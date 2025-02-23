@@ -3,9 +3,9 @@ import { Button } from "presentation/components/ui/button";
 import type { Customer } from "domain/entities";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, ArrowDownUp, FileUser, Printer } from "lucide-react";
+import { ArrowUpDown, ArrowDownUp, Printer } from "lucide-react";
 
-export const customerColumns: ColumnDef<Omit<Customer, "id">>[] = [
+export const customerColumns: ColumnDef<Customer>[] = [
   {
     id: "identificacion",
     accessorKey: "identification",
@@ -114,7 +114,7 @@ export const customerColumns: ColumnDef<Omit<Customer, "id">>[] = [
   {
     id: "customer-actions",
     cell: ({ row }) => {
-      const customer = row.original;
+      const customerId = row.original.id;
 
       return (
         <div className="flex justify-end">
@@ -122,7 +122,7 @@ export const customerColumns: ColumnDef<Omit<Customer, "id">>[] = [
             className="mr-2 bg-slate-700 text-white"
             size="icon"
             onClick={() => {
-              console.log("Imprimir", customer);
+              console.log("Imprimir", customerId);
             }}
           >
             <Printer />
