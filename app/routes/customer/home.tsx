@@ -13,7 +13,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function CustomerPage() {
-  const { queryCustomers } = useCustomers();
+  const { queryCustomers } = useCustomers({onlyActives: true});
 
   return (
     <div className="container mx-auto p-3">

@@ -71,7 +71,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <section>
-      <section className="flex flex-col md:flex-row justify-between items-start gap-2 py-4">
+      <section className="flex flex-col-reverse md:flex-row justify-between items-start gap-2 py-4">
         <div className="flex flex-row items-center gap-3 lg:w-3/5">
           <Input
             placeholder="Filtrar por identificación"

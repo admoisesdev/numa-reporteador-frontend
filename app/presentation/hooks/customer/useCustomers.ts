@@ -4,10 +4,12 @@ import * as UsesCases from "domain/use-cases/customer";
 
 import { useQuery } from "@tanstack/react-query";
 
-export const useCustomers = () => {
+
+
+export const useCustomers = (customersParams: UsesCases.CustomersParams) => {
   const queryCustomers = useQuery({
-    queryKey: ["customers"],
-    queryFn: () => UsesCases.getCustomersUseCase(apiFetcher),
+    queryKey: ["customers", customersParams],
+    queryFn: () => UsesCases.getCustomersUseCase(apiFetcher, customersParams),
   });
 
   return {
