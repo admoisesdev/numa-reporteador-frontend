@@ -1,22 +1,22 @@
 import { useState } from "react";
 
 import {
+  Button,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  Input,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Skeleton } from "../ui/skeleton";
+} from "../ui";
+
+import { DataTablePagination } from "./DataTablePagination";
 
 import {
   flexRender,
@@ -33,19 +33,20 @@ import type {
   VisibilityState,
 } from "@tanstack/react-table";
 
-import { Eye, MoveLeft, MoveRight } from "lucide-react";
-import { DataTablePagination } from "./DataTablePagination";
+import { Eye } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   isLoading: boolean;
+  rowsPerPageOptions?: number[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading,
+  rowsPerPageOptions = [5,10,15, 20,30],
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -118,10 +119,7 @@ export function DataTable<TData, TValue>({
               <Eye /> Columnas visibles
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="bg-white"
-            align="end"
-          >
+          <DropdownMenuContent className="bg-white" align="end">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -216,30 +214,10 @@ export function DataTable<TData, TValue>({
         </Table>
       </section>
 
-      <DataTablePagination table={table} />
-
-      {/* <section className="flex items-center justify-end space-x-6 py-4">
-        {table.getCanPreviousPage() && (
-          <Button
-            variant="ghost"
-            className="bg-zinc-800 text-white"
-            size="icon"
-            onClick={() => table.previousPage()}
-          >
-            <MoveLeft className="size-5" />
-          </Button>
-        )}
-        {table.getCanNextPage() && (
-          <Button
-            variant="ghost"
-            className="bg-zinc-800 text-white"
-            size="icon"
-            onClick={() => table.nextPage()}
-          >
-            <MoveRight className="size-5" />
-          </Button>
-        )}
-      </section> */}
+      <DataTablePagination
+        table={table}
+        rowsPerPageOptions={rowsPerPageOptions}
+      />
     </section>
   );
 }
