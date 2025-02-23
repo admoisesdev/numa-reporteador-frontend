@@ -22,6 +22,7 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -31,6 +32,9 @@ import type {
   SortingState,
   VisibilityState,
 } from "@tanstack/react-table";
+
+import { Eye, MoveLeft, MoveRight } from "lucide-react";
+import { DataTablePagination } from "./DataTablePagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -43,7 +47,7 @@ export function DataTable<TData, TValue>({
   data,
   isLoading,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
@@ -51,6 +55,7 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: setSorting,
@@ -66,14 +71,17 @@ export function DataTable<TData, TValue>({
   return (
     <section>
       <section className="flex flex-col md:flex-row justify-between items-start gap-2 py-4">
-        <div className="flex flex-row items-center gap-3 lg:w-2/5">
+        <div className="flex flex-row items-center gap-3 lg:w-3/5">
           <Input
             placeholder="Filtrar por identificación"
             value={
-              (table.getColumn("identificacion")?.getFilterValue() as string) ?? ""
+              (table.getColumn("identificacion")?.getFilterValue() as string) ??
+              ""
             }
             onChange={(event) =>
-              table.getColumn("identificacion")?.setFilterValue(event.target.value)
+              table
+                .getColumn("identificacion")
+                ?.setFilterValue(event.target.value)
             }
             className="max-w-xs"
           />
@@ -105,13 +113,13 @@ export function DataTable<TData, TValue>({
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="focus-visible:ring-0 focus-visible:border-slate-700"
+              className="focus-visible:ring-0 focus-visible:border-slate-600"
             >
-              Columnas visibles
+              <Eye /> Columnas visibles
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="bg-white border-slate-800"
+            className="bg-white"
             align="end"
           >
             {table
@@ -137,7 +145,7 @@ export function DataTable<TData, TValue>({
 
       <section className="rounded-md overflow-hidden">
         <Table className="min-w-full">
-          <TableHeader className="bg-slate-800 text-white">
+          <TableHeader className="bg-slate-800 text-white border border-slate-800">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -156,7 +164,7 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
 
-          <TableBody>
+          <TableBody className="border border-slate-300 border-t-0">
             {isLoading ? (
               <TableRow>
                 <TableCell
@@ -207,6 +215,31 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </section>
+
+      <DataTablePagination table={table} />
+
+      {/* <section className="flex items-center justify-end space-x-6 py-4">
+        {table.getCanPreviousPage() && (
+          <Button
+            variant="ghost"
+            className="bg-zinc-800 text-white"
+            size="icon"
+            onClick={() => table.previousPage()}
+          >
+            <MoveLeft className="size-5" />
+          </Button>
+        )}
+        {table.getCanNextPage() && (
+          <Button
+            variant="ghost"
+            className="bg-zinc-800 text-white"
+            size="icon"
+            onClick={() => table.nextPage()}
+          >
+            <MoveRight className="size-5" />
+          </Button>
+        )}
+      </section> */}
     </section>
   );
 }
