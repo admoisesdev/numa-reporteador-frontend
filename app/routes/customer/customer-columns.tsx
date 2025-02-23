@@ -3,7 +3,8 @@ import { Button } from "presentation/components/ui/button";
 import type { Customer } from "domain/entities";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, ArrowDownUp, Printer } from "lucide-react";
+import { ArrowUpDown, ArrowDownUp } from "lucide-react";
+import { CustomerAccountStatements } from "presentation/components/customer";
 
 export const customerColumns: ColumnDef<Customer>[] = [
   {
@@ -114,19 +115,14 @@ export const customerColumns: ColumnDef<Customer>[] = [
   {
     id: "customer-actions",
     cell: ({ row }) => {
-      const customerId = row.original.id;
+      // const customerId = row.original.id;
+      const customer = row.original;
 
       return (
         <div className="flex justify-end">
-          <Button
-            className="mr-2 bg-slate-700 text-white"
-            size="icon"
-            onClick={() => {
-              console.log("Imprimir", customerId);
-            }}
-          >
-            <Printer />
-          </Button>
+          <CustomerAccountStatements
+            /* customerId={customerId} */ customer={customer}
+          />
         </div>
       );
     },

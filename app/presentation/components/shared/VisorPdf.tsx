@@ -1,7 +1,6 @@
 import React from "react";
 import {
   BlobProvider,
-  Document,
   type DocumentProps,
 } from "@react-pdf/renderer";
 
@@ -25,7 +24,7 @@ export const VisorPdf = ({ pdfDocument }: VisorPdfProps) => {
           <iframe
             src={url!}
             width="100%"
-            height="500px"
+            height="100%"
             title="Vista previa del PDF"
           />
         );

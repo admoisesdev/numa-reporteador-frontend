@@ -98,72 +98,24 @@ const styles = StyleSheet.create({
   },
 });
 
-export const AccountStatementPdf = () => {
-  const data = {
-    logo: "./logo.jpg",
-    title: "Numa S.A.S",
-    subtitle: "Estado de cuenta",
-    date: new Date().toLocaleDateString(),
-    columns: ["Producto", "Cantidad", "Precio"],
-    info: [
-      { key: "fecha del corte", value: "??" },
-      { key: "cliente", value: "??" },
-      { key: "urbanizacion", value: "??" },
-      { key: "tipo del bien", value: "??" },
-      { key: "Nro. contrato", value: "??" },
-      { key: "vendedor", value: "??" },
-      { key: "precio de venta", value: "??" },
-      { key: "Proyecto", value: "??" },
-      { key: "Modelo", value: "??" },
-      { key: "Fecha Cont", value: "??" },
-      { key: "Estado Cont", value: "??" },
-      { key: "Asesor de crédito", value: "??" },
-      { key: "Moneda", value: "??" },
-    ],
-    paymentInfo: [
-      { key: "cuota de entrada", value: "??" },
-      { key: "pago inicial", value: "??" },
-      { key: "saldo cuota de entrada", value: "??" },
-      { key: "credito institucion financiera", value: "??" },
-    ],
-    annulmentColumns: [
-      {
-        title: "Documento por cobrar",
-        subcolumns: ["Nro.", "Documento", "Vcto.", "Valor"],
-      },
-    ],
-    annulmentRows: [
-      [["001", "Factura", "01/01/2025", "$1000"]],
-      [["002", "Recibo", "01/02/2025", "$500"]],
-    ],
-    cancelationColumns: [
-      {
-        title: "Documento por cobrar",
-        subcolumns: ["Nro.", "Documento", "Vcto.", "Valor"],
-      },
-      {
-        title: "Cancelaciones",
-        subcolumns: ["Mora", "Rec. #", "Fecha", "Valor"],
-      },
-      {
-        title: "Saldo doct.",
-        subcolumns: ["Int. Mora", "Valor"],
-      },
-    ],
-    cancelationRows: [
-      [
-        ["001", "Factura", "01/01/2025", "$1000"],
-        ["No", "123", "01/01/2025", "$500"],
-        ["$10", "$490"],
-      ],
-      [
-        ["002", "Recibo", "01/02/2025", "$500"],
-        ["Yes", "124", "01/02/2025", "$250"],
-        ["$5", "$245"],
-      ],
-    ],
-  };
+type DataPdf = {
+  logo: string;
+  title: string;
+  subtitle: string;
+  date: string;
+  info: { key: string; value: string }[];
+  paymentInfo: { key: string; value: string }[];
+  annulmentColumns: { title: string; subcolumns: string[] }[];
+  annulmentRows: string[][][];
+  cancelationColumns: { title: string; subcolumns: string[] }[];
+  cancelationRows: string[][][];
+}
 
+interface AccountStatementPdfProps {
+  data: DataPdf;
+}
+
+export const AccountStatementPdf = ({ data }: AccountStatementPdfProps) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
