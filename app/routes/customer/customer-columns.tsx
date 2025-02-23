@@ -119,17 +119,6 @@ export const customerColumns: ColumnDef<Omit<Customer, "id">>[] = [
       return (
         <div className="flex justify-end">
           <Button
-            variant="outline"
-            className="mr-2 text-slate-700 border-slate-700"
-            size="icon"
-            onClick={() => {
-              console.log("Ver contratos", customer);
-            }}
-          >
-            <FileUser />
-          </Button>
-
-          <Button
             className="mr-2 bg-slate-700 text-white"
             size="icon"
             onClick={() => {

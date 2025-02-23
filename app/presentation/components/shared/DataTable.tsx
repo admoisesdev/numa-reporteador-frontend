@@ -16,6 +16,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Skeleton } from "../ui/skeleton";
 
 import {
   flexRender,
@@ -34,11 +35,13 @@ import type {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isLoading: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -62,11 +65,13 @@ export function DataTable<TData, TValue>({
 
   return (
     <section>
-      <section className="flex flex-wrap items-center md:justify-between gap-2 py-4">
+      <section className="flex flex-col md:flex-row justify-between items-start gap-2 py-4">
         <div className="flex flex-row items-center gap-3 lg:w-2/5">
           <Input
             placeholder="Filtrar por nombre"
-            value={(table.getColumn("nombre")?.getFilterValue() as string) ?? ""}
+            value={
+              (table.getColumn("nombre")?.getFilterValue() as string) ?? ""
+            }
             onChange={(event) =>
               table.getColumn("nombre")?.setFilterValue(event.target.value)
             }
@@ -75,7 +80,9 @@ export function DataTable<TData, TValue>({
 
           <Input
             placeholder="Filtrar por email"
-            value={(table.getColumn("correo")?.getFilterValue() as string) ?? ""}
+            value={
+              (table.getColumn("correo")?.getFilterValue() as string) ?? ""
+            }
             onChange={(event) =>
               table.getColumn("correo")?.setFilterValue(event.target.value)
             }
@@ -87,7 +94,7 @@ export function DataTable<TData, TValue>({
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="ml-auto focus-visible:ring-0 focus-visible:border-slate-700"
+              className="focus-visible:ring-0 focus-visible:border-slate-700"
             >
               Columnas visibles
             </Button>
@@ -117,52 +124,78 @@ export function DataTable<TData, TValue>({
         </DropdownMenu>
       </section>
 
-      {/* <section className="rounded-md overflow-hidden"> */}
-      <Table className="min-w-full">
-        <TableHeader className="bg-slate-800 text-white">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id} className="p-0">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-                className="border-none odd:bg-slate-200 even:bg-slate-100"
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+      <section className="rounded-md overflow-hidden">
+        <Table className="min-w-full">
+          <TableHeader className="bg-slate-800 text-white">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id} className="p-0">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center text-2xl">
-                No hay clientes
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      {/* </section> */}
+            ))}
+          </TableHeader>
+
+          <TableBody>
+            {isLoading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center text-2xl"
+                >
+                  <div className="space-y-2">
+                    <Skeleton className="bg-slate-300 h-10 w-full" />
+                    <Skeleton className="bg-slate-300 h-10 w-full" />
+                    <Skeleton className="bg-slate-300 h-10 w-full" />
+                    <Skeleton className="bg-slate-300 h-10 w-full" />
+                    <Skeleton className="bg-slate-300 h-10 w-full" />
+                    <Skeleton className="bg-slate-300 h-10 w-full" />
+                    <Skeleton className="bg-slate-300 h-10 w-full" />
+                    <Skeleton className="bg-slate-300 h-10 w-full" />
+                    <Skeleton className="bg-slate-300 h-10 w-full" />
+                    <Skeleton className="bg-slate-300 h-10 w-5/6" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="border-none odd:bg-slate-200 even:bg-slate-100"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center text-2xl"
+                >
+                  No hay clientes
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </section>
     </section>
   );
 }
