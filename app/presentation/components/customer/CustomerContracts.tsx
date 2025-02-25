@@ -24,12 +24,20 @@ interface CustomerContractsProps {
 }
 
 export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
+  const [isOpenPDf, setIsOpenPDf] = useState(false);
+  const [selectedContractId, setSelectedContractId] = useState<string | null>(null);
   const { queryContractsCustomer } = useContractsCustomer({
     customerId: customer.id,
   });
 
-  const { contractId, isOpenPDf } = useAccountStatus();
-  console.log({contractId});
+  
+  // const {  } = useAccountStatus();
+  
+  const handlePrint = (contractId: string) => {
+    setSelectedContractId(contractId);
+    setIsOpenPDf(true);
+  };
+  
   const data = {
     logo: "./logo.jpg",
     title: "Numa S.A.S",
@@ -101,6 +109,9 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
         <Button
           className="mr-2 bg-slate-700 text-white"
           size="icon"
+          onClick={() => {
+            setIsOpenPDf(true);
+          }}
         >
           <ReceiptText className="size-5" />
         </Button>
@@ -118,6 +129,7 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
             columns={contractsCustomerColumns}
             data={queryContractsCustomer?.data ?? []}
             isLoading={queryContractsCustomer.isLoading}
+            metaData={{ total: queryContractsCustomer?.data?.length }}
             noDataMessage="No hay contratos de cliente"
             classNameTableHeader="bg-gray-800 border-gray-800"
           />

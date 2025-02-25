@@ -1,18 +1,18 @@
-import { useState } from "react"
+import { apiFetcher } from "config/adapters";
+import * as UsesCases from "domain/use-cases/contract";
 
-export const useAccountStatus = () => {
-  const [contractId, setContractId] = useState("");
-  const [isOpenPDf, setIsOpenPDf] = useState(false);
+import { useQuery } from "@tanstack/react-query";
 
-  const handleContractId = (id: string) => {
-    setContractId(id);
-    setIsOpenPDf(true);
-  }
+export const useAccountStatus = (
+  accountStatusParams: UsesCases.AccountStatusParams
+) => {
+  const queryContracts = useQuery({
+    queryKey: ["account-status", accountStatusParams],
+    queryFn: () =>
+      UsesCases.getAccountStatusUseCase(apiFetcher, accountStatusParams),
+  });
 
   return {
-    contractId,
-    isOpenPDf,
-    handleContractId,
+    queryContractsCustomer: queryContracts,
   };
-
-}
+};

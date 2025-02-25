@@ -40,6 +40,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   isLoading: boolean;
+  metaData?: Record<string, any>;
   noDataMessage?: string;
   rowsPerPageOptions?: number[];
   canHideColumns?: boolean;
@@ -52,6 +53,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading,
+  metaData,
   noDataMessage = "No hay datos para mostrar",
   rowsPerPageOptions = [5, 10, 15, 20, 30],
   canHideColumns = false,
@@ -78,6 +80,7 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility,
     },
+    meta: metaData,
   });
 
   return (

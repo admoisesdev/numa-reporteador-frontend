@@ -1,10 +1,9 @@
 import { Button } from "presentation/components/ui/button";
+import { CustomerAccountStatus } from "presentation/components/customer";
 
 import type { Contract } from "domain/entities";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, ArrowDownUp, Printer } from "lucide-react";
-import { CustomerAccountStatus } from "presentation/components/customer";
 
 export const contractsCustomerColumns: ColumnDef<Contract>[] = [
   {
@@ -75,8 +74,13 @@ export const contractsCustomerColumns: ColumnDef<Contract>[] = [
   },
   {
     id: "contracts-customer-actions",
-    cell: ({ row }) => {
+    cell: ({ row,table }) => {
       const contractId = row.original.id;
+      console.log(table.options.meta);
+
+      //* Guarda en metadata
+      table.options.meta = { contractId: contractId,
+      };
 
       return (
         <div className="flex justify-end">
