@@ -1,6 +1,9 @@
 import { useState } from "react";
 
-import { useAccountStatus, useContractsCustomer } from "presentation/hooks/contract";
+import {
+  useAccountStatus,
+  useContractsCustomer,
+} from "presentation/hooks/contract";
 import { DataTable, VisorPdf } from "../shared";
 import { AccountStatusPdf } from "./AccountStatusPdf";
 
@@ -25,19 +28,22 @@ interface CustomerContractsProps {
 
 export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
   const [isOpenPDf, setIsOpenPDf] = useState(false);
-  const [selectedContractId, setSelectedContractId] = useState<string | null>(null);
+  const [selectedContractId, setSelectedContractId] = useState<string | null>(
+    null
+  );
   const { queryContractsCustomer } = useContractsCustomer({
     customerId: customer.id,
   });
 
-  
-  // const {  } = useAccountStatus();
-  
+  const { accountStatus } = useAccountStatus({
+    contractId: selectedContractId!,
+  });
+
   const handlePrint = (contractId: string) => {
     setSelectedContractId(contractId);
     setIsOpenPDf(true);
   };
-  
+
   const data = {
     logo: "./logo.jpg",
     title: "Numa S.A.S",
@@ -46,18 +52,18 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
     contractsCustomerColumns: ["Producto", "Cantidad", "Precio"],
     info: [
       { key: "fecha del corte", value: DateAdapter.formatDate(new Date()) },
-      { key: "proyecto", value: customer.project },
+      { key: "proyecto", value: accountStatus?.contract.proyecto! },
       { key: "cliente", value: customer.name },
-      { key: "modelo", value: "??" },
+      { key: "modelo", value: accountStatus?.contract.ubicacion! },
       { key: "urbanizacion", value: customer.project },
-      { key: "fecha cont", value: "??" },
-      { key: "tipo del bien", value: "??" },
-      { key: "estado cont", value: "??" },
-      { key: "Nro. contrato", value: "??" },
+      { key: "fecha cont", value: accountStatus?.contract.fecha_cierre! },
+      { key: "tipo del bien", value: accountStatus?.contract.tipo_producto! },
+      { key: "estado cont", value: accountStatus?.contract.estado! },
+      { key: "Nro. contrato", value: accountStatus?.contract.id! },
       { key: "asesor de crédito", value: "??" },
-      { key: "vendedor", value: "??" },
+      { key: "vendedor", value: accountStatus?.contract.cliente_vendedor! },
       { key: "moneda", value: "??" },
-      { key: "precio de venta", value: "??" },
+      { key: "precio de venta", value: accountStatus?.contract.precioventa! },
     ],
     paymentInfo: [
       { key: "cuota de entrada", value: "??" },
@@ -106,13 +112,7 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          className="mr-2 bg-slate-700 text-white"
-          size="icon"
-          onClick={() => {
-            setIsOpenPDf(true);
-          }}
-        >
+        <Button className="mr-2 bg-slate-700 text-white" size="icon">
           <ReceiptText className="size-5" />
         </Button>
       </DialogTrigger>
@@ -129,7 +129,7 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
             columns={contractsCustomerColumns}
             data={queryContractsCustomer?.data ?? []}
             isLoading={queryContractsCustomer.isLoading}
-            metaData={{ total: queryContractsCustomer?.data?.length }}
+            metaData={{ handlePrint }}
             noDataMessage="No hay contratos de cliente"
             classNameTableHeader="bg-gray-800 border-gray-800"
           />

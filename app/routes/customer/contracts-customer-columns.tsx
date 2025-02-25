@@ -5,6 +5,12 @@ import type { Contract } from "domain/entities";
 
 import type { ColumnDef } from "@tanstack/react-table";
 
+declare module "@tanstack/react-table" {
+  interface TableMeta<TData> {
+    handlePrint?: (contractId: string) => void;
+  }
+}
+
 export const contractsCustomerColumns: ColumnDef<Contract>[] = [
   {
     id: "id",
@@ -76,15 +82,16 @@ export const contractsCustomerColumns: ColumnDef<Contract>[] = [
     id: "contracts-customer-actions",
     cell: ({ row,table }) => {
       const contractId = row.original.id;
-      console.log(table.options.meta);
 
-      //* Guarda en metadata
-      table.options.meta = { contractId: contractId,
-      };
+      const handlePrint = table.options.meta?.handlePrint;
 
+   
       return (
         <div className="flex justify-end">
-          <CustomerAccountStatus contractId={contractId} />
+          <CustomerAccountStatus
+            contractId={contractId}
+            handlePrint={handlePrint}
+          />
         </div>
       );
     },

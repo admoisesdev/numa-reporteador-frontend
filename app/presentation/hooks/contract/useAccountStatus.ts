@@ -6,13 +6,15 @@ import { useQuery } from "@tanstack/react-query";
 export const useAccountStatus = (
   accountStatusParams: UsesCases.AccountStatusParams
 ) => {
-  const queryContracts = useQuery({
+  const queryAccountStatus = useQuery({
     queryKey: ["account-status", accountStatusParams],
     queryFn: () =>
       UsesCases.getAccountStatusUseCase(apiFetcher, accountStatusParams),
+    enabled: !!accountStatusParams.contractId,
   });
 
   return {
-    queryContractsCustomer: queryContracts,
+    queryAccountStatus,
+    accountStatus: queryAccountStatus.data,
   };
 };
