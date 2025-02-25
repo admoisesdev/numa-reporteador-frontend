@@ -4,7 +4,7 @@ import type { Customer } from "domain/entities";
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, ArrowDownUp } from "lucide-react";
-import { CustomerAccountStatements } from "presentation/components/customer";
+import { CustomerAccountStatus } from "presentation/components/customer";
 
 export const customerColumns: ColumnDef<Customer>[] = [
   {
@@ -120,7 +120,7 @@ export const customerColumns: ColumnDef<Customer>[] = [
 
       return (
         <div className="flex justify-end">
-          <CustomerAccountStatements
+          <CustomerAccountStatus
             /* customerId={customerId} */ customer={customer}
           />
         </div>

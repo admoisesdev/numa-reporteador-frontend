@@ -1,2 +1,2 @@
 export * from './AccountStatementPdf';
-export * from './CustomerAccountStatements';
+export * from './CustomerAccountStatus';

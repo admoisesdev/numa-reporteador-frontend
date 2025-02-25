@@ -12,7 +12,7 @@ import {
 import { VisorPdf } from "../shared";
 import { AccountStatementPdf } from "./AccountStatementPdf";
 
-import { Printer } from "lucide-react";
+import { ReceiptText } from "lucide-react";
 import type { Customer } from "domain/entities";
 
 interface CustomerAccountStatementsProps {
@@ -20,7 +20,7 @@ interface CustomerAccountStatementsProps {
   customer: Customer;
 }
 
-export const CustomerAccountStatements = ({
+export const CustomerAccountStatus = ({
   customer,
 }: CustomerAccountStatementsProps) => {
   const [isOpenPDf, setisOpenPDf] = useState(false);
@@ -101,16 +101,18 @@ export const CustomerAccountStatements = ({
             setisOpenPDf(true);
           }}
         >
-          <Printer />
+          <ReceiptText className="size-5" />
         </Button>
       </DialogTrigger>
       <DialogContent className="min-w-5/6 min-h-11/12 bg-white border-none m-3 px-1 py-2">
         <DialogHeader>
           <DialogTitle className="mx-2 mb-2">
-            Contratos de cliente y sus estado de cuenta
+            Contratos de cliente
           </DialogTitle>
 
-          {isOpenPDf && <VisorPdf pdfDocument={<AccountStatementPdf data={data} />} />}
+          {isOpenPDf && (
+            <VisorPdf pdfDocument={<AccountStatementPdf data={data} />} />
+          )}
         </DialogHeader>
       </DialogContent>
     </Dialog>
