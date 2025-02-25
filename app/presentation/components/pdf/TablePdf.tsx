@@ -24,10 +24,11 @@ const styles = StyleSheet.create({
 
 interface TableProps {
   children: React.ReactNode;
+  style?: any;
 }
 
-const TablePdf = ({ children }: TableProps) => (
-  <View style={styles.table}>{children}</View>
+const TablePdf = ({ children,style }: TableProps) => (
+  <View style={[styles.table,style]}>{children}</View>
 );
 
 interface TableCellProps {

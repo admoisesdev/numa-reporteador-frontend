@@ -34,19 +34,30 @@ import type {
 } from "@tanstack/react-table";
 
 import { Eye } from "lucide-react";
+import { cn } from "presentation/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   isLoading: boolean;
+  noDataMessage?: string;
   rowsPerPageOptions?: number[];
+  canHideColumns?: boolean;
+  canFilterColumns?: boolean;
+  canPaginate?: boolean;
+  classNameTableHeader?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading,
-  rowsPerPageOptions = [5,10,15, 20,30],
+  noDataMessage = "No hay datos para mostrar",
+  rowsPerPageOptions = [5, 10, 15, 20, 30],
+  canHideColumns = false,
+  canFilterColumns = false,
+  canPaginate = false,
+  classNameTableHeader = "bg-slate-800 border-slate-800",
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -72,78 +83,85 @@ export function DataTable<TData, TValue>({
   return (
     <section>
       <section className="flex flex-col-reverse md:flex-row justify-between items-start gap-2 py-4">
-        <div className="flex flex-row items-center gap-3 lg:w-3/5">
-          <Input
-            placeholder="Filtrar por identificación"
-            value={
-              (table.getColumn("identificacion")?.getFilterValue() as string) ??
-              ""
-            }
-            onChange={(event) =>
-              table
-                .getColumn("identificacion")
-                ?.setFilterValue(event.target.value)
-            }
-            className="max-w-xs"
-          />
+        {canFilterColumns && (
+          <div className="flex flex-row items-center gap-3 lg:w-3/5">
+            <Input
+              placeholder="Filtrar por identificación"
+              value={
+                (table
+                  .getColumn("identificacion")
+                  ?.getFilterValue() as string) ?? ""
+              }
+              onChange={(event) =>
+                table
+                  .getColumn("identificacion")
+                  ?.setFilterValue(event.target.value)
+              }
+              className="max-w-xs"
+            />
 
-          <Input
-            placeholder="Filtrar por nombre"
-            value={
-              (table.getColumn("nombre")?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event) =>
-              table.getColumn("nombre")?.setFilterValue(event.target.value)
-            }
-            className="max-w-xs"
-          />
+            <Input
+              placeholder="Filtrar por nombre"
+              value={
+                (table.getColumn("nombre")?.getFilterValue() as string) ?? ""
+              }
+              onChange={(event) =>
+                table.getColumn("nombre")?.setFilterValue(event.target.value)
+              }
+              className="max-w-xs"
+            />
 
-          <Input
-            placeholder="Filtrar por email"
-            value={
-              (table.getColumn("correo")?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event) =>
-              table.getColumn("correo")?.setFilterValue(event.target.value)
-            }
-            className="max-w-xs"
-          />
-        </div>
+            <Input
+              placeholder="Filtrar por email"
+              value={
+                (table.getColumn("correo")?.getFilterValue() as string) ?? ""
+              }
+              onChange={(event) =>
+                table.getColumn("correo")?.setFilterValue(event.target.value)
+              }
+              className="max-w-xs"
+            />
+          </div>
+        )}
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="focus-visible:ring-0 focus-visible:border-slate-600"
-            >
-              <Eye /> Columnas visibles
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="bg-white" align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {canHideColumns && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="focus-visible:ring-0 focus-visible:border-slate-600"
+              >
+                <Eye /> Columnas visibles
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="bg-white" align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </section>
 
       <section className="rounded-md overflow-hidden">
         <Table className="min-w-full">
-          <TableHeader className="bg-slate-800 text-white border border-slate-800">
+          <TableHeader
+            className={cn("text-white border", classNameTableHeader)}
+          >
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -206,7 +224,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center text-2xl"
                 >
-                  No hay clientes
+                  {noDataMessage}
                 </TableCell>
               </TableRow>
             )}
@@ -214,10 +232,10 @@ export function DataTable<TData, TValue>({
         </Table>
       </section>
 
-      <DataTablePagination
+     {canPaginate && <DataTablePagination
         table={table}
         rowsPerPageOptions={rowsPerPageOptions}
-      />
+      />}
     </section>
   );
 }

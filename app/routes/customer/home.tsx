@@ -18,11 +18,18 @@ export default function CustomerPage() {
 
   return (
     <div className="container mx-auto p-3">
-      <TypographyH3 className="mb-2 text-slate-900">Clientes</TypographyH3>
+      <section className="flex items-center gap-4">
+        <img src="/logo.jpg" alt="Logo" width={250} height={150}/>
+        <TypographyH3 className="mb-2 text-slate-900">Clientes</TypographyH3>
+      </section>
       <DataTable
         columns={customerColumns}
         data={queryCustomers?.data ?? []}
         isLoading={queryCustomers.isLoading}
+        noDataMessage="No hay clientes"
+        canHideColumns
+        canFilterColumns
+        canPaginate
       />
     </div>
   );

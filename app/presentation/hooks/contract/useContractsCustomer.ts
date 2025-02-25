@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useContractsCustomer = (contractsParams: UsesCases.ContractsCustomerParams) => {
   const queryContracts = useQuery({
-    queryKey: ["customers", contractsParams],
+    queryKey: ["contracts", contractsParams],
     queryFn: () => UsesCases.getContractsCustomerUseCase(apiFetcher, contractsParams),
   });
 

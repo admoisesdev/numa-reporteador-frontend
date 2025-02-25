@@ -5,14 +5,14 @@ import type { ContractResponse } from "infrastructure/interfaces";
 import { ContractMapper } from "infrastructure/mappers";
 
 export interface ContractsCustomerParams {
-  customerId?: boolean;
+  customerId?: number;
 }
 
 export const getContractsCustomerUseCase = async (
   fetcher: HttpAdapter,
   params: ContractsCustomerParams
 ): Promise<Contract[]> => {
-  const { customerId = "" } = params;
+  const { customerId } = params;
 
   try {
     const contractsByCustomer = await fetcher.get<ContractResponse[]>("/contract", {

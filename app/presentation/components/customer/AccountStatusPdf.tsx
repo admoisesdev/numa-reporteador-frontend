@@ -48,48 +48,45 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   infoKey: {
-    fontSize: 10,
+    fontSize: 8,
     fontWeight: 700,
     textTransform: "uppercase",
     width: "50%",
     color: "#292b33",
   },
   infoValue: {
-    fontSize: 10,
+    fontSize: 8,
     width: "50%",
+    marginRight: 10,
   },
   paymentTitle: {
+    marginLeft: 10,
     fontSize: 11,
     fontWeight: "bold",
     marginTop: 20,
     marginBottom: 10,
-    textAlign: "center",
     textTransform: "uppercase",
   },
-  paymentContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginVertical: 10,
-    marginLeft: 10,
-  },
   paymentColumn: {
+    marginLeft: 10,
     width: "50%",
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 12,
   },
   paymentKey: {
-    fontSize: 10,
+    fontSize: 8,
     fontWeight: 700,
     textTransform: "uppercase",
     width: "50%",
     color: "#0f172b",
   },
   paymentValue: {
-    fontSize: 10,
+    fontSize: 8,
     width: "50%",
   },
   tableTitle: {
+    marginLeft: 10,
     fontSize: 11,
     fontWeight: "bold",
     marginTop: 20,
@@ -115,7 +112,7 @@ interface AccountStatementPdfProps {
   data: DataPdf;
 }
 
-export const AccountStatementPdf = ({ data }: AccountStatementPdfProps) => {
+export const AccountStatusPdf = ({ data }: AccountStatementPdfProps) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -141,25 +138,23 @@ export const AccountStatementPdf = ({ data }: AccountStatementPdfProps) => {
 
         <Text style={styles.paymentTitle}>Forma de pago según convenio</Text>
 
-        <View style={styles.paymentContainer}>
-          {data.paymentInfo.map((item, index) => (
-            <View key={index} style={styles.paymentColumn}>
-              <Text style={styles.paymentKey}>{item.key}:</Text>
-              <Text style={styles.paymentValue}>{item.value}</Text>
-            </View>
-          ))}
-        </View>
+        {data.paymentInfo.map((item, index) => (
+          <View key={index} style={styles.paymentColumn}>
+            <Text style={styles.paymentKey}>{item.key}:</Text>
+            <Text style={styles.paymentValue}>{item.value}</Text>
+          </View>
+        ))}
 
         <Text style={styles.tableTitle}>Detalle de anulaciones</Text>
 
-        <TablePdf>
+        <TablePdf style={{ marginLeft: 10 }}>
           <TableHeaderPdf columns={data.annulmentColumns} />
           <TableBodyPdf rows={data.annulmentRows} />
         </TablePdf>
 
         <Text style={styles.tableTitle}>Detalle de cancelaciones</Text>
 
-        <TablePdf>
+        <TablePdf style={{ marginLeft: 10 }}>
           <TableHeaderPdf columns={data.cancelationColumns} />
           <TableBodyPdf rows={data.cancelationRows} />
         </TablePdf>
