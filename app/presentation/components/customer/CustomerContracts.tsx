@@ -44,6 +44,19 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
     setIsOpenPDf(true);
   };
 
+  const cancelationsData = accountStatus?.financing.map((financing) => {
+    return [
+      [
+        financing.dividendNumber ?? "N/A",
+        financing.dividendType ?? "N/A",
+        financing.expirationDate ?? "N/A",
+        financing.dividendValue ?? "N/A",
+      ],
+      ["N/A", "N/A", "N/A"],
+      [financing.dividendBalanceValue ?? "N/A"],
+    ];
+  }) as string[][][];
+
   const data: DataPdf = {
     logo: "./logo.jpg",
     title: "Numa S.A.S",
@@ -104,14 +117,14 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
       },
       {
         title: "Cancelaciones",
-        subcolumns: ["Rec. #", "Fecha", "Valor cobrado"],
+        subcolumns: ["Rec. #", "Fecha", "Valor"],
       },
       {
         title: "Saldo doct.",
         subcolumns: ["Valor"],
       },
     ],
-    cancelationRows: [
+    /* cancelationRows: [
       [
         ["001", "Factura", "01/01/2025", "$1000"], // N°, Documento, Vcto., Valor
         ["123", "01/01/2025", "$500"], // Rec. #, Fecha, Valor cobrado
@@ -122,7 +135,8 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
         ["124", "01/02/2025", "$250"],
         ["$245"],
       ],
-    ],
+    ], */
+    cancelationRows: cancelationsData,
     totalsInfo: [
       {
         key: "Por vencer",
