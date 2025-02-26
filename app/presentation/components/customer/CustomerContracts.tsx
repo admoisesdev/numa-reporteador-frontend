@@ -52,34 +52,51 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
     contractsCustomerColumns: ["Producto", "Cantidad", "Precio"],
     info: [
       { key: "fecha del corte", value: DateAdapter.formatDate(new Date()) },
-      { key: "proyecto", value: accountStatus?.contract.proyecto! },
+      { key: "proyecto", value: accountStatus?.contract.project! },
       { key: "cliente", value: customer.name },
-      { key: "modelo", value: accountStatus?.contract.ubicacion! },
-      { key: "urbanizacion", value: customer.project },
-      { key: "fecha cont", value: accountStatus?.contract.fecha_cierre! },
-      { key: "tipo del bien", value: accountStatus?.contract.tipo_producto! },
-      { key: "estado cont", value: accountStatus?.contract.estado! },
-      { key: "Nro. contrato", value: accountStatus?.contract.id! },
-      { key: "asesor de crédito", value: "??" },
-      { key: "vendedor", value: accountStatus?.contract.cliente_vendedor! },
-      { key: "moneda", value: "??" },
-      { key: "precio de venta", value: accountStatus?.contract.precioventa! },
-    ],
-    paymentInfo: [
-      { key: "cuota de entrada", value: "??" },
-      { key: "pago inicial", value: "??" },
-      { key: "saldo cuota de entrada", value: "??" },
-      { key: "credito institucion financiera", value: "??" },
-    ],
-    annulmentColumns: [
+      { key: "modelo", value: accountStatus?.contract.location! },
+      { key: "urbanizacion", value: accountStatus?.contract.project! },
       {
-        title: "Documento por cobrar",
-        subcolumns: ["Nro.", "Documento", "Vcto.", "Valor"],
+        key: "fecha cont",
+        value: accountStatus?.contract.closingDate! ?? "N/A",
+      },
+      {
+        key: "tipo del bien",
+        value: accountStatus?.contract.typeOfGood! ?? "N/A",
+      },
+      { key: "estado cont", value: accountStatus?.contract.status! ?? "N/A" },
+      { key: "Nro. contrato", value: accountStatus?.contract.id! },
+      {
+        key: "asesor de crédito",
+        value: accountStatus?.contract.creditAdvisor! ?? "N/A",
+      },
+      {
+        key: "vendedor",
+        value: accountStatus?.contract.sellerCustomer! ?? "N/A",
+      },
+      { key: "moneda", value: accountStatus?.contract.currency! ?? "N/A" },
+      {
+        key: "precio de venta",
+        value: accountStatus?.contract.salePrice! ?? "N/A",
       },
     ],
-    annulmentRows: [
-      [["001", "Factura", "01/01/2025", "$1000"]],
-      [["002", "Recibo", "01/02/2025", "$500"]],
+    paymentInfo: [
+      {
+        key: "cuota de entrada",
+        value: accountStatus?.contract.entranceValue! ?? "N/A",
+      },
+      {
+        key: "pago inicial",
+        value: accountStatus?.contract.reserveValue! ?? "N/A",
+      },
+      {
+        key: "saldo cuota de entrada",
+        value: accountStatus?.contract.entryFeeBalance! ?? "N/A",
+      },
+      {
+        key: "credito institucion financiera",
+        value: accountStatus?.contract.balanceValue! ?? "N/A",
+      },
     ],
     cancelationColumns: [
       {
@@ -118,7 +135,7 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
       </DialogTrigger>
       <DialogContent className="min-w-[90%] min-h-11/12 bg-white border-none m-3">
         <DialogHeader>
-          <DialogTitle className="flex gap-3 mx-2 mb-2 uppercase text-gray-700 text-md">
+          <DialogTitle className="flex gap-3 mx-2 uppercase text-gray-700 text-md">
             <span className="font-bold text-slate-950">
               Contratos de cliente:
             </span>{" "}

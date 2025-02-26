@@ -85,7 +85,14 @@ export function DataTable<TData, TValue>({
 
   return (
     <section>
-      <section className="flex flex-col-reverse md:flex-row justify-between items-start gap-2 py-4">
+      <section
+        className={cn(
+          "flex flex-col-reverse md:flex-row justify-between items-start gap-2",
+          {
+            "py-4": canFilterColumns || canHideColumns,
+          }
+        )}
+      >
         {canFilterColumns && (
           <div className="flex flex-row items-center gap-3 lg:w-3/5">
             <Input
@@ -235,10 +242,12 @@ export function DataTable<TData, TValue>({
         </Table>
       </section>
 
-     {canPaginate && <DataTablePagination
-        table={table}
-        rowsPerPageOptions={rowsPerPageOptions}
-      />}
+      {canPaginate && (
+        <DataTablePagination
+          table={table}
+          rowsPerPageOptions={rowsPerPageOptions}
+        />
+      )}
     </section>
   );
 }

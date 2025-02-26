@@ -1,27 +1,44 @@
+import type { ChargeResponse, FinancingResponse } from "./";
+
 export interface ContractResponse {
   id: string;
-  estado: string;
-  ubicacion: string;
+  asesor_credito: string;
+  cantidad_cuota_inicial: string;
   cliente_vendedor: string;
-  fecha_creacion: string;
-  empresa: string;
-  proyecto: string;
-  precio_lista: string;
-  descuento: number;
-  precioventa: string;
-  fecha_reserva: string;
-  fecha_cierre: string;
-  financiamiento_idvigente: number;
-  tipo_contratoid: string;
-  valor_contrato: string;
-  valor_reserva: number;
   cuota_reserv2: number;
   cuota_reserv8: number;
-  valor_entrada: number;
-  valor_saldo: number;
+  descuento: number;
+  empresa: string;
+  estado: string;
+  fecha_cierre: string;
+  fecha_creacion: string;
+  fecha_reserva: string;
+  financiamiento_idvigente: number;
+  int_mora_pagar: number;
+  moneda: string;
   plazo_ce: number;
-  cantidad_cuota_inicial: string;
+  porcentaje_cobrado: number;
+  precio_lista: string;
+  precioventa: string;
+  proyecto: string;
+  saldo_ce: number;
+  tipo_contratoid: string;
   tipo_producto: string;
+  ubicacion: string;
+  valor_contrato: string;
+  valor_documentos_vencidos: number;
+  valor_entrada: number;
+  valor_nc: number;
+  valor_por_vencer: number;
+  valor_reserva: number;
+  valor_saldo: number;
+  valor_total_vencido: number;
+  valor_total_descuento: number;
   cliente_id: number;
 }
 
+export interface AccountStatusResponse {
+  contract: ContractResponse;
+  financing: FinancingResponse[];
+  charges: ChargeResponse[];
+}

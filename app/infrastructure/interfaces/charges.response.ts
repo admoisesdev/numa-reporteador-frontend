@@ -1,18 +1,18 @@
-export interface ChargesResponse {
+export interface ChargeResponse {
   id: number;
-  id_contrato: string;
-  valor_cobrado: string;
-  num_dividendo: number;
-  tipo_dividendo: string;
-  tipo_transaccion: null;
+  concepto: string;
+  cuenta_plan: null;
   fecha_cobro: string;
   fecha_vcto_cobro: null;
-  concepto: string;
-  tipo_comprobante: null;
   id_transaccion: null;
-  referencia: string;
-  nro_documento: null;
-  cuenta_plan: null;
   nombre_cuenta: null;
+  nro_documento: null;
+  num_dividendo: number;
   recibo_num: string;
+  referencia: string;
+  tipo_comprobante: null;
+  tipo_dividendo: string;
+  tipo_transaccion: null;
+  valor_cobrado: string;
+  id_contrato: string;
 }

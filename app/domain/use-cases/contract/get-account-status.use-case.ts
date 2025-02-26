@@ -1,16 +1,8 @@
 import type { HttpAdapter } from "config/adapters/http";
 
-import type {
-  ChargesResponse,
-  ContractResponse,
-  FinancingResponse,
-} from "infrastructure/interfaces";
-
-type AccountStatus = {
-  contract: ContractResponse;
-  financing: FinancingResponse[];
-  charges: ChargesResponse[];
-};
+import { ContractMapper } from "infrastructure/mappers";
+import type { AccountStatusResponse } from "infrastructure/interfaces";
+import type { AccountStatus } from "domain/entities";
 
 export interface AccountStatusParams {
   contractId?: string;
@@ -23,7 +15,7 @@ export const getAccountStatusUseCase = async (
   const { contractId } = params;
 
   try {
-    const contractAccountStatus = await fetcher.get<AccountStatus>(
+    const contractAccountStatus = await fetcher.get<AccountStatusResponse>(
       "/contract/account-status",
       {
         params: {
@@ -32,7 +24,9 @@ export const getAccountStatusUseCase = async (
       }
     );
 
-    return contractAccountStatus;
+    return ContractMapper.fromResponseAccountStatusToEntity(
+      contractAccountStatus
+    );
   } catch (error) {
     throw new Error("Error getting account status of the contract");
   }

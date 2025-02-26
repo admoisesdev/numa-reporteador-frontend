@@ -18,6 +18,7 @@ export const contractsCustomerColumns: ColumnDef<Contract>[] = [
     header: ({ column }) => {
       return (
         <Button
+        className="pl-2"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -33,6 +34,7 @@ export const contractsCustomerColumns: ColumnDef<Contract>[] = [
     header: ({ column }) => {
       return (
         <Button
+        className="pl-2"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -51,6 +53,7 @@ export const contractsCustomerColumns: ColumnDef<Contract>[] = [
     header: ({ column }) => {
       return (
         <Button
+        className="pl-2"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -66,6 +69,7 @@ export const contractsCustomerColumns: ColumnDef<Contract>[] = [
     header: ({ column }) => {
       return (
         <Button
+        className="pl-2"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >

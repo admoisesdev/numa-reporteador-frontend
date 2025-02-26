@@ -5,7 +5,6 @@ import {
   StyleSheet,
   View,
   Image,
-  BlobProvider,
 } from "@react-pdf/renderer";
 import { TableBodyPdf, TableHeaderPdf, TablePdf } from "../pdf";
 
@@ -18,6 +17,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 12,
   },
   logo: {
     width: 210,
@@ -45,18 +45,19 @@ const styles = StyleSheet.create({
     width: "50%",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 12,
+    gap: 5,
+    marginBottom: 6,
   },
   infoKey: {
     fontSize: 8,
     fontWeight: 700,
     textTransform: "uppercase",
-    width: "50%",
+    width: "40%",
     color: "#292b33",
   },
   infoValue: {
     fontSize: 8,
-    width: "50%",
+    width: "60%",
     marginRight: 10,
   },
   paymentTitle: {
@@ -69,21 +70,21 @@ const styles = StyleSheet.create({
   },
   paymentColumn: {
     marginLeft: 10,
-    width: "50%",
+    width: "70%",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 12,
+    marginBottom: 6,
   },
   paymentKey: {
     fontSize: 8,
     fontWeight: 700,
     textTransform: "uppercase",
-    width: "50%",
+    width: "70%",
     color: "#0f172b",
   },
   paymentValue: {
     fontSize: 8,
-    width: "50%",
+    width: "30%",
   },
   tableTitle: {
     marginLeft: 10,
@@ -101,9 +102,7 @@ type DataPdf = {
   subtitle: string;
   date: string;
   info: { key: string; value: string }[];
-  paymentInfo: { key: string; value: string }[];
-  annulmentColumns: { title: string; subcolumns: string[] }[];
-  annulmentRows: string[][][];
+  paymentInfo: { key: string; value: number }[];
   cancelationColumns: { title: string; subcolumns: string[] }[];
   cancelationRows: string[][][];
 }
@@ -144,13 +143,6 @@ export const AccountStatusPdf = ({ data }: AccountStatementPdfProps) => {
             <Text style={styles.paymentValue}>{item.value}</Text>
           </View>
         ))}
-
-        <Text style={styles.tableTitle}>Detalle de anulaciones</Text>
-
-        <TablePdf style={{ marginLeft: 10 }}>
-          <TableHeaderPdf columns={data.annulmentColumns} />
-          <TableBodyPdf rows={data.annulmentRows} />
-        </TablePdf>
 
         <Text style={styles.tableTitle}>Detalle de cancelaciones</Text>
 
