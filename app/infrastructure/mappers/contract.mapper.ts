@@ -1,5 +1,9 @@
+import { FinancingMapper } from "./financing.mapper";
+import { ChargeMapper } from "./charges.mapper";
+
 import type { AccountStatus, Contract, FullContract } from "domain/entities";
 import type { AccountStatusResponse, ContractResponse } from "infrastructure/interfaces";
+
 
 export class ContractMapper{
   static fromResponseContractsCustomerToEntity(response: ContractResponse): Contract{
@@ -29,9 +33,11 @@ export class ContractMapper{
 
   static fromResponseAccountStatusToEntity(response: AccountStatusResponse): AccountStatus { 
     return {
-      contract: ContractMapper.fromResponseFullContractToEntity(response.contract),
-      financing: [],
-      charges: [],
-    }
+      contract: ContractMapper.fromResponseFullContractToEntity(
+        response.contract
+      ),
+      financing: response.financing.map(FinancingMapper.fromResponseFinancingToEntity),
+      charges: response.charges.map(ChargeMapper.fromResponseChargesToEntity),
+    };
   }
 }
