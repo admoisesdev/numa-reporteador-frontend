@@ -5,7 +5,7 @@ import {
   useContractsCustomer,
 } from "presentation/hooks/contract";
 import { DataTable, VisorPdf } from "../shared";
-import { AccountStatusPdf } from "./AccountStatusPdf";
+import { AccountStatusPdf, type DataPdf } from "./AccountStatusPdf";
 
 import {
   Button,
@@ -44,12 +44,11 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
     setIsOpenPDf(true);
   };
 
-  const data = {
+  const data: DataPdf = {
     logo: "./logo.jpg",
     title: "Numa S.A.S",
     subtitle: "Estado de cuenta",
     date: new Date().toLocaleDateString(),
-    contractsCustomerColumns: ["Producto", "Cantidad", "Precio"],
     info: [
       { key: "fecha del corte", value: DateAdapter.formatDate(new Date()) },
       { key: "proyecto", value: accountStatus?.contract.project! },
@@ -123,6 +122,56 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
         ["124", "01/02/2025", "$250"],
         ["$245"],
       ],
+    ],
+    totalsInfo: [
+      {
+        key: "Por vencer",
+        value: accountStatus?.contract.valueToBeat ?? "N/A",
+      },
+      {
+        key: "Totales canc. por dcto.",
+        value: accountStatus?.contract.totalCancelDiscount ?? "N/A",
+      },
+      {
+        key: "Porcentaje cobrado",
+        value: accountStatus?.contract.percentageCharged ?? "N/A",
+      },
+      {
+        key: "Canc. por mora",
+        value: accountStatus?.contract.valueCancelArrears ?? "N/A",
+      },
+      {
+        key: "Docts. vencidos",
+        value: accountStatus?.contract.expiredDocumentsValue ?? "N/A",
+      },
+      {
+        key: "Canc. por pago excedente",
+        value: accountStatus?.contract.valueCancelExcessPayment ?? "N/A",
+      },
+      {
+        key: "Int. mora a pagar",
+        value: accountStatus?.contract.lateInterestPayable ?? "N/A",
+      },
+      {
+        key: "Neto cancelaciones",
+        value: accountStatus?.contract.netValueCancel ?? "N/A",
+      },
+      {
+        key: "Total vencido",
+        value: accountStatus?.contract.totalExpired ?? "N/A",
+      },
+      {
+        key: "Canc. com. cheq. prot.",
+        value: accountStatus?.contract.valueCancelCheck ?? "N/A",
+      },
+      {
+        key: "Resumen de notas de crédito",
+        value: accountStatus?.contract.ncValue ?? "N/A",
+      },
+      {
+        key: "Valor total por cobrar al cliente en USD",
+        value: accountStatus?.contract.totalValueChargedCustomer ?? "N/A",
+      },
     ],
   };
 

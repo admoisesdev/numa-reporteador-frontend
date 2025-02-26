@@ -38,7 +38,7 @@ interface TableCellProps {
 
 const TableCellPdf = ({ children, style }: TableCellProps) => (
   <View style={[styles.tableCell, ...(Array.isArray(style) ? style : [style])]}>
-    <Text style={{textAlign: "center"}}>{children}</Text>
+    <Text style={{ textAlign: "center" }}>{children}</Text>
   </View>
 );
 
@@ -73,12 +73,7 @@ const TableHeaderPdf = ({ columns }: TableHeaderProps) => (
         {columns.map((column, index) =>
           column.subcolumns ? (
             column.subcolumns.map((subcolumn, subIndex) => (
-              <TableCellPdf
-                key={`${index}-${subIndex}`}
-                style={{
-                  backgroundColor: "red",
-                }}
-              >
+              <TableCellPdf key={`${index}-${subIndex}`}>
                 {subcolumn}
               </TableCellPdf>
             ))
@@ -98,16 +93,18 @@ interface TableBodyProps {
 const TableBodyPdf = ({ rows }: TableBodyProps) => (
   <View>
     {rows.map((row, rowIndex) => (
-      <View key={rowIndex} style={styles.tableRow}>
+      <View
+        key={rowIndex}
+        style={[
+          styles.tableRow,
+          {
+            backgroundColor: rowIndex % 2 === 0 ? "#e2e8f0" : "#f1f5f9",
+            padding: 3,
+          },
+        ]}
+      >
         {row.flat().map((cell, cellIndex) => (
-          <TableCellPdf
-            key={cellIndex}
-            style={{
-              backgroundColor: "green",
-            }}
-          >
-            {cell}
-          </TableCellPdf>
+          <TableCellPdf key={cellIndex}>{cell}</TableCellPdf>
         ))}
       </View>
     ))}

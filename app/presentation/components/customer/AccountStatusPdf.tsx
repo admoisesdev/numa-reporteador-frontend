@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginVertical: 12,
+    paddingVertical: 12,
     borderBottom: 1,
     borderBottomColor: "#cad5e2",
   },
@@ -90,9 +90,35 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textTransform: "uppercase",
   },
+  totalsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    paddingVertical: 12,
+    marginTop: 12,
+    borderTop: 1,
+    borderTopColor: "#cad5e2",
+  },
+  totalsColumn: {
+    width: "50%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 2,
+    marginBottom: 6,
+  },
+  totalsKey: {
+    fontSize: 8,
+    fontWeight: 700,
+    width: "55%",
+    color: "#292b33",
+  },
+  totalsValue: {
+    fontSize: 8,
+    width: "45%",
+    marginRight: 10,
+  },
 });
 
-type DataPdf = {
+export type DataPdf = {
   logo: string;
   title: string;
   subtitle: string;
@@ -101,6 +127,7 @@ type DataPdf = {
   paymentInfo: { key: string; value: number }[];
   cancelationColumns: { title: string; subcolumns: string[] }[];
   cancelationRows: string[][][];
+  totalsInfo: { key: string; value: number | string }[];
 }
 
 interface AccountStatementPdfProps {
@@ -146,6 +173,15 @@ export const AccountStatusPdf = ({ data }: AccountStatementPdfProps) => {
           <TableHeaderPdf columns={data.cancelationColumns} />
           <TableBodyPdf rows={data.cancelationRows} />
         </TablePdf>
+
+        <View style={styles.totalsContainer}>
+          {data.totalsInfo.map((item, index) => (
+            <View key={index} style={styles.totalsColumn}>
+              <Text style={styles.totalsKey}>{item.key}:</Text>
+              <Text style={styles.totalsValue}>{item.value}</Text>
+            </View>
+          ))}
+        </View>
       </Page>
     </Document>
   );
