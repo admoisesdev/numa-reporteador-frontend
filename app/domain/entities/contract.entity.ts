@@ -15,10 +15,22 @@ export interface FullContract extends Contract{
   currency: string;
   entranceValue: number;
   entryFeeBalance: number;
+  expiredDocumentsValue: number;
+  lateInterestPayable: number;
+  ncValue: number;
+  netValueCancel: number;
+  percentageCharged: number;
   reserveValue: number;
   salePrice: string;
   status: string;
+  totalCancelDiscount: number;
+  totalExpired: number;
+  totalValueChargedCustomer: number;
   typeOfGood: string;
+  valueCancelArrears: number;
+  valueCancelCheck: number; //!
+  valueCancelExcessPayment: number;
+  valueToBeat: number;
 }
 
 export interface AccountStatus {

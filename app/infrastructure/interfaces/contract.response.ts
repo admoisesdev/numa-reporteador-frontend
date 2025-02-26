@@ -25,13 +25,18 @@ export interface ContractResponse {
   tipo_contratoid: string;
   tipo_producto: string;
   ubicacion: string;
+  valor_canc_cheq: number;
+  valor_canc_mora: number;
+  valor_canc_pag_exced: number;
   valor_contrato: string;
   valor_documentos_vencidos: number;
   valor_entrada: number;
   valor_nc: number;
+  valor_neto_cancel: number;
   valor_por_vencer: number;
   valor_reserva: number;
   valor_saldo: number;
+  valor_total_cob_client: number
   valor_total_vencido: number;
   valor_total_descuento: number;
   cliente_id: number;

@@ -24,11 +24,23 @@ export class ContractMapper{
       currency: response.moneda,
       entranceValue: response.valor_entrada,
       entryFeeBalance: response.saldo_ce,
+      expiredDocumentsValue: response.valor_documentos_vencidos,
+      lateInterestPayable: response.int_mora_pagar,
+      ncValue: response.valor_nc,
+      netValueCancel: response.valor_neto_cancel,
+      percentageCharged: response.porcentaje_cobrado,
       reserveValue: response.valor_reserva,
       salePrice: response.precioventa,
       status: response.estado,
+      totalCancelDiscount: response.valor_total_descuento,
+      totalExpired: response.valor_total_vencido,
+      totalValueChargedCustomer: response.valor_total_cob_client,
       typeOfGood: response.tipo_producto,
-    }
+      valueCancelArrears: response.valor_canc_mora,
+      valueCancelCheck: response.valor_canc_cheq, //!
+      valueCancelExcessPayment: response.valor_canc_pag_exced,
+      valueToBeat: response.valor_por_vencer,
+    };
   }
 
   static fromResponseAccountStatusToEntity(response: AccountStatusResponse): AccountStatus { 
