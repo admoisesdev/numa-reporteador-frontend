@@ -6,17 +6,17 @@ const styles = StyleSheet.create({
   },
   tableRow: {
     flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "#e2e8f0",
   },
   tableHeader: {
     backgroundColor: "#1d293d",
     color: "#fff",
     fontWeight: "bold",
+    borderBottomWidth: 1,
+    borderBottomColor: "#e2e8f0",
   },
   tableCell: {
     flex: 1,
-    padding: 5,
+    padding: 3,
     fontSize: 8,
     textAlign: "center",
   },
@@ -27,8 +27,8 @@ interface TableProps {
   style?: any;
 }
 
-const TablePdf = ({ children,style }: TableProps) => (
-  <View style={[styles.table,style]}>{children}</View>
+const TablePdf = ({ children, style }: TableProps) => (
+  <View style={[styles.table, style]}>{children}</View>
 );
 
 interface TableCellProps {
@@ -38,7 +38,7 @@ interface TableCellProps {
 
 const TableCellPdf = ({ children, style }: TableCellProps) => (
   <View style={[styles.tableCell, ...(Array.isArray(style) ? style : [style])]}>
-    <Text>{children}</Text>
+    <Text style={{textAlign: "center"}}>{children}</Text>
   </View>
 );
 
@@ -59,6 +59,8 @@ const TableHeaderPdf = ({ columns }: TableHeaderProps) => (
           key={index}
           style={{
             flex: column.subcolumns ? column.subcolumns.length : 1,
+            borderLeftWidth: index === 0 ? 0 : 1,
+            borderLeftColor: "#e2e8f0",
           }}
         >
           {column.title}
@@ -71,7 +73,12 @@ const TableHeaderPdf = ({ columns }: TableHeaderProps) => (
         {columns.map((column, index) =>
           column.subcolumns ? (
             column.subcolumns.map((subcolumn, subIndex) => (
-              <TableCellPdf key={`${index}-${subIndex}`}>
+              <TableCellPdf
+                key={`${index}-${subIndex}`}
+                style={{
+                  backgroundColor: "red",
+                }}
+              >
                 {subcolumn}
               </TableCellPdf>
             ))
@@ -93,7 +100,14 @@ const TableBodyPdf = ({ rows }: TableBodyProps) => (
     {rows.map((row, rowIndex) => (
       <View key={rowIndex} style={styles.tableRow}>
         {row.flat().map((cell, cellIndex) => (
-          <TableCellPdf key={cellIndex}>{cell}</TableCellPdf>
+          <TableCellPdf
+            key={cellIndex}
+            style={{
+              backgroundColor: "green",
+            }}
+          >
+            {cell}
+          </TableCellPdf>
         ))}
       </View>
     ))}

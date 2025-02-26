@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     marginVertical: 12,
-    marginLeft: 10,
     borderBottom: 1,
     borderBottomColor: "#cad5e2",
   },
@@ -61,7 +60,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   paymentTitle: {
-    marginLeft: 10,
     fontSize: 11,
     fontWeight: "bold",
     marginTop: 20,
@@ -69,7 +67,6 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   paymentColumn: {
-    marginLeft: 10,
     width: "70%",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -87,7 +84,6 @@ const styles = StyleSheet.create({
     width: "30%",
   },
   tableTitle: {
-    marginLeft: 10,
     fontSize: 11,
     fontWeight: "bold",
     marginTop: 20,
@@ -146,7 +142,7 @@ export const AccountStatusPdf = ({ data }: AccountStatementPdfProps) => {
 
         <Text style={styles.tableTitle}>Detalle de cancelaciones</Text>
 
-        <TablePdf style={{ marginLeft: 10 }}>
+        <TablePdf>
           <TableHeaderPdf columns={data.cancelationColumns} />
           <TableBodyPdf rows={data.cancelationRows} />
         </TablePdf>

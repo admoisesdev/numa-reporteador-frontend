@@ -101,27 +101,27 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
     cancelationColumns: [
       {
         title: "Documento por cobrar",
-        subcolumns: ["Nro.", "Documento", "Vcto.", "Valor"],
+        subcolumns: ["N°", "Documento", "Vcto.", "Valor"],
       },
       {
         title: "Cancelaciones",
-        subcolumns: ["Mora", "Rec. #", "Fecha", "Valor"],
+        subcolumns: ["Rec. #", "Fecha", "Valor cobrado"],
       },
       {
         title: "Saldo doct.",
-        subcolumns: ["Int. Mora", "Valor"],
+        subcolumns: ["Valor"],
       },
     ],
     cancelationRows: [
       [
-        ["001", "Factura", "01/01/2025", "$1000"],
-        ["No", "123", "01/01/2025", "$500"],
-        ["$10", "$490"],
+        ["001", "Factura", "01/01/2025", "$1000"], // N°, Documento, Vcto., Valor
+        ["123", "01/01/2025", "$500"], // Rec. #, Fecha, Valor cobrado
+        ["$490"], // Valor
       ],
       [
         ["002", "Recibo", "01/02/2025", "$500"],
-        ["Yes", "124", "01/02/2025", "$250"],
-        ["$5", "$245"],
+        ["124", "01/02/2025", "$250"],
+        ["$245"],
       ],
     ],
   };
