@@ -37,7 +37,7 @@ export class ContractMapper{
       totalValueChargedCustomer: response.valor_total_cob_client,
       typeOfGood: response.tipo_producto,
       valueCancelArrears: response.valor_canc_mora,
-      valueCancelCheck: response.valor_canc_cheq, //!
+      valueCancelProtestedCheck: response.valor_canc_cheq,
       valueCancelExcessPayment: response.valor_canc_pag_exced,
       valueToBeat: response.valor_por_vencer,
     };
@@ -49,7 +49,6 @@ export class ContractMapper{
         response.contract
       ),
       financing: response.financing.map(FinancingMapper.fromResponseFinancingToEntity),
-      charges: response.charges.map(ChargeMapper.fromResponseChargesToEntity),
     };
   }
 }

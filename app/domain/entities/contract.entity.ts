@@ -28,7 +28,7 @@ export interface FullContract extends Contract{
   totalValueChargedCustomer: number;
   typeOfGood: string;
   valueCancelArrears: number;
-  valueCancelCheck: number; //!
+  valueCancelProtestedCheck: number; 
   valueCancelExcessPayment: number;
   valueToBeat: number;
 }
@@ -36,5 +36,4 @@ export interface FullContract extends Contract{
 export interface AccountStatus {
   contract: FullContract;
   financing: Financing[];
-  charges: Charge[];
 }

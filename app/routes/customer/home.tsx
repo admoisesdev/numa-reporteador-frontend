@@ -19,7 +19,7 @@ export default function CustomerPage() {
   return (
     <div className="container mx-auto p-3">
       <section className="flex flex-col-reverse sm:flex-row items-center sm:gap-4">
-        <img src="/logo.jpg" alt="Logo" width={250} height={150} />
+        <img src="/logo.png" alt="Logo" width={250} height={150} />
         <TypographyH3 className="mb-2 text-slate-900">Clientes</TypographyH3>
       </section>
       <DataTable

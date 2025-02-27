@@ -45,20 +45,30 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
   };
 
   const cancelationsData = accountStatus?.financing.map((financing) => {
-    return [
-      [
-        financing.dividendNumber ?? "N/A",
-        financing.dividendType ?? "N/A",
-        financing.expirationDate ?? "N/A",
-        financing.dividendValue ?? "N/A",
+    return {
+      mainRow: [
+        [
+          financing.dividendNumber ?? "N/A",
+          financing.dividendType ?? "N/A",
+          financing.expirationDate ?? "N/A",
+          financing.dividendValue ?? "N/A",
+        ],
+        ["", "", ""],
+        [financing.dividendBalanceValue ?? "N/A"],
       ],
-      ["N/A", "N/A", "N/A"],
-      [financing.dividendBalanceValue ?? "N/A"],
-    ];
-  }) as string[][][];
+      subRows: financing.charges.map((charge) => [
+        "",
+        `${charge.reference} ${charge.dividendType}` || "N/A",
+        charge.receiptNumber ?? "N/A",
+        charge.chargeDate ?? "N/A",
+        charge.chargedValue ?? "N/A",
+      ]),
+    };
+  }) as { mainRow: string[][]; subRows: string[][] }[];
+
 
   const data: DataPdf = {
-    logo: "./logo.jpg",
+    logo: "./logo.png",
     title: "Numa S.A.S",
     subtitle: "Estado de cuenta",
     date: new Date().toLocaleDateString(),
@@ -124,19 +134,7 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
         subcolumns: ["Valor"],
       },
     ],
-    /* cancelationRows: [
-      [
-        ["001", "Factura", "01/01/2025", "$1000"], // N°, Documento, Vcto., Valor
-        ["123", "01/01/2025", "$500"], // Rec. #, Fecha, Valor cobrado
-        ["$490"], // Valor
-      ],
-      [
-        ["002", "Recibo", "01/02/2025", "$500"],
-        ["124", "01/02/2025", "$250"],
-        ["$245"],
-      ],
-    ], */
-    cancelationRows: cancelationsData,
+    cancelationRows: { rows: cancelationsData },
     totalsInfo: [
       {
         key: "Por vencer",
@@ -176,7 +174,7 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
       },
       {
         key: "Canc. com. cheq. prot.",
-        value: accountStatus?.contract.valueCancelCheck ?? "N/A",
+        value: accountStatus?.contract.valueCancelProtestedCheck ?? "N/A",
       },
       {
         key: "Resumen de notas de crédito",

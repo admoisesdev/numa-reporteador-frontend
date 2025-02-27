@@ -6,7 +6,7 @@ import {
   View,
   Image,
 } from "@react-pdf/renderer";
-import { TableBodyPdf, TableHeaderPdf, TablePdf } from "../pdf";
+import { TableBodyPdf, TableHeaderPdf, TablePdf, type TableBodyProps } from "../pdf";
 
 const styles = StyleSheet.create({
   page: {
@@ -20,8 +20,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   logo: {
-    width: 210,
-    height: 60,
+    position: "relative",
+    left: -8,
+    width: 150,
+    height: 50,
   },
   title: {
     fontSize: 15,
@@ -118,6 +120,8 @@ const styles = StyleSheet.create({
   },
 });
 
+
+
 export type DataPdf = {
   logo: string;
   title: string;
@@ -126,9 +130,9 @@ export type DataPdf = {
   info: { key: string; value: string }[];
   paymentInfo: { key: string; value: number }[];
   cancelationColumns: { title: string; subcolumns: string[] }[];
-  cancelationRows: string[][][];
+  cancelationRows: { rows: { mainRow: string[][]; subRows?: string[][]}[] };
   totalsInfo: { key: string; value: number | string }[];
-}
+};
 
 interface AccountStatementPdfProps {
   data: DataPdf;
@@ -141,7 +145,12 @@ export const AccountStatusPdf = ({ data }: AccountStatementPdfProps) => {
         <View style={styles.header}>
           <Image style={styles.logo} src={data.logo} />
 
-          <View style={{ flex: 1, flexDirection: "column", gap: 2 }}>
+          <View
+            style={{
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
             <Text style={styles.title}>{data.title}</Text>
             <Text style={styles.subtitle}>{data.subtitle}</Text>
           </View>
@@ -171,7 +180,7 @@ export const AccountStatusPdf = ({ data }: AccountStatementPdfProps) => {
 
         <TablePdf>
           <TableHeaderPdf columns={data.cancelationColumns} />
-          <TableBodyPdf rows={data.cancelationRows} />
+          <TableBodyPdf rows={data.cancelationRows.rows} />
         </TablePdf>
 
         <View style={styles.totalsContainer}>

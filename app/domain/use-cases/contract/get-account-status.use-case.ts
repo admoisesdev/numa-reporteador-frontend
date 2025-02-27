@@ -24,6 +24,7 @@ export const getAccountStatusUseCase = async (
       }
     );
 
+
     return ContractMapper.fromResponseAccountStatusToEntity(
       contractAccountStatus
     );

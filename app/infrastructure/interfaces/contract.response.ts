@@ -1,4 +1,4 @@
-import type { ChargeResponse, FinancingResponse } from "./";
+import type {  FinancingResponse } from "./";
 
 export interface ContractResponse {
   id: string;
@@ -45,5 +45,4 @@ export interface ContractResponse {
 export interface AccountStatusResponse {
   contract: ContractResponse;
   financing: FinancingResponse[];
-  charges: ChargeResponse[];
 }

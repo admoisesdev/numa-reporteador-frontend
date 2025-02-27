@@ -15,10 +15,11 @@ const styles = StyleSheet.create({
     borderBottomColor: "#e2e8f0",
   },
   tableCell: {
-    flex: 1,
     padding: 3,
     fontSize: 8,
     textAlign: "center",
+    width: "100%",
+    textAnchor: "middle",
   },
 });
 
@@ -38,7 +39,7 @@ interface TableCellProps {
 
 const TableCellPdf = ({ children, style }: TableCellProps) => (
   <View style={[styles.tableCell, ...(Array.isArray(style) ? style : [style])]}>
-    <Text style={{ textAlign: "center" }}>{children}</Text>
+    <Text>{children}</Text>
   </View>
 );
 
@@ -73,7 +74,7 @@ const TableHeaderPdf = ({ columns }: TableHeaderProps) => (
         {columns.map((column, index) =>
           column.subcolumns ? (
             column.subcolumns.map((subcolumn, subIndex) => (
-              <TableCellPdf key={`${index}-${subIndex}`}>
+              <TableCellPdf key={`${index}-${subIndex}`} style={{ paddingRight: 25 }}>
                 {subcolumn}
               </TableCellPdf>
             ))
@@ -86,29 +87,56 @@ const TableHeaderPdf = ({ columns }: TableHeaderProps) => (
   </View>
 );
 
-interface TableBodyProps {
-  rows: (string | number)[][][];
+
+export type Row = {
+  mainRow: (string | number)[];
+  subRows?: (string | number)[][];
+};
+export interface TableBodyProps {
+  rows: {
+    mainRow: (string | number)[][];
+    subRows?: (string | number)[][];
+  }[];
 }
 
-const TableBodyPdf = ({ rows }: TableBodyProps) => (
-  <View>
-    {rows.map((row, rowIndex) => (
-      <View
-        key={rowIndex}
-        style={[
-          styles.tableRow,
-          {
-            backgroundColor: rowIndex % 2 === 0 ? "#e2e8f0" : "#f1f5f9",
-            padding: 3,
-          },
-        ]}
-      >
-        {row.flat().map((cell, cellIndex) => (
-          <TableCellPdf key={cellIndex}>{cell}</TableCellPdf>
-        ))}
-      </View>
-    ))}
-  </View>
-);
+const TableBodyPdf = ({ rows = [] }: TableBodyProps) => {
+  return (
+    <View>
+      {rows.map((row, rowIndex) => (
+        <View key={rowIndex}>
+          <View
+            style={[
+              styles.tableRow,
+              {
+                backgroundColor: "#e2e8f0",
+              },
+            ]}
+          >
+            {row.mainRow.flat().map((cell, cellIndex) => (
+              <TableCellPdf key={cellIndex}>{cell}</TableCellPdf>
+            ))}
+          </View>
+          {row.subRows &&
+            row.subRows.map((subRow, subRowIndex) => (
+              <View
+                key={subRowIndex}
+                style={[
+                  styles.tableRow,
+                  {
+                    backgroundColor:
+                      subRowIndex % 2 === 0 ? "#f9fafb" : "#f1f5f9",
+                  },
+                ]}
+              >
+                {subRow.flat().map((cell, cellIndex) => (
+                  <TableCellPdf key={cellIndex}>{cell}</TableCellPdf>
+                ))}
+              </View>
+            ))}
+        </View>
+      ))}
+    </View>
+  );
+};
 
 export { TablePdf, TableHeaderPdf, TableCellPdf, TableBodyPdf };

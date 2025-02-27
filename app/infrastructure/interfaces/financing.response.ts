@@ -1,7 +1,10 @@
+import type { ChargeResponse } from "./charges.response";
+
 export interface FinancingResponse {
   id: number;
   cabecera_factura: number;
   cabecera_id: number;
+  charges: ChargeResponse[];
   estado_dividendo: string;
   estado: string;
   fecha_creacion: string;
