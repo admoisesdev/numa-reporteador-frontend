@@ -59,9 +59,12 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
       subRows: financing.charges.map((charge) => [
         "",
         `${charge.reference} ${charge.dividendType}` || "N/A",
+        "",
+        "",
         charge.receiptNumber ?? "N/A",
         charge.chargeDate ?? "N/A",
         charge.chargedValue ?? "N/A",
+        "",
       ]),
     };
   }) as { mainRow: string[][]; subRows: string[][] }[];

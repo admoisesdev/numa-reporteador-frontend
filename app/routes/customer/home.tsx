@@ -22,6 +22,7 @@ export default function CustomerPage() {
         <img src="/logo.png" alt="Logo" width={250} height={150} />
         <TypographyH3 className="mb-2 text-slate-900">Clientes</TypographyH3>
       </section>
+      
       <DataTable
         columns={customerColumns}
         data={queryCustomers?.data ?? []}

@@ -108,7 +108,7 @@ const TableBodyPdf = ({ rows = [] }: TableBodyProps) => {
             style={[
               styles.tableRow,
               {
-                backgroundColor: "#e2e8f0",
+                backgroundColor: "#eef5ff",
               },
             ]}
           >
@@ -123,8 +123,7 @@ const TableBodyPdf = ({ rows = [] }: TableBodyProps) => {
                 style={[
                   styles.tableRow,
                   {
-                    backgroundColor:
-                      subRowIndex % 2 === 0 ? "#f9fafb" : "#f1f5f9",
+                    backgroundColor: "#f9fafb",
                   },
                 ]}
               >
