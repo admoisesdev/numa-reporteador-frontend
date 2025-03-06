@@ -21,6 +21,9 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: "hidden",
   },
+  expandedCell: {
+    flex: 3,
+  },
 });
 
 interface TableProps {
@@ -35,12 +38,14 @@ const TablePdf = ({ children, style }: TableProps) => (
 interface TableCellProps {
   children?: React.ReactNode;
   style?: any;
+  expandedCell?: boolean;
 }
 
-const TableCellPdf = ({ children, style }: TableCellProps) => (
+const TableCellPdf = ({ children, style, expandedCell }: TableCellProps) => (
   <View
     style={[
       styles.tableCell,
+      expandedCell && styles.expandedCell,
       ...(Array.isArray(style) ? style : [style]),
     ]}
   >
@@ -108,32 +113,24 @@ const TableBodyPdf = ({ rows = [] }: TableBodyProps) => {
   return (
     <View>
       {rows.map((row, rowIndex) => (
-        <View key={rowIndex}>
-          <View
-            style={[
-              styles.tableRow,
-              {
-                backgroundColor: "#eef5ff",
-              },
-            ]}
-          >
+        <View
+          key={rowIndex}
+          style={{
+            borderBottomWidth: 1,
+            borderBottomColor: "#e2e8f0",
+            padding: 2,
+          }}
+        >
+          <View style={styles.tableRow}>
             {row.mainRow.flat().map((cell, cellIndex) => (
               <TableCellPdf key={cellIndex}>{cell}</TableCellPdf>
             ))}
           </View>
           {row.subRows &&
             row.subRows.map((subRow, subRowIndex) => (
-              <View
-                key={subRowIndex}
-                style={[
-                  styles.tableRow,
-                  {
-                    backgroundColor: "#f9fafb",
-                  },
-                ]}
-              >
+              <View key={subRowIndex} style={styles.tableRow}>
                 {subRow.flat().map((cell, cellIndex) => (
-                  <TableCellPdf key={cellIndex}>
+                  <TableCellPdf key={cellIndex} expandedCell={cellIndex === 0}>
                     {cell}
                   </TableCellPdf>
                 ))}
