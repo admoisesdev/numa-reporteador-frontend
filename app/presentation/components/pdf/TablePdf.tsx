@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     padding: 3,
     fontSize: 8,
     textAlign: "center",
-    width: "100%",
-    textAnchor: "middle",
+    flex: 1,
+    overflow: "hidden",
   },
 });
 
@@ -38,8 +38,13 @@ interface TableCellProps {
 }
 
 const TableCellPdf = ({ children, style }: TableCellProps) => (
-  <View style={[styles.tableCell, ...(Array.isArray(style) ? style : [style])]}>
-    <Text>{children}</Text>
+  <View
+    style={[
+      styles.tableCell,
+      ...(Array.isArray(style) ? style : [style]),
+    ]}
+  >
+    <Text style={{}}>{children}</Text>
   </View>
 );
 
@@ -74,7 +79,7 @@ const TableHeaderPdf = ({ columns }: TableHeaderProps) => (
         {columns.map((column, index) =>
           column.subcolumns ? (
             column.subcolumns.map((subcolumn, subIndex) => (
-              <TableCellPdf key={`${index}-${subIndex}`} style={{ paddingRight: 25 }}>
+              <TableCellPdf key={`${index}-${subIndex}`}>
                 {subcolumn}
               </TableCellPdf>
             ))
@@ -128,7 +133,9 @@ const TableBodyPdf = ({ rows = [] }: TableBodyProps) => {
                 ]}
               >
                 {subRow.flat().map((cell, cellIndex) => (
-                  <TableCellPdf key={cellIndex}>{cell}</TableCellPdf>
+                  <TableCellPdf key={cellIndex}>
+                    {cell}
+                  </TableCellPdf>
                 ))}
               </View>
             ))}
