@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
   paymentValue: {
     fontSize: 8,
     width: "30%",
+    textAlign: "right",
   },
   tableTitle: {
     fontSize: 11,
@@ -128,7 +129,7 @@ export type DataPdf = {
   subtitle: string;
   date: string;
   info: { key: string; value: string }[];
-  paymentInfo: { key: string; value: number }[];
+  paymentInfo: { key: string; value: string }[];
   cancelationColumns: { title: string; subcolumns: string[] }[];
   cancelationRows: { rows: { mainRow: string[][]; subRows?: string[][]}[] };
   totalsInfo: { key: string; value: number | string }[];

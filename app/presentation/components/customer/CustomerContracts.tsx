@@ -21,6 +21,7 @@ import { DateAdapter } from "config/adapters";
 import type { Customer } from "domain/entities";
 
 import { ReceiptText } from "lucide-react";
+import { Formatter } from "config/helpers";
 
 interface CustomerContractsProps {
   customer: Customer;
@@ -51,10 +52,13 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
           financing.dividendNumber ?? "N/A",
           financing.dividendType ?? "N/A",
           financing.expirationDate ?? "N/A",
-          financing.dividendValue ?? "N/A",
+          Formatter.numberWithCommasAndDots(financing.dividendValue) ?? "N/A",
         ],
         ["", "", ""],
-        [financing.dividendBalanceValue ?? "N/A"],
+        [
+          Formatter.numberWithCommasAndDots(financing.dividendBalanceValue) ??
+            "N/A",
+        ],
       ],
       subRows: financing.charges.map((charge) => [
         "",
@@ -63,7 +67,7 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
         "",
         charge.receiptNumber ?? "N/A",
         charge.chargeDate ?? "N/A",
-        charge.chargedValue ?? "N/A",
+        Formatter.numberWithCommasAndDots(charge.chargedValue) ?? "N/A",
         "",
       ]),
     };
@@ -102,25 +106,26 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
       { key: "moneda", value: accountStatus?.contract.currency! ?? "N/A" },
       {
         key: "precio de venta",
-        value: accountStatus?.contract.salePrice! ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(accountStatus?.contract.salePrice!) ?? "N/A",
       },
     ],
     paymentInfo: [
       {
         key: "cuota de entrada",
-        value: accountStatus?.contract.entranceValue! ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.entranceValue!) ?? "N/A",
       },
       {
         key: "pago inicial",
-        value: accountStatus?.contract.reserveValue! ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.reserveValue!) ?? "N/A",
       },
       {
         key: "saldo cuota de entrada",
-        value: accountStatus?.contract.entryFeeBalance! ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.entryFeeBalance!) ?? "N/A",
       },
       {
         key: "credito institucion financiera",
-        value: accountStatus?.contract.balanceValue! ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.balanceValue!) ?? "N/A",
       },
     ],
     cancelationColumns: [
@@ -141,51 +146,51 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
     totalsInfo: [
       {
         key: "Por vencer",
-        value: accountStatus?.contract.valueToBeat ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.valueToBeat!) ?? "N/A",
       },
       {
         key: "Totales canc. por dcto.",
-        value: accountStatus?.contract.totalCancelDiscount ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.totalCancelDiscount!) ?? "N/A",
       },
       {
         key: "Porcentaje cobrado",
-        value: accountStatus?.contract.percentageCharged ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.percentageCharged!) ?? "N/A",
       },
       {
         key: "Canc. por mora",
-        value: accountStatus?.contract.valueCancelArrears ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.valueCancelArrears!) ?? "N/A",
       },
       {
         key: "Docts. vencidos",
-        value: accountStatus?.contract.expiredDocumentsValue ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.expiredDocumentsValue!) ?? "N/A",
       },
       {
         key: "Canc. por pago excedente",
-        value: accountStatus?.contract.valueCancelExcessPayment ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.valueCancelExcessPayment!) ?? "N/A",
       },
       {
         key: "Int. mora a pagar",
-        value: accountStatus?.contract.lateInterestPayable ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.lateInterestPayable!) ?? "N/A",
       },
       {
         key: "Neto cancelaciones",
-        value: accountStatus?.contract.netValueCancel ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.netValueCancel!) ?? "N/A",
       },
       {
         key: "Total vencido",
-        value: accountStatus?.contract.totalExpired ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.totalExpired!) ?? "N/A",
       },
       {
         key: "Canc. com. cheq. prot.",
-        value: accountStatus?.contract.valueCancelProtestedCheck ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.valueCancelProtestedCheck!) ?? "N/A",
       },
       {
         key: "Resumen de notas de crédito",
-        value: accountStatus?.contract.ncValue ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.ncValue!) ?? "N/A",
       },
       {
         key: "Valor total por cobrar al cliente en USD",
-        value: accountStatus?.contract.totalValueChargedCustomer ?? "N/A",
+        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.totalValueChargedCustomer!) ?? "N/A",
       },
     ],
   };
