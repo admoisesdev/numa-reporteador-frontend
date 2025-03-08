@@ -78,7 +78,6 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
     logo: "./logo.png",
     title: "Numa S.A.S",
     subtitle: "Estado de cuenta",
-    date: new Date().toLocaleDateString(),
     info: [
       { key: "fecha del corte", value: DateAdapter.formatDate(new Date()) },
       { key: "proyecto", value: accountStatus?.contract.project! },

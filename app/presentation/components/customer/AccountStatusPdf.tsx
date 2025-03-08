@@ -15,13 +15,10 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 12,
   },
   logo: {
-    position: "relative",
-    left: -8,
     width: 150,
     height: 50,
   },
@@ -62,7 +59,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   paymentTitle: {
-    fontSize: 11,
+    fontSize: 9,
     fontWeight: "bold",
     marginTop: 20,
     marginBottom: 10,
@@ -87,7 +84,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   tableTitle: {
-    fontSize: 11,
+    fontSize: 9,
     fontWeight: "bold",
     marginTop: 20,
     marginBottom: 10,
@@ -127,7 +124,6 @@ export type DataPdf = {
   logo: string;
   title: string;
   subtitle: string;
-  date: string;
   info: { key: string; value: string }[];
   paymentInfo: { key: string; value: string }[];
   cancelationColumns: { title: string; subcolumns: string[] }[];
@@ -148,6 +144,7 @@ export const AccountStatusPdf = ({ data }: AccountStatementPdfProps) => {
 
           <View
             style={{
+              flex: 1,
               flexDirection: "column",
               alignItems: "center",
             }}
@@ -155,8 +152,6 @@ export const AccountStatusPdf = ({ data }: AccountStatementPdfProps) => {
             <Text style={styles.title}>{data.title}</Text>
             <Text style={styles.subtitle}>{data.subtitle}</Text>
           </View>
-
-          <Text style={{ fontSize: 13 }}>{data.date}</Text>
         </View>
 
         <View style={styles.infoContainer}>
