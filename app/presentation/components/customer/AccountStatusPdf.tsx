@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
     marginBottom: 12,
   },
@@ -145,6 +144,9 @@ export const AccountStatusPdf = ({ data }: AccountStatementPdfProps) => {
 
           <View
             style={{
+              position: "relative",
+              right: 15,
+              flex: 1,
               flexDirection: "column",
               alignItems: "center",
             }}
