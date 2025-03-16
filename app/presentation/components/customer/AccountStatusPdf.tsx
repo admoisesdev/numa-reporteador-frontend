@@ -136,7 +136,7 @@ interface AccountStatementPdfProps {
 }
 
 export const AccountStatusPdf = ({ data }: AccountStatementPdfProps) => {
-  
+  console.log({ cancelationRows: data.cancelationRows.rows });
   return (
     <Document>
       <Page size="A4" style={styles.page}>

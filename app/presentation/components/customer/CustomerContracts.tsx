@@ -33,6 +33,8 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
   const [selectedContractId, setSelectedContractId] = useState<string | null>(
     null
   );
+  const [pdfKey, setPdfKey] = useState(0);
+
   const { queryContractsCustomer } = useContractsCustomer({
     customerId: customer.id,
   });
@@ -42,8 +44,8 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
   });
 
   const handlePrint = (contractId: string) => {
-    setIsOpenPDf(false);
     setSelectedContractId(contractId);
+    setPdfKey((prevKey) => prevKey + 1);
     setIsOpenPDf(true);
   };
 
@@ -279,8 +281,12 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
               </Spinner>
             </div>
           ) : (
-            isOpenPDf && queryAccountStatus.data && (
-              <VisorPdf pdfDocument={<AccountStatusPdf data={data} />} />
+            isOpenPDf &&
+            queryAccountStatus.data && (
+              <VisorPdf
+                key={pdfKey}
+                pdfDocument={<AccountStatusPdf data={data} />}
+              />
             )
           )}
         </DialogHeader>
