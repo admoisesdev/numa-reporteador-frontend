@@ -136,6 +136,7 @@ interface AccountStatementPdfProps {
 }
 
 export const AccountStatusPdf = ({ data }: AccountStatementPdfProps) => {
+  
   return (
     <Document>
       <Page size="A4" style={styles.page}>

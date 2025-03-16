@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import { Spinner } from "../ui";
+import { TypographyH4 } from "./TypographyH4";
+
 import {
   BlobProvider,
   type DocumentProps,
 } from "@react-pdf/renderer";
-import { Spinner } from "../ui";
-import { TypographyH4 } from "./TypographyH4";
 
 type PdfDocument = React.ReactElement<
   DocumentProps,
@@ -19,20 +21,24 @@ export const VisorPdf = ({ pdfDocument }: VisorPdfProps) => {
   return (
     <BlobProvider document={pdfDocument}>
       {({ url, loading, error }) => {
-        if (loading) return (
-          <div className="flex items-center justify-center h-full">
-            <Spinner className="text-slate-500" size="large">
-              <span className="text-slate-500 text-xl">Cargando vista previa...</span>
-            </Spinner>
-          </div>
-        );
-        if (error) return (
-          <div className="flex items-center justify-center h-full">
-            <TypographyH4 className="text-slate-500">
-              Error al generar el PDF.
-            </TypographyH4>
-          </div>
-        );
+        if (loading)
+          return (
+            <div className="flex items-center justify-center h-full">
+              <Spinner className="text-slate-500" size="large">
+                <span className="text-slate-500 text-xl">
+                  Cargando vista previa...
+                </span>
+              </Spinner>
+            </div>
+          );
+        if (error)
+          return (
+            <div className="flex items-center justify-center h-full">
+              <TypographyH4 className="text-slate-500">
+                Error al generar el PDF.
+              </TypographyH4>
+            </div>
+          );
 
         return (
           <iframe

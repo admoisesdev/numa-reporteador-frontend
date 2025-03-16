@@ -14,6 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  Spinner,
 } from "../ui";
 
 import { contractsCustomerColumns } from "routes/customer/contracts-customer-columns";
@@ -36,11 +37,12 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
     customerId: customer.id,
   });
 
-  const { accountStatus } = useAccountStatus({
+  const { accountStatus, queryAccountStatus } = useAccountStatus({
     contractId: selectedContractId!,
   });
 
   const handlePrint = (contractId: string) => {
+    setIsOpenPDf(false);
     setSelectedContractId(contractId);
     setIsOpenPDf(true);
   };
@@ -69,21 +71,20 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
         charge.chargeDate ?? "N/A",
         Formatter.numberWithCommasAndDots(charge.chargedValue) ?? "N/A",
         "",
-      ]),
+      ]) ?? [],
     };
   }) as { mainRow: string[][]; subRows: string[][] }[];
-
 
   const data: DataPdf = {
     logo: "./logo.png",
     title: "Numa S.A.S",
     subtitle: "Estado de cuenta",
     info: [
-      { key: "fecha del corte", value: DateAdapter.formatDate(new Date()) },
-      { key: "proyecto", value: accountStatus?.contract.project! },
-      { key: "cliente", value: customer.name },
-      { key: "modelo", value: accountStatus?.contract.location! },
-      { key: "urbanizacion", value: accountStatus?.contract.project! },
+      { key: "fecha del corte", value: DateAdapter.formatDate(new Date()) ?? "N/A" },
+      { key: "proyecto", value: accountStatus?.contract.project! ?? "N/A" },
+      { key: "cliente", value: customer.name ?? "N/A" },
+      { key: "modelo", value: accountStatus?.contract.location! ?? "N/A" },
+      { key: "urbanizacion", value: accountStatus?.contract.project! ?? "N/A" },
       {
         key: "fecha cont",
         value: accountStatus?.contract.closingDate! ?? "N/A",
@@ -93,7 +94,7 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
         value: accountStatus?.contract.typeOfGood! ?? "N/A",
       },
       { key: "estado cont", value: accountStatus?.contract.status! ?? "N/A" },
-      { key: "Nro. contrato", value: accountStatus?.contract.id! },
+      { key: "Nro. contrato", value: accountStatus?.contract.id! ?? "N/A" },
       {
         key: "asesor de crédito",
         value: accountStatus?.contract.creditAdvisor! ?? "N/A",
@@ -106,25 +107,39 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
       {
         key: "precio de venta",
         value:
-          Formatter.numberWithCommasAndDots(accountStatus?.contract.salePrice!) ?? "N/A",
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.salePrice!
+          ) ?? "N/A",
       },
     ],
     paymentInfo: [
       {
         key: "cuota de entrada",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.entranceValue!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.entranceValue!
+          ) ?? "N/A",
       },
       {
         key: "pago inicial",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.reserveValue!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.reserveValue!
+          ) ?? "N/A",
       },
       {
         key: "saldo cuota de entrada",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.entryFeeBalance!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.entryFeeBalance!
+          ) ?? "N/A",
       },
       {
         key: "credito institucion financiera",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.balanceValue!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.balanceValue!
+          ) ?? "N/A",
       },
     ],
     cancelationColumns: [
@@ -145,54 +160,90 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
     totalsInfo: [
       {
         key: "Por vencer",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.valueToBeat!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.valueToBeat!
+          ) ?? "N/A",
       },
       {
         key: "Totales canc. por dcto.",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.totalCancelDiscount!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.totalCancelDiscount!
+          ) ?? "N/A",
       },
       {
         key: "Porcentaje cobrado",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.percentageCharged!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.percentageCharged!
+          ) ?? "N/A",
       },
       {
         key: "Canc. por mora",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.valueCancelArrears!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.valueCancelArrears!
+          ) ?? "N/A",
       },
       {
         key: "Docts. vencidos",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.expiredDocumentsValue!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.expiredDocumentsValue!
+          ) ?? "N/A",
       },
       {
         key: "Canc. por pago excedente",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.valueCancelExcessPayment!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.valueCancelExcessPayment!
+          ) ?? "N/A",
       },
       {
         key: "Int. mora a pagar",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.lateInterestPayable!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.lateInterestPayable!
+          ) ?? "N/A",
       },
       {
         key: "Neto cancelaciones",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.netValueCancel!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.netValueCancel!
+          ) ?? "N/A",
       },
       {
         key: "Total vencido",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.totalExpired!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.totalExpired!
+          ) ?? "N/A",
       },
       {
         key: "Canc. com. cheq. prot.",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.valueCancelProtestedCheck!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.valueCancelProtestedCheck!
+          ) ?? "N/A",
       },
       {
         key: "Resumen de notas de crédito",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.ncValue!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(accountStatus?.contract.ncValue!) ??
+          "N/A",
       },
       {
         key: "Valor total por cobrar al cliente en USD",
-        value: Formatter.numberWithCommasAndDots(accountStatus?.contract.totalValueChargedCustomer!) ?? "N/A",
+        value:
+          Formatter.numberWithCommasAndDots(
+            accountStatus?.contract.totalValueChargedCustomer!
+          ) ?? "N/A",
       },
     ],
   };
+
 
   return (
     <Dialog>
@@ -219,8 +270,18 @@ export const CustomerContracts = ({ customer }: CustomerContractsProps) => {
             classNameTableHeader="bg-gray-800 border-gray-800"
           />
 
-          {isOpenPDf && (
-            <VisorPdf pdfDocument={<AccountStatusPdf data={data} />} />
+          {queryAccountStatus.isLoading ? (
+            <div className="flex items-center justify-center h-full">
+              <Spinner className="text-slate-500" size="large">
+                <span className="text-slate-500 text-xl">
+                  Cargando estado de cuenta...
+                </span>
+              </Spinner>
+            </div>
+          ) : (
+            isOpenPDf && queryAccountStatus.data && (
+              <VisorPdf pdfDocument={<AccountStatusPdf data={data} />} />
+            )
           )}
         </DialogHeader>
       </DialogContent>

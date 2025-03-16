@@ -127,6 +127,7 @@ const TableBodyPdf = ({ rows = [] }: TableBodyProps) => {
             ))}
           </View>
           {row.subRows &&
+            row.subRows.length > 0 &&
             row.subRows.map((subRow, subRowIndex) => (
               <View key={subRowIndex} style={styles.tableRow}>
                 {subRow.flat().map((cell, cellIndex) => (
