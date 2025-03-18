@@ -1,21 +1,33 @@
 import { FinancingMapper } from "./financing.mapper";
 import { ChargeMapper } from "./charges.mapper";
 
-import type { AccountStatus, Contract, FullContract } from "domain/entities";
-import type { AccountStatusResponse, ContractResponse } from "infrastructure/interfaces";
+import type {
+  AccountStatus,
+  ChargedPortfolio,
+  Contract,
+  FullContract,
+} from "domain/entities";
+import type {
+  AccountStatusResponse,
+  ChargedPortfolioResponse,
+  ContractResponse,
+} from "infrastructure/interfaces";
 
-
-export class ContractMapper{
-  static fromResponseContractsCustomerToEntity(response: ContractResponse): Contract{
+export class ContractMapper {
+  static fromResponseContractsCustomerToEntity(
+    response: ContractResponse
+  ): Contract {
     return {
       id: response.id,
       location: response.ubicacion,
       sellerCustomer: response.cliente_vendedor,
       project: response.proyecto,
-    }
+    };
   }
 
-  static fromResponseFullContractToEntity(response: ContractResponse): FullContract { 
+  static fromResponseFullContractToEntity(
+    response: ContractResponse
+  ): FullContract {
     return {
       ...ContractMapper.fromResponseContractsCustomerToEntity(response),
       balanceValue: response.valor_saldo,
@@ -43,12 +55,37 @@ export class ContractMapper{
     };
   }
 
-  static fromResponseAccountStatusToEntity(response: AccountStatusResponse): AccountStatus { 
+  static fromResponseAccountStatusToEntity(
+    response: AccountStatusResponse
+  ): AccountStatus {
     return {
       contract: ContractMapper.fromResponseFullContractToEntity(
         response.contract
       ),
-      financing: response.financing.map(FinancingMapper.fromResponseFinancingToEntity),
+      financing: response.financing.map(
+        FinancingMapper.fromResponseFinancingToEntity
+      ),
+    };
+  }
+
+  static fromResponseChargedPortfolioToEntity(
+    response: ChargedPortfolioResponse
+  ): ChargedPortfolio {
+    return {
+      contract: response.contrato,
+      creditAdvisor: response.oficial_credito,
+      location: response.ubicacion,
+      customer: response.cliente,
+      deliveryDate: response.fecha_entrega,
+      initialFee: Number(response.cuota_inicial),
+      expiredLess30Fb: Number(response.vencida_menor_30_fb),
+      expiredMore30Fb: Number(response.vencida_mayor_30_fb),
+      onTimeFb: Number(response.al_tiemopo_fb),
+      prepaymentFb: Number(response.prepago_fb),
+      expiredLess30Ce: Number(response.vencida_menor_30_ce),
+      expiredMore30Ce: Number(response.vencida_mayor_30_ce),
+      onTimeCe: Number(response.al_tiemopo_ce),
+      prepaymentCe: Number(response.prepago_ce),
     };
   }
 }

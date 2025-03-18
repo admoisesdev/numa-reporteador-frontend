@@ -46,3 +46,20 @@ export interface AccountStatusResponse {
   contract: ContractResponse;
   financing: FinancingResponse[];
 }
+
+export interface ChargedPortfolioResponse {
+  contrato: string;
+  oficial_credito: string;
+  ubicacion: string;
+  cliente: string;
+  fecha_entrega: string;
+  cuota_inicial: string;
+  vencida_menor_30_fb: string;
+  vencida_mayor_30_fb: string;
+  al_tiemopo_fb: string;
+  prepago_fb: string;
+  vencida_menor_30_ce: string;
+  vencida_mayor_30_ce: string;
+  al_tiemopo_ce: string;
+  prepago_ce: string;
+}

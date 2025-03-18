@@ -1,4 +1,3 @@
-import type { Charge } from "./charges.entity";
 import type { Financing } from "./financing.entity";
 
 export interface Contract {
@@ -36,4 +35,21 @@ export interface FullContract extends Contract{
 export interface AccountStatus {
   contract: FullContract;
   financing: Financing[];
+}
+
+export interface ChargedPortfolio {
+  contract: string;
+  creditAdvisor: string;
+  location: string;
+  customer: string;
+  deliveryDate: string;
+  initialFee: number;
+  expiredLess30Fb: number;
+  expiredMore30Fb: number;
+  onTimeFb: number;
+  prepaymentFb: number;
+  expiredLess30Ce: number;
+  expiredMore30Ce: number;
+  onTimeCe: number;
+  prepaymentCe: number;
 }
