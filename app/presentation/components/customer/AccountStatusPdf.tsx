@@ -6,7 +6,8 @@ import {
   View,
   Image,
 } from "@react-pdf/renderer";
-import { TableBodyPdf, TableHeaderPdf, TablePdf, type TableBodyProps } from "../pdf";
+import { TableBodyPdf, TableHeaderPdf, TablePdf } from "../pdf";
+import type { AccountStatusPdfData } from "infrastructure/interfaces";
 
 const styles = StyleSheet.create({
   page: {
@@ -120,23 +121,12 @@ const styles = StyleSheet.create({
 
 
 
-export type DataPdf = {
-  logo: string;
-  title: string;
-  subtitle: string;
-  info: { key: string; value: string }[];
-  paymentInfo: { key: string; value: string }[];
-  cancelationColumns: { title: string; subcolumns: string[] }[];
-  cancelationRows: { rows: { mainRow: string[][]; subRows?: string[][]}[] };
-  totalsInfo: { key: string; value: number | string }[];
-};
 
 interface AccountStatementPdfProps {
-  data: DataPdf;
+  data: AccountStatusPdfData;
 }
 
 export const AccountStatusPdf = ({ data }: AccountStatementPdfProps) => {
-  console.log({ cancelationRows: data.cancelationRows.rows });
   return (
     <Document>
       <Page size="A4" style={styles.page}>
