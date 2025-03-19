@@ -6,7 +6,6 @@ import { Calendar } from "presentation/components/ui/calendar";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,10 +18,12 @@ import {
 import { chargedPortfolioSchema } from "presentation/validations";
 
 import { format } from "date-fns";
+import { es } from "date-fns/locale/es";
 import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useChargedPortfolioMutation } from "presentation/hooks/contract";
 
 const ChargedPortfolioPage = () => {
   const form = useForm<z.infer<typeof chargedPortfolioSchema>>({
@@ -33,15 +34,13 @@ const ChargedPortfolioPage = () => {
     },
   });
 
-  function onSubmit(data: z.infer<typeof chargedPortfolioSchema>) {
-    /* toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    }); */
+  const {chargedPortfolio } = useChargedPortfolioMutation();
+
+  const onSubmit = (data: z.infer<typeof chargedPortfolioSchema>) => {
+    chargedPortfolio.mutate({
+      startDate: format(data.startDate, "yyyy-MM-dd"),
+      endDate: format(data.endDate, "yyyy-MM-dd"),
+    });
   }
 
   return (
@@ -53,7 +52,9 @@ const ChargedPortfolioPage = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flew-row items-end gap-6 my-5"
+          className={cn("flex flew-row items-end gap-6 my-5", {
+            "items-center": form.formState.errors.startDate,
+          })}
         >
           <FormField
             control={form.control}
@@ -72,7 +73,7 @@ const ChargedPortfolioPage = () => {
                         )}
                       >
                         {field.value ? (
-                          format(field.value, "dd-mm-yyy")
+                          format(field.value, "dd-MM-yyyy")
                         ) : (
                           <span>Selecciona una fecha</span>
                         )}
@@ -88,11 +89,13 @@ const ChargedPortfolioPage = () => {
                       disabled={(date) =>
                         date > new Date() || date < new Date("1900-01-01")
                       }
+                      locale={es}
                       initialFocus
                     />
                   </PopoverContent>
                 </Popover>
                 <FormMessage className="text-red-600" />
+                {form.formState.errors.endDate && <div className="h-5" />}
               </FormItem>
             )}
           />
@@ -114,7 +117,7 @@ const ChargedPortfolioPage = () => {
                         )}
                       >
                         {field.value ? (
-                          format(field.value, "dd-mm-yyy")
+                          format(field.value, "dd-MM-yyyy")
                         ) : (
                           <span>Selecciona una fecha</span>
                         )}
@@ -130,11 +133,13 @@ const ChargedPortfolioPage = () => {
                       disabled={(date) =>
                         date > new Date() || date < new Date("1900-01-01")
                       }
+                      locale={es}
                       initialFocus
                     />
                   </PopoverContent>
                 </Popover>
                 <FormMessage className="text-red-600" />
+                {form.formState.errors.startDate && <div className="h-5" />}
               </FormItem>
             )}
           />
@@ -146,8 +151,8 @@ const ChargedPortfolioPage = () => {
             >
               Generar reporte
             </Button>
-            {(form.formState.errors.startDate ||
-              form.formState.errors.endDate) && <div className="h-5" />}
+            {form.formState.errors.startDate &&
+              form.formState.errors.endDate && <div className="h-5" />}
           </div>
         </form>
       </Form>

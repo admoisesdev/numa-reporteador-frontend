@@ -21,7 +21,7 @@ const routes = [
 ];
 
 const MainLayout = () => {
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   return (
     <div className="container mx-auto p-3">
@@ -31,20 +31,19 @@ const MainLayout = () => {
         <NavigationMenu>
           <NavigationMenuList>
             {routes.map((route) => (
-              <NavigationMenuItem>
-                <Link to={route.path}>
-                  <NavigationMenuLink
-                    className={cn(
-                      navigationMenuTriggerStyle(),
-                      "text-xl rounded-none md:hover:text-slate-700",
-                      {
-                        "border-b-2 border-slate-700": pathname === route.path,
-                      }
-                    )}
-                  >
-                    {route.name}
-                  </NavigationMenuLink>
-                </Link>
+              <NavigationMenuItem key={route.path}>
+                <NavigationMenuLink
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    "text-xl rounded-none md:hover:text-slate-700",
+                    {
+                      "border-b-2 border-slate-700": pathname === route.path,
+                    }
+                  )}
+                  asChild
+                >
+                  <Link to={route.path}>{route.name}</Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
           </NavigationMenuList>

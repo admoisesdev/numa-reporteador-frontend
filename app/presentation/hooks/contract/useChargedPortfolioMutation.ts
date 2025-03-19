@@ -1,20 +1,20 @@
 import { apiFetcher } from "config/adapters";
 import * as UsesCases from "domain/use-cases/contract";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
-export const useChargedPortfolioMutation = (
-  chargedPortfolioParams: UsesCases.ChargedPortfolioParams
-) => {
-  const queryChargedPortfolio = useQuery({
-    queryKey: ["account-status", chargedPortfolioParams],
-    queryFn: () =>
-      UsesCases.getChargedPortfolioUseCase(apiFetcher, chargedPortfolioParams),
-    enabled: !!chargedPortfolioParams.startDate || !!chargedPortfolioParams.endDate,
+export const useChargedPortfolioMutation = () => {
+
+  const chargedPortfolio = useMutation({
+    mutationFn: (params: UsesCases.ChargedPortfolioParams) => {
+      return UsesCases.getChargedPortfolioUseCase(apiFetcher, params)
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
   });
 
   return {
-    queryChargedPortfolio,
-    chargedPortfolio: queryChargedPortfolio.data,
+    chargedPortfolio,
   };
 };
