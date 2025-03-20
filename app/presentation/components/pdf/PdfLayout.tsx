@@ -38,12 +38,19 @@ interface PdfLayoutProps {
   logoUrl: string;
   title: string;
   subtitle?: string;
+  pageStyle?: any;
 }
 
-export const PdfLayout = ({children,logoUrl,title,subtitle}: PdfLayoutProps) => {
+export const PdfLayout = ({
+  children,
+  logoUrl,
+  title,
+  subtitle,
+  pageStyle,
+}: PdfLayoutProps) => {
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size="A4" style={[styles.page, pageStyle]}>
         <View style={styles.header}>
           <Image style={styles.logo} src={logoUrl} />
 

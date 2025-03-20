@@ -165,12 +165,13 @@ const ChargedPortfolioPage = () => {
       <div className="min-h-screen">
         {chargedPortfolio.data && (
           <VisorPdf
+            height="600"
             pdfDocument={
               <ChargedPortfolioPdf
                 data={PdfMapper.fromChargedPortfolioToPdfData(
                   chargedPortfolio.data,
                   form.getValues("startDate"),
-                  form.getValues("endDate"),
+                  form.getValues("endDate")
                 )}
               />
             }

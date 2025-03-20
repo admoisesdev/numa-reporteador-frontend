@@ -219,8 +219,38 @@ export class PdfMapper {
   static fromChargedPortfolioToPdfData(
     chargedPortfolio: ChargedPortfolio[],
     startDate: Date,
-    endDate: Date,
+    endDate: Date
   ): ChargedPortfolioPdfData {
+    const chargedData = chargedPortfolio.map((item) => {
+      return {
+        mainRow: [
+          [
+            item.contract,
+            item.creditAdvisor,
+            item.location,
+            item.customer,
+            item.deliveryDate,
+            item.initialFee,
+          ],
+          [
+            item.expiredLess30Fb,
+            item.expiredMore30Fb,
+            item.onTimeFb,
+            item.prepaymentFb,
+            ""
+          ],
+          [
+            item.expiredLess30Ce,
+            item.expiredMore30Ce,
+            item.onTimeCe,
+            item.prepaymentCe,
+            "",
+          ],
+          [""],
+        ],
+      };
+    }) as { mainRow: string[][] }[];
+
     return {
       logo: "./logo.png",
       title: "Cartera cobrada",
@@ -234,8 +264,44 @@ export class PdfMapper {
           value: DateAdapter.formatDate(endDate) ?? "N/A",
         },
       ],
-      contractsChargesColumns: [],
-      contractsChargesRows: { rows: [] },
+      contractsChargesColumns: [
+        {
+          title: " ",
+          subcolumns: [
+            "Contrato",
+            "Oficial de crédito",
+            "Ubicación",
+            "Cliente",
+            "Fecha entrega",
+            "Cuota inicial",
+          ],
+        },
+        {
+          title: "Hipoteca Cobrada",
+          subcolumns: [
+            "Vencido < 30 días",
+            "Vencido > 30 días",
+            "Al vencimiento",
+            "Prepago",
+            "Total Cobrado",
+          ],
+        },
+        {
+          title: "Letra Cliene Cobrada",
+          subcolumns: [
+            "Vencido < 30 días",
+            "Vencido > 30 días",
+            "Al vencimiento",
+            "Prepago",
+            "Total Cobrado",
+          ],
+        },
+        {
+          title: "Total",
+          subcolumns: ["Cobrado Cliente"],
+        },
+      ],
+      contractsChargesRows: { rows: chargedData },
     };
   }
 }

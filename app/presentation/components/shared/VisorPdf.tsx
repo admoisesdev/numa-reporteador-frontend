@@ -1,10 +1,7 @@
 import { Spinner } from "../ui";
 import { TypographyH4 } from "./TypographyH4";
 
-import {
-  BlobProvider,
-  type DocumentProps,
-} from "@react-pdf/renderer";
+import { BlobProvider, type DocumentProps } from "@react-pdf/renderer";
 
 type PdfDocument = React.ReactElement<
   DocumentProps,
@@ -13,9 +10,10 @@ type PdfDocument = React.ReactElement<
 
 interface VisorPdfProps {
   pdfDocument: PdfDocument;
+  height?: string;
 }
 
-export const VisorPdf = ({ pdfDocument }: VisorPdfProps) => {
+export const VisorPdf = ({ pdfDocument, height="100%" }: VisorPdfProps) => {
   return (
     <BlobProvider document={pdfDocument}>
       {({ url, loading, error }) => {
@@ -42,7 +40,7 @@ export const VisorPdf = ({ pdfDocument }: VisorPdfProps) => {
           <iframe
             src={url!}
             width="100%"
-            height="600"
+            height={height}
             title="Vista previa del PDF"
           />
         );

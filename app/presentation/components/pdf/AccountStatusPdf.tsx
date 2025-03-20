@@ -1,6 +1,7 @@
-import { Text, StyleSheet, View } from "@react-pdf/renderer";
 import { PdfLayout, TableBodyPdf, TableHeaderPdf, TablePdf } from ".";
+
 import type { AccountStatusPdfData } from "infrastructure/interfaces";
+import { Text, StyleSheet, View } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   infoContainer: {

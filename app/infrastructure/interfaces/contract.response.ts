@@ -58,8 +58,11 @@ export interface ChargedPortfolioResponse {
   vencida_mayor_30_fb: string;
   al_tiemopo_fb: string;
   prepago_fb: string;
+  // total cobrado: string;
   vencida_menor_30_ce: string;
   vencida_mayor_30_ce: string;
   al_tiemopo_ce: string;
   prepago_ce: string;
+  // total cobrado: string;
+  // total cobrado cliente: string;
 }
