@@ -145,7 +145,12 @@ const ChargedPortfolioPage = () => {
             )}
           />
 
-          <div className="flex flex-col gap-2">
+          <div
+            className={cn("flex flex-col gap-2", {
+              "self-end": !form.formState.errors.startDate || !form.formState.errors.endDate,
+              "self-center": form.formState.errors.startDate || form.formState.errors.endDate,
+            })}
+          >
             <Button
               type="submit"
               className="bg-slate-600 hover:bg-slate-700 text-white"

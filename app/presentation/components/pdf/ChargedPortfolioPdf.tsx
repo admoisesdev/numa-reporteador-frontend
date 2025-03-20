@@ -6,7 +6,8 @@ import { StyleSheet, Text, View } from "@react-pdf/renderer";
 const styles = StyleSheet.create({
   infoContainer: {
     flexDirection: "row",
-    gap: 80,
+    justifyContent: "center",
+    gap: 60,
     padding: 12,
     borderBottom: 1,
     borderBottomColor: "#cad5e2",
@@ -17,15 +18,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: 5,
     marginBottom: 6,
+    fontSize: 8,
   },
   infoKey: {
-    fontSize: 8,
+    fontSize: 12,
     fontWeight: 800,
     textTransform: "uppercase",
     color: "#292b33",
   },
   infoValue: {
-    fontSize: 8,
+    fontSize: 12,
   },
 });
 

@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
   tableCell: {
     padding: 3,
-    fontSize: 8,
+    fontSize: 7,
     textAlign: "center",
     flex: 1,
     overflow: "hidden",
