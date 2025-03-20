@@ -37,6 +37,7 @@ interface PdfLayoutProps {
   children: React.ReactNode;
   logoUrl: string;
   title: string;
+  orientation?: "landscape" | "portrait";
   subtitle?: string;
   pageStyle?: any;
 }
@@ -45,12 +46,17 @@ export const PdfLayout = ({
   children,
   logoUrl,
   title,
+  orientation = "portrait",
   subtitle,
   pageStyle,
 }: PdfLayoutProps) => {
   return (
     <Document>
-      <Page size="A4" style={[styles.page, pageStyle]}>
+      <Page
+        size="A4"
+        style={[styles.page, pageStyle]}
+        orientation={orientation}
+      >
         <View style={styles.header}>
           <Image style={styles.logo} src={logoUrl} />
 

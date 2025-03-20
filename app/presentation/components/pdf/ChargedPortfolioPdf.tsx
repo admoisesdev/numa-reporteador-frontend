@@ -38,6 +38,7 @@ export const ChargedPortfolioPdf = ({ data }: ChargedPortfolioPdfProps) => {
     <PdfLayout
       logoUrl={data.logo}
       title={data.title}
+      orientation="landscape"
       pageStyle={{ padding: 0 }}
     >
       <View style={styles.infoContainer}>
