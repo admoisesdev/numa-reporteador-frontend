@@ -285,15 +285,24 @@ export class PdfMapper {
           totals.onTimeFb,
           totals.prepaymentFb,
           totals.totalChargedFb,
-        ].map((value) => Formatter.numberWithCommasAndDots(value) ?? "N/A"),
+        ].map(
+          (value) =>
+            Formatter.numberWithCommasAndDots(value.toFixed(2)) ?? "N/A"
+        ),
         [
           totals.expiredLess30Ce,
           totals.expiredMore30Ce,
           totals.onTimeCe,
           totals.prepaymentCe,
           totals.totalChargedCe,
-        ].map((value) => Formatter.numberWithCommasAndDots(value) ?? "N/A"),
-        [Formatter.numberWithCommasAndDots(totals.totalCustomer) ?? "N/A"],
+        ].map(
+          (value) =>
+            Formatter.numberWithCommasAndDots(value.toFixed(2)) ?? "N/A"
+        ),
+        [
+          Formatter.numberWithCommasAndDots(totals.totalCustomer.toFixed(2)) ??
+            "N/A",
+        ],
       ],
     });
 
