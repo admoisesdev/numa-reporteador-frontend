@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from "react";
-
 import { Spinner } from "../ui";
 import { TypographyH4 } from "./TypographyH4";
 
@@ -44,7 +42,7 @@ export const VisorPdf = ({ pdfDocument }: VisorPdfProps) => {
           <iframe
             src={url!}
             width="100%"
-            height="100%"
+            height="600"
             title="Vista previa del PDF"
           />
         );

@@ -24,7 +24,7 @@ const MainLayout = () => {
   const { pathname } = useLocation();
 
   return (
-    <div className="container mx-auto p-3">
+    <div className="container mx-auto p-3 min-h-screen">
       <section className="flex flex-col-reverse sm:flex-row items-center sm:gap-4">
         <img src="/logo.png" alt="Logo" width={250} height={150} />
 

@@ -1,11 +1,17 @@
-import type { AccountStatus } from "domain/entities";
-import type { AccountStatusPdfData } from "infrastructure/interfaces";
+import type { AccountStatus, ChargedPortfolio } from "domain/entities";
+import type {
+  AccountStatusPdfData,
+  ChargedPortfolioPdfData,
+} from "infrastructure/interfaces";
 
 import { Formatter } from "config/helpers";
 import { DateAdapter } from "config/adapters";
 
-export class PdfMapper{
-  static fromAccountStatusToPdfData(accountStatus: AccountStatus,customerName: string): AccountStatusPdfData{
+export class PdfMapper {
+  static fromAccountStatusToPdfData(
+    accountStatus: AccountStatus,
+    customerName: string
+  ): AccountStatusPdfData {
     const cancelationsData = accountStatus?.financing.map((financing) => {
       return {
         mainRow: [
@@ -32,7 +38,7 @@ export class PdfMapper{
           ]) ?? [],
       };
     }) as { mainRow: string[][]; subRows: string[][] }[];
-    
+
     return {
       logo: "./logo.png",
       title: "Numa S.A.S",
@@ -207,6 +213,29 @@ export class PdfMapper{
             ) ?? "N/A",
         },
       ],
+    };
+  }
+
+  static fromChargedPortfolioToPdfData(
+    chargedPortfolio: ChargedPortfolio[],
+    startDate: Date,
+    endDate: Date,
+  ): ChargedPortfolioPdfData {
+    return {
+      logo: "./logo.png",
+      title: "Cartera cobrada",
+      info: [
+        {
+          key: "Fecha desde",
+          value: DateAdapter.formatDate(startDate) ?? "N/A",
+        },
+        {
+          key: "Fecha hasta",
+          value: DateAdapter.formatDate(endDate) ?? "N/A",
+        },
+      ],
+      contractsChargesColumns: [],
+      contractsChargesRows: { rows: [] },
     };
   }
 }

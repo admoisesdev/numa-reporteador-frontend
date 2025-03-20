@@ -5,7 +5,7 @@ import {
   useContractsCustomer,
 } from "presentation/hooks/contract";
 import { DataTable, VisorPdf } from "../shared";
-import { AccountStatusPdf } from "./AccountStatusPdf";
+import { AccountStatusPdf } from "../pdf/AccountStatusPdf";
 
 import {
   Button,

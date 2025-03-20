@@ -1,9 +1,9 @@
-import { TypographyH3 } from "presentation/components/shared";
-import { cn } from "presentation/lib/utils";
-import { Button } from "presentation/components/ui/button";
-import { Calendar } from "presentation/components/ui/calendar";
+import { useChargedPortfolioMutation } from "presentation/hooks/contract";
 
+import { TypographyH4, VisorPdf } from "presentation/components/shared";
 import {
+  Button,
+  Calendar,
   Form,
   FormControl,
   FormField,
@@ -16,45 +16,46 @@ import {
 } from "presentation/components/ui";
 
 import { chargedPortfolioSchema } from "presentation/validations";
+import { cn } from "presentation/lib/utils";
+import { PdfMapper } from "infrastructure/mappers";
+
+import { ChargedPortfolioPdf } from "presentation/components/pdf";
 
 import { format } from "date-fns";
 import { es } from "date-fns/locale/es";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useChargedPortfolioMutation } from "presentation/hooks/contract";
 
 const ChargedPortfolioPage = () => {
   const form = useForm<z.infer<typeof chargedPortfolioSchema>>({
     resolver: zodResolver(chargedPortfolioSchema),
     defaultValues: {
-      startDate: undefined,
-      endDate: undefined,
+      startDate: new Date("2025-03-01"),
+      endDate: new Date(),
     },
   });
 
-  const {chargedPortfolio } = useChargedPortfolioMutation();
+  const { chargedPortfolio } = useChargedPortfolioMutation();
 
   const onSubmit = (data: z.infer<typeof chargedPortfolioSchema>) => {
     chargedPortfolio.mutate({
       startDate: format(data.startDate, "yyyy-MM-dd"),
       endDate: format(data.endDate, "yyyy-MM-dd"),
     });
-  }
+  };
 
   return (
-    <section className="py-4">
-      <TypographyH3 className="">
+    <section className="py-4 min-h-screen">
+      <TypographyH4 className="text-slate-800">
         Seleccione un rango de fechas para ver la cartera cobrada:
-      </TypographyH3>
+      </TypographyH4>
 
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className={cn("flex flew-row items-end gap-6 my-5", {
-            "items-center": form.formState.errors.startDate,
-          })}
+          className="flex flew-row items-center gap-6 my-5"
         >
           <FormField
             control={form.control}
@@ -105,7 +106,7 @@ const ChargedPortfolioPage = () => {
             name="endDate"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Fecha desde</FormLabel>
+                <FormLabel>Fecha hasta</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -148,7 +149,11 @@ const ChargedPortfolioPage = () => {
             <Button
               type="submit"
               className="bg-slate-600 hover:bg-slate-700 text-white"
+              disabled={chargedPortfolio.isPending}
             >
+              {chargedPortfolio.isPending && (
+                <Loader2 className="animate-spin" />
+              )}
               Generar reporte
             </Button>
             {form.formState.errors.startDate &&
@@ -156,6 +161,22 @@ const ChargedPortfolioPage = () => {
           </div>
         </form>
       </Form>
+
+      <div className="min-h-screen">
+        {chargedPortfolio.data && (
+          <VisorPdf
+            pdfDocument={
+              <ChargedPortfolioPdf
+                data={PdfMapper.fromChargedPortfolioToPdfData(
+                  chargedPortfolio.data,
+                  form.getValues("startDate"),
+                  form.getValues("endDate"),
+                )}
+              />
+            }
+          />
+        )}
+      </div>
     </section>
   );
 };
