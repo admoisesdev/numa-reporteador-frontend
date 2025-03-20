@@ -237,16 +237,16 @@ export class PdfMapper {
             item.expiredMore30Fb,
             item.onTimeFb,
             item.prepaymentFb,
-            ""
+            item.totalChargedFb,
           ],
           [
             item.expiredLess30Ce,
             item.expiredMore30Ce,
             item.onTimeCe,
             item.prepaymentCe,
-            "",
+            item.totalChargedCe,
           ],
-          [""],
+          [item.totalCustomer],
         ],
       };
     }) as { mainRow: string[][] }[];

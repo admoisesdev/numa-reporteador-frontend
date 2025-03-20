@@ -32,8 +32,8 @@ const ChargedPortfolioPage = () => {
   const form = useForm<z.infer<typeof chargedPortfolioSchema>>({
     resolver: zodResolver(chargedPortfolioSchema),
     defaultValues: {
-      startDate: new Date("2025-03-01"),
-      endDate: new Date(),
+      startDate: undefined,
+      endDate: undefined,
     },
   });
 

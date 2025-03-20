@@ -48,8 +48,11 @@ export interface ChargedPortfolio {
   expiredMore30Fb: number;
   onTimeFb: number;
   prepaymentFb: number;
+  totalChargedFb: number;
   expiredLess30Ce: number;
   expiredMore30Ce: number;
   onTimeCe: number;
   prepaymentCe: number;
+  totalChargedCe: number;
+  totalCustomer: number;
 }

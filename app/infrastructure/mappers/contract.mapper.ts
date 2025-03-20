@@ -82,10 +82,13 @@ export class ContractMapper {
       expiredMore30Fb: Number(response.vencida_mayor_30_fb),
       onTimeFb: Number(response.al_tiemopo_fb),
       prepaymentFb: Number(response.prepago_fb),
+      totalChargedFb: Number(response.total_cobradofb),
       expiredLess30Ce: Number(response.vencida_menor_30_ce),
       expiredMore30Ce: Number(response.vencida_mayor_30_ce),
       onTimeCe: Number(response.al_tiemopo_ce),
       prepaymentCe: Number(response.prepago_ce),
+      totalChargedCe: Number(response.total_cobradoce),
+      totalCustomer: Number(response.total),
     };
   }
 }

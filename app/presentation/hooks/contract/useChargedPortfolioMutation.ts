@@ -10,6 +10,7 @@ export const useChargedPortfolioMutation = () => {
       return UsesCases.getChargedPortfolioUseCase(apiFetcher, params)
     },
     onSuccess: (data) => {
+      console.log(data);
     },
   });
 
