@@ -1,5 +1,6 @@
 export * from './DataTable';
 export * from './DataTablePagination';
+export * from './DatePicker';
 export * from './Divider';
 export * from './TypographyH1';
 export * from './TypographyH2';

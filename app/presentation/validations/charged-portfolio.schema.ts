@@ -8,6 +8,9 @@ export const chargedPortfolioSchema = z
     endDate: z.date({
       required_error: "La fecha de fin es requerida",
     }),
+    reportType: z.enum(["pdf", "excel"], {
+      required_error: "El tipo de reporte es obligatorio",
+    }),
   })
   .refine((data) => data.startDate < data.endDate, {
     message: "La fecha de inicio es menor a la de fin",

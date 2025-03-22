@@ -46,7 +46,7 @@ export class PdfMapper {
       info: [
         {
           key: "fecha del corte",
-          value: DateAdapter.formatDate(new Date()) ?? "N/A",
+          value: DateAdapter.format(new Date(), "dd/MM/yyyy") ?? "N/A",
         },
         { key: "proyecto", value: accountStatus?.contract.project! ?? "N/A" },
         { key: "cliente", value: customerName ?? "N/A" },
@@ -312,11 +312,11 @@ export class PdfMapper {
       info: [
         {
           key: "Fecha desde",
-          value: DateAdapter.formatDate(startDate) ?? "N/A",
+          value: DateAdapter.format(startDate, "dd/MM/yyyy") ?? "N/A",
         },
         {
           key: "Fecha hasta",
-          value: DateAdapter.formatDate(endDate) ?? "N/A",
+          value: DateAdapter.format(endDate, "dd/MM/yyyy") ?? "N/A",
         },
       ],
       contractsChargesColumns: [
