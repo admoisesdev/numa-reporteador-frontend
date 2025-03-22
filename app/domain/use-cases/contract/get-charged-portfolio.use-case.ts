@@ -3,7 +3,6 @@ import type { HttpAdapter } from "config/adapters/http";
 import { ContractMapper } from "infrastructure/mappers";
 import type { ChargedPortfolioResponse } from "infrastructure/interfaces";
 import type { ChargedPortfolio } from "domain/entities";
-import { chargedPortfolioSchema } from "presentation/validations";
 
 export interface ChargedPortfolioParams {
   startDate: string;

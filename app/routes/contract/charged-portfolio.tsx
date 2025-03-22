@@ -7,28 +7,20 @@ import {
 } from "presentation/components/shared";
 import {
   Button,
-  Calendar,
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
 } from "presentation/components/ui";
-
+import { ChargedPortfolioPdf } from "presentation/components/pdf";
 import { chargedPortfolioSchema } from "presentation/validations";
 import { cn } from "presentation/lib/utils";
-import { PdfMapper } from "infrastructure/mappers";
-
-import { ChargedPortfolioPdf } from "presentation/components/pdf";
 
 import { DateAdapter } from "config/adapters";
+import { PdfMapper } from "infrastructure/mappers";
 
-import { CalendarIcon, Loader2 } from "lucide-react";
-import { es } from "date-fns/locale/es";
+import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -43,16 +35,13 @@ const ChargedPortfolioPage = () => {
     },
   });
 
-  const { chargedPortfolio } = useChargedPortfolioMutation();
+  const { chargedPortfolio } = useChargedPortfolioMutation(form.getValues("reportType"));
 
   const onSubmit = (data: z.infer<typeof chargedPortfolioSchema>) => {
     chargedPortfolio.mutate({
       startDate: DateAdapter.format(data.startDate, "yyyy-MM-dd"),
       endDate: DateAdapter.format(data.endDate, "yyyy-MM-dd"),
     });
-
-    if (data.reportType === "excel") {
-    }
   };
 
   return (

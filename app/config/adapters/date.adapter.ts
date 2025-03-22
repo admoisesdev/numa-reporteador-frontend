@@ -14,9 +14,8 @@ export class DateAdapter {
       formatDate = DateAdapter.parseISO(date);
     }
 
-    const dateInTimeZone = DateAdapter.zonedTimeToUtc(formatDate);
 
-    return format(new Date(dateInTimeZone), stringFormat, options);
+    return format(new Date(formatDate), stringFormat, options);
   }
 
   static isToday(date: Date): boolean {
@@ -34,7 +33,7 @@ export class DateAdapter {
 
   static zonedTimeToUtc(
     date: Date | string | number,
-    timeZone: string = "America/Santiago",
+    timeZone: string = "America/Guayaquil",
     options?: ToDateOptionsWithTZ
   ): Date {
     return toZonedTime(date, timeZone, options);
