@@ -342,7 +342,7 @@ export class PdfMapper {
           ],
         },
         {
-          title: "Letra Cliene Cobrada",
+          title: "Letra Cliente Cobrada",
           subcolumns: [
             "Vencido < 30 días",
             "Vencido > 30 días",
