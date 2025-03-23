@@ -17,3 +17,22 @@ export interface ChargedPortfolioExcelData {
   "Total cobrado (CE)": number;
   "Total cobrado cliente": number;
 }
+
+export interface ReceivablesExcelData {
+  Empresa: string;
+  Proyecto: string;
+  "Oficial de credito": string;
+  Cliente: string;
+  "Teléfono": string;
+  Email: string;
+  "Oficial de cuenta": string;
+  Contrato: string;
+  "Precio venta": string;
+  Ubicación: string;
+  "Tipo de documento": string;
+  Descripción: string;
+  "Fecha vencimiento": string;
+  Cuota: string;
+  "Imp. pendiente": string;
+  "Imp. bruto": string;
+}

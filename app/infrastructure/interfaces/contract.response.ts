@@ -66,3 +66,23 @@ export interface ChargedPortfolioResponse {
   total_cobradoce: string;
   total: string;
 }
+
+
+export interface ReceivablesResponse {
+  empresa: string;
+  proyecto: string;
+  oficial_credito: string;
+  cliente: string;
+  telefono: string;
+  email: string;
+  oficial_cuenta: string;
+  contrato: string;
+  precio_venta: string;
+  ubicacion: string;
+  tipo_documento: string;
+  descripcion: string;
+  fecha_vencimiento: string;
+  cuota: string;
+  imp_pendiente: string;
+  imp_bruto: string;
+}

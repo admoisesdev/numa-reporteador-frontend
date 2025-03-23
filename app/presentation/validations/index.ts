@@ -1,1 +1,1 @@
-export * from './charged-portfolio.schema';
+export * from './reports.schema';

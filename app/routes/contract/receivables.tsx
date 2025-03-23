@@ -1,3 +1,5 @@
+import { useReceivablesMutation } from "presentation/hooks/contract";
+
 import { DatePicker, TypographyH4 } from "presentation/components/shared";
 import {
   Button,
@@ -7,7 +9,7 @@ import {
   FormLabel,
   FormMessage,
 } from "presentation/components/ui";
-import { chargedPortfolioSchema } from "presentation/validations";
+import { receivablesSchema } from "presentation/validations";
 import { cn } from "presentation/lib/utils";
 
 import { DateAdapter } from "config/adapters";
@@ -18,14 +20,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const ReceivablesPage = () => {
-  const form = useForm<z.infer<typeof chargedPortfolioSchema>>({
-    resolver: zodResolver(chargedPortfolioSchema),
+  const form = useForm<z.infer<typeof receivablesSchema>>({
+    resolver: zodResolver(receivablesSchema),
     defaultValues: {
-      endDate: undefined,
+      expirationDate: undefined,
     },
   });
 
-  const onSubmit = (data: z.infer<typeof chargedPortfolioSchema>) => {};
+  const { receivables } = useReceivablesMutation();
+
+  const onSubmit = (data: z.infer<typeof receivablesSchema>) => {
+     receivables.mutate({
+       expirationDate: DateAdapter.format(data.expirationDate, "yyyy-MM-dd"),
+     });
+  };
 
   return (
     <section className="py-4 min-h-screen">
@@ -40,35 +48,34 @@ const ReceivablesPage = () => {
         >
           <FormField
             control={form.control}
-            name="endDate"
+            name="expirationDate"
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Fecha hasta</FormLabel>
                 <DatePicker value={field.value} onChange={field.onChange} />
                 <FormMessage className="text-red-600" />
-                {form.formState.errors.endDate && <div className="h-5" />}
+                {form.formState.errors.expirationDate && <div className="h-5" />}
               </FormItem>
             )}
           />
 
           <div
             className={cn("flex flex-col gap-2", {
-              "self-end": !form.formState.errors.endDate,
-              "self-center": form.formState.errors.endDate,
+              "self-end": !form.formState.errors.expirationDate,
+              "self-center": form.formState.errors.expirationDate,
             })}
           >
             <Button
               type="submit"
               className="bg-emerald-700 hover:bg-emerald-800 text-white"
-              disabled={true}
-              onClick={() => form.setValue("reportType", "excel")}
+              disabled={receivables.isPending}
             >
-              {form.getValues("reportType") === "excel" && true && (
+              {receivables.isPending && (
                 <Loader2 className="animate-spin" />
               )}
               Generar Excel
             </Button>
-            {form.formState.errors.endDate && <div className="h-5" />}
+            {form.formState.errors.expirationDate && <div className="h-5" />}
           </div>
         </form>
       </Form>

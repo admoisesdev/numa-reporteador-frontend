@@ -16,3 +16,9 @@ export const chargedPortfolioSchema = z
     message: "La fecha de inicio es menor a la de fin",
     path: ["startDate"],
   });
+
+export const receivablesSchema = z.object({
+  expirationDate: z.date({
+    required_error: "La fecha de vencimiento es requerida",
+  }),
+});
