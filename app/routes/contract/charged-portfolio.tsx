@@ -47,7 +47,7 @@ const ChargedPortfolioPage = () => {
   return (
     <section className="py-4 min-h-screen">
       <TypographyH4 className="text-slate-800">
-        Seleccione un rango de fechas para ver la cartera cobrada:
+        Seleccione un rango de fechas para generar la cartera cobrada:
       </TypographyH4>
 
       <Form {...form}>

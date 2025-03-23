@@ -18,6 +18,10 @@ const routes = [
     path: "/cartera-cobrada",
     name: "Cartera cobrada",
   },
+  {
+    path: "/cartera-por-cobrar",
+    name: "Cartera por cobrar",
+  }
 ];
 
 const MainLayout = () => {
