@@ -1,5 +1,10 @@
-import type { ChargedPortfolio } from "domain/entities";
-import type { ChargedPortfolioExcelData, ReceivablesExcelData, ReceivablesResponse } from "infrastructure/interfaces";
+import type { ChargedPortfolio, PortfolioAge } from "domain/entities";
+import type {
+  ChargedPortfolioExcelData,
+  PortfolioAgeExcelData,
+  ReceivablesExcelData,
+  ReceivablesResponse,
+} from "infrastructure/interfaces";
 
 export class ExcelMapper {
   static fromChargedPortfolioToExcelData(
@@ -26,13 +31,15 @@ export class ExcelMapper {
     };
   }
 
-  static fromReceivablesToExcelData(data: ReceivablesResponse): ReceivablesExcelData{
+  static fromReceivablesToExcelData(
+    data: ReceivablesResponse
+  ): ReceivablesExcelData {
     return {
       Empresa: data.empresa,
       Proyecto: data.proyecto,
       "Oficial de credito": data.oficial_credito,
       Cliente: data.cliente,
-      "Teléfono": data.telefono,
+      Teléfono: data.telefono,
       Email: data.email,
       "Oficial de cuenta": data.oficial_cuenta,
       Contrato: data.contrato,
@@ -44,6 +51,32 @@ export class ExcelMapper {
       Cuota: data.cuota,
       "Imp. pendiente": data.imp_pendiente,
       "Imp. bruto": data.imp_bruto,
-    }
+    };
+  }
+
+  static fromPortfolioAgeToExcelData(
+    data: PortfolioAge
+  ): PortfolioAgeExcelData {
+    return {
+      Proyecto: data.project,
+      Contrato: data.contract,
+      "Ubicación": data.location,
+      "Estado Const.": data.constructionStatus,
+      "% Avan.": data.progressPercentage,
+      Cliente: data.customer,
+      "Fecha venta": data.saleDate,
+      "Fecha entrega": data.deliveryDate,
+      "Precio de venta": data.salePrice,
+      "Total cobrado": data.totalCharged,
+      "Pago cubierto": data.chargedPercentage,
+      "C. de entrada": data.entryBalance,
+      "Hip Trámite": data.hipProcedure,
+      "F. Directo": data.fStraight,
+      "0 - 30": data.from0to30,
+      "31 - 60": data.from30to60,
+      "61 - 90": data.from60to90,
+      "Más de 90": data.moreThan90,
+      "Total vencido": data.totalExpired,
+    };
   }
 }

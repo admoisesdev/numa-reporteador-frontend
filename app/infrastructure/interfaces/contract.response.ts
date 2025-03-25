@@ -86,3 +86,25 @@ export interface ReceivablesResponse {
   imp_pendiente: string;
   imp_bruto: string;
 }
+
+export interface PortfolioAgeResponse {
+  proyecto: string;
+  contrato: string;
+  ubicacion: string;
+  estado_construccion: string;
+  por_avance: string;
+  cliente: string;
+  fecha_venta: string;
+  fecha_entrega: string;
+  precioventa: string;
+  total_cobrado: string;
+  por_cobrado: string;
+  saldo_entrada: string;
+  h_tramite: string;
+  f_directo: string;
+  de_0_30: string;
+  de_30_60: string;
+  de_60_90: string;
+  mayor_90: string;
+  total: string;
+}

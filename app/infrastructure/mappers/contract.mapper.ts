@@ -5,11 +5,13 @@ import type {
   ChargedPortfolio,
   Contract,
   FullContract,
+  PortfolioAge,
 } from "domain/entities";
 import type {
   AccountStatusResponse,
   ChargedPortfolioResponse,
   ContractResponse,
+  PortfolioAgeResponse,
 } from "infrastructure/interfaces";
 
 export class ContractMapper {
@@ -88,6 +90,32 @@ export class ContractMapper {
       prepaymentCe: Number(response.prepago_ce),
       totalChargedCe: Number(response.total_cobradoce),
       totalCustomer: Number(response.total),
+    };
+  }
+
+  static fromResponsePortfolioAgeToEntity(
+    response: PortfolioAgeResponse
+  ): PortfolioAge { 
+    return {
+      project: response.proyecto,
+      contract: response.contrato,
+      location: response.ubicacion,
+      constructionStatus: response.estado_construccion,
+      progressPercentage: Number(response.por_avance),
+      customer: response.cliente,
+      saleDate: response.fecha_venta,
+      deliveryDate: response.fecha_entrega,
+      salePrice: Number(response.precioventa),
+      totalCharged: Number(response.total_cobrado),
+      chargedPercentage: Number(response.por_cobrado),
+      entryBalance: Number(response.saldo_entrada),
+      hipProcedure: Number(response.h_tramite),
+      fStraight: Number(response.f_directo),
+      from0to30: Number(response.de_0_30),
+      from30to60: Number(response.de_30_60),
+      from60to90: Number(response.de_60_90),
+      moreThan90: Number(response.mayor_90),
+      totalExpired: Number(response.total),
     };
   }
 }

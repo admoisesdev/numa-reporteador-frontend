@@ -1,10 +1,11 @@
-import { apiFetcher, DateAdapter, ExcelAdapter } from "config/adapters";
 import * as UsesCases from "domain/use-cases/contract";
+
+import { apiFetcher, DateAdapter, ExcelAdapter } from "config/adapters";
 import { ExcelMapper } from "infrastructure/mappers";
+import type { ReportType } from "infrastructure/interfaces";
 
 import { useMutation } from "@tanstack/react-query";
 
-export type ReportType = "pdf" | "excel" | undefined;
 
 export const useChargedPortfolioMutation = (reportType: ReportType) => {
   const chargedPortfolio = useMutation({

@@ -16,12 +16,15 @@ interface DatePickerProps {
   value: Date | undefined;
   onChange: (date: Date | undefined) => void;
   placeholder?: string;
+  disabledCondition?: (date: Date) => boolean;
 }
 
 export const DatePicker = ({
   value,
   onChange,
   placeholder = "Selecciona una fecha",
+  disabledCondition = (date) =>
+    date > new Date() || date < new Date("1900-01-01"),
 }: DatePickerProps) => {
   return (
     <Popover>
@@ -48,9 +51,7 @@ export const DatePicker = ({
           mode="single"
           selected={value}
           onSelect={onChange}
-          disabled={(date) =>
-            date > new Date() || date < new Date("1900-01-01")
-          }
+          disabled={disabledCondition}
           locale={es}
           initialFocus
         />

@@ -36,3 +36,7 @@ export interface ReceivablesExcelData {
   "Imp. pendiente": string;
   "Imp. bruto": string;
 }
+
+export interface PortfolioAgeExcelData{
+  
+}

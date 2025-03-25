@@ -57,6 +57,29 @@ export interface ChargedPortfolio {
   totalCustomer: number;
 }
 
+export interface PortfolioAge {
+  project: string;
+  contract: string;
+  location: string;
+  constructionStatus: string;
+  progressPercentage: number;
+  customer: string;
+  saleDate: string;
+  deliveryDate: string;
+  salePrice: number;
+  totalCharged: number;
+  chargedPercentage: number;
+  entryBalance: number;
+  hipProcedure: number;
+  fStraight: number;
+  from0to30: number;
+  from30to60: number;
+  from60to90: number;
+  moreThan90: number;
+  totalExpired: number;
+
+}
+
 export interface Receivables { 
   "Empresa": string;
   "Proyecto": string;

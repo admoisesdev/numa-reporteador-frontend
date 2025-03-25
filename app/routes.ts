@@ -10,5 +10,6 @@ export default [
     index("routes/customer/home.tsx"),
     route("cartera-cobrada", "routes/contract/charged-portfolio.tsx"),
     route("cartera-por-cobrar", "routes/contract/receivables.tsx"),
+    route("antiguedad-cartera", "routes/contract/portfolio-age.tsx"),
   ]),
 ] satisfies RouteConfig;

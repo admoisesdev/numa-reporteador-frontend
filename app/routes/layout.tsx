@@ -21,6 +21,10 @@ const routes = [
   {
     path: "/cartera-por-cobrar",
     name: "Cartera por cobrar",
+  },
+  {
+    path: "/antiguedad-cartera",
+    name: "Antigüedad de cartera",
   }
 ];
 
