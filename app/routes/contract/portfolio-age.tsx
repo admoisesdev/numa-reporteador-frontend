@@ -1,6 +1,6 @@
 import { usePortfolioAgeMutation } from "presentation/hooks/contract";
 
-import { DatePicker, TypographyH4 } from "presentation/components/shared";
+import { DatePicker, TypographyH4, VisorPdf } from "presentation/components/shared";
 import {
   Button,
   Form,
@@ -9,10 +9,13 @@ import {
   FormLabel,
   FormMessage,
 } from "presentation/components/ui";
+import { PortfolioAgePdf } from "presentation/components/pdf";
+
 import { portfolioAgeSchema } from "presentation/validations";
 import { cn } from "presentation/lib/utils";
 
 import { DateAdapter } from "config/adapters";
+import { PdfMapper } from "infrastructure/mappers";
 
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -28,12 +31,15 @@ const PortfolioAgePage = () => {
     },
   });
 
-  const { portfolioAge } = usePortfolioAgeMutation(form.getValues("reportType"));
+  const { portfolioAge } = usePortfolioAgeMutation(
+    form.getValues("reportType")
+  );
+  console.log(portfolioAge.data);
 
   const onSubmit = (data: z.infer<typeof portfolioAgeSchema>) => {
-     portfolioAge.mutate({
-       expirationDate: DateAdapter.format(data.expirationDate, "yyyy-MM-dd"),
-     });
+    portfolioAge.mutate({
+      expirationDate: DateAdapter.format(data.expirationDate, "yyyy-MM-dd"),
+    });
   };
 
   return (
@@ -74,6 +80,25 @@ const PortfolioAgePage = () => {
           >
             <Button
               type="submit"
+              className="bg-slate-600 hover:bg-slate-700 text-white"
+              disabled={portfolioAge.isPending}
+              onClick={() => form.setValue("reportType", "pdf")}
+            >
+              {form.getValues("reportType") === "pdf" &&
+                portfolioAge.isPending && <Loader2 className="animate-spin" />}
+              Generar reporte
+            </Button>
+            {form.formState.errors.expirationDate && <div className="h-5" />}
+          </div>
+
+          <div
+            className={cn("flex flex-col gap-2", {
+              "self-end": !form.formState.errors.expirationDate,
+              "self-center": form.formState.errors.expirationDate,
+            })}
+          >
+            <Button
+              type="submit"
               className="bg-emerald-700 hover:bg-emerald-800 text-white"
               disabled={portfolioAge.isPending}
               onClick={() => form.setValue("reportType", "excel")}
@@ -86,6 +111,24 @@ const PortfolioAgePage = () => {
           </div>
         </form>
       </Form>
+
+      {form.getValues("reportType") === "pdf" && (
+        <div className="min-h-screen">
+          {portfolioAge.data && (
+            <VisorPdf
+              height="600"
+              pdfDocument={
+                <PortfolioAgePdf
+                  data={PdfMapper.fromPortfolioAgeToPdfData(
+                    portfolioAge.data,
+                    form.getValues("expirationDate")
+                  )}
+                />
+              }
+            />
+          )}
+        </div>
+      )}
     </section>
   );
 };

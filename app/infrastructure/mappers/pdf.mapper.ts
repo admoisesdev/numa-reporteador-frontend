@@ -365,14 +365,53 @@ export class PdfMapper {
     portfolioAge: PortfolioAge[],
     expiredDate: Date
   ): PortfolioAgePdfData {
+    const portfolioAgeData = portfolioAge.map((item) => {
+     
+      return {
+        mainRow: [
+          [
+            item.project,
+            item.contract,
+            item.location,
+            item.constructionStatus ?? "N/A",
+            `${Formatter.numberWithCommasAndDots(
+              item.progressPercentage.toFixed(2)
+            )}%`,
+            DateAdapter.format(item.saleDate, "dd/MM/yyyy"),
+            DateAdapter.format(item.deliveryDate, "dd/MM/yyyy"),
+            Formatter.numberWithCommasAndDots(item.salePrice.toFixed(2)),
+            Formatter.numberWithCommasAndDots(item.totalCharged.toFixed(2)),
+            `${Formatter.numberWithCommasAndDots(
+              item.entryBalance.toFixed(2)
+            )}%`,
+          ],
+          [
+            Formatter.numberWithCommasAndDots(item.hipProcedure.toFixed(2)),
+            Formatter.numberWithCommasAndDots(item.fStraight.toFixed(2)),
+          ],
+          [
+            Formatter.numberWithCommasAndDots(item.from0to30.toFixed(2)),
+            Formatter.numberWithCommasAndDots(item.from30to60.toFixed(2)),
+            Formatter.numberWithCommasAndDots(item.from60to90.toFixed(2)),
+            Formatter.numberWithCommasAndDots(item.moreThan90.toFixed(2)),
+          ],
+          [],
+          [Formatter.numberWithCommasAndDots(item.totalExpired.toFixed(2))],
+        ],
+      };
+    }) as { mainRow: string[][] }[];
+
+
     return {
       logo: "./logo.png",
       title: "Reporte Antiguedad de Cartera",
       subtitle: "Numa S.A.S",
-      info: [{
-        key: "Fecha de corte",
-        value: DateAdapter.format(expiredDate, "dd/MM/yyyy") ?? "N/A",
-      }],
+      info: [
+        {
+          key: "Fecha de corte",
+          value: DateAdapter.format(expiredDate, "dd/MM/yyyy") ?? "N/A",
+        },
+      ],
       portfolioAgeColumns: [
         {
           title: " ",
@@ -392,19 +431,11 @@ export class PdfMapper {
         },
         {
           title: "Saldo",
-          subcolumns: [
-            "Hip Trámite",
-            "F. Directo",
-          ],
+          subcolumns: ["Hip Trámite", "F. Directo"],
         },
         {
           title: "Vencidos (días)",
-          subcolumns: [
-            "0 - 30",
-            "31 - 60",
-            "61 - 90",
-            "Más de 90",
-          ],
+          subcolumns: ["0 - 30", "31 - 60", "61 - 90", "Más de 90"],
         },
         {
           title: "Total",
@@ -412,8 +443,8 @@ export class PdfMapper {
         },
       ],
       portfolioAgeRows: {
-        rows: [],
+        rows: portfolioAgeData,
       },
-    }
+    };
   }
 }
