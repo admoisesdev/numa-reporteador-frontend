@@ -16,3 +16,12 @@ export interface ChargedPortfolioPdfData {
   contractsChargesColumns: { title: string; subcolumns: string[] }[];
   contractsChargesRows: { rows: { mainRow: string[][]; }[] };
 }
+
+export interface PortfolioAgePdfData {
+  logo: string;
+  title: string;
+  info: { key: string; value: string }[];
+  subtitle: string;
+  portfolioAgeColumns: { title: string; subcolumns: string[] }[];
+  portfolioAgeRows: { rows: { mainRow: string[][] }[] };
+}

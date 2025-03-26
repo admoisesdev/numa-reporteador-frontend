@@ -1,7 +1,8 @@
-import type { AccountStatus, ChargedPortfolio } from "domain/entities";
+import type { AccountStatus, ChargedPortfolio,PortfolioAge } from "domain/entities";
 import type {
   AccountStatusPdfData,
   ChargedPortfolioPdfData,
+  PortfolioAgePdfData,
 } from "infrastructure/interfaces";
 
 import { Formatter } from "config/helpers";
@@ -222,19 +223,19 @@ export class PdfMapper {
     endDate: Date
   ): ChargedPortfolioPdfData {
     const totals = {
-    expiredLess30Fb: 0,
-    expiredMore30Fb: 0,
-    onTimeFb: 0,
-    prepaymentFb: 0,
-    totalChargedFb: 0,
-    expiredLess30Ce: 0,
-    expiredMore30Ce: 0,
-    onTimeCe: 0,
-    prepaymentCe: 0,
-    totalChargedCe: 0,
-    totalCustomer: 0,
+      expiredLess30Fb: 0,
+      expiredMore30Fb: 0,
+      onTimeFb: 0,
+      prepaymentFb: 0,
+      totalChargedFb: 0,
+      expiredLess30Ce: 0,
+      expiredMore30Ce: 0,
+      onTimeCe: 0,
+      prepaymentCe: 0,
+      totalChargedCe: 0,
+      totalCustomer: 0,
     };
-    
+
     const chargedData = chargedPortfolio.map((item) => {
       totals.expiredLess30Fb += item.expiredLess30Fb || 0;
       totals.expiredMore30Fb += item.expiredMore30Fb || 0;
@@ -358,5 +359,61 @@ export class PdfMapper {
       ],
       contractsChargesRows: { rows: chargedData },
     };
+  }
+
+  static fromPortfolioAgeToPdfData(
+    portfolioAge: PortfolioAge[],
+    expiredDate: Date
+  ): PortfolioAgePdfData {
+    return {
+      logo: "./logo.png",
+      title: "Reporte Antiguedad de Cartera",
+      subtitle: "Numa S.A.S",
+      info: [{
+        key: "Fecha de corte",
+        value: DateAdapter.format(expiredDate, "dd/MM/yyyy") ?? "N/A",
+      }],
+      portfolioAgeColumns: [
+        {
+          title: " ",
+          subcolumns: [
+            "Proyecto",
+            "Contrato",
+            "Ubicación",
+            "Estado Const.",
+            "% Avan.",
+            "Cliente",
+            "Fecha venta",
+            "Fecha entrega",
+            "Precio de venta",
+            "Total Cobrado",
+            "Pago cubierto",
+          ],
+        },
+        {
+          title: "Saldo",
+          subcolumns: [
+            "Hip Trámite",
+            "F. Directo",
+          ],
+        },
+        {
+          title: "Vencidos (días)",
+          subcolumns: [
+            "0 - 30",
+            "31 - 60",
+            "61 - 90",
+            "Más de 90",
+          ],
+        },
+        {
+          title: "Total",
+          subcolumns: ["Vencido"],
+        },
+      ],
+      portfolioAgeRows: {
+        rows: [],
+      },
+    }
   }
 }
