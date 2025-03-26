@@ -34,7 +34,6 @@ const PortfolioAgePage = () => {
   const { portfolioAge } = usePortfolioAgeMutation(
     form.getValues("reportType")
   );
-  console.log(portfolioAge.data);
 
   const onSubmit = (data: z.infer<typeof portfolioAgeSchema>) => {
     portfolioAge.mutate({

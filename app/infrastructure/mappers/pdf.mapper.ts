@@ -365,7 +365,30 @@ export class PdfMapper {
     portfolioAge: PortfolioAge[],
     expiredDate: Date
   ): PortfolioAgePdfData {
+    const totals = {
+      totalSalePrice: 0,
+      totalCharged: 0,
+      totalEntryBalance: 0,
+      totalHipProcedure: 0,
+      totalFStraight: 0,
+      totalFrom0to30: 0,
+      totalFrom30to60: 0,
+      totalFrom60to90: 0,
+      totalMoreThan90: 0,
+      totalExpired: 0,
+    }
+
     const portfolioAgeData = portfolioAge.map((item) => {
+      totals.totalSalePrice += item.salePrice || 0;
+      totals.totalCharged += item.totalCharged || 0;
+      totals.totalEntryBalance += item.entryBalance || 0;
+      totals.totalHipProcedure += item.hipProcedure || 0;
+      totals.totalFStraight += item.fStraight || 0;
+      totals.totalFrom0to30 += item.from0to30 || 0;
+      totals.totalFrom30to60 += item.from30to60 || 0;
+      totals.totalFrom60to90 += item.from60to90 || 0;
+      totals.totalMoreThan90 += item.moreThan90 || 0;
+      totals.totalExpired += item.totalExpired || 0;
      
       return {
         mainRow: [
@@ -377,15 +400,17 @@ export class PdfMapper {
             `${Formatter.numberWithCommasAndDots(
               item.progressPercentage.toFixed(2)
             )}%`,
+            item.customer,
             DateAdapter.format(item.saleDate, "dd/MM/yyyy"),
             DateAdapter.format(item.deliveryDate, "dd/MM/yyyy"),
             Formatter.numberWithCommasAndDots(item.salePrice.toFixed(2)),
             Formatter.numberWithCommasAndDots(item.totalCharged.toFixed(2)),
             `${Formatter.numberWithCommasAndDots(
-              item.entryBalance.toFixed(2)
+              item.chargedPercentage.toFixed(2)
             )}%`,
           ],
           [
+            Formatter.numberWithCommasAndDots(item.entryBalance.toFixed(2)),
             Formatter.numberWithCommasAndDots(item.hipProcedure.toFixed(2)),
             Formatter.numberWithCommasAndDots(item.fStraight.toFixed(2)),
           ],
@@ -399,7 +424,43 @@ export class PdfMapper {
           [Formatter.numberWithCommasAndDots(item.totalExpired.toFixed(2))],
         ],
       };
-    }) as { mainRow: string[][] }[];
+    }) as { mainRow: (string)[][] }[];
+
+    portfolioAgeData.push({
+      mainRow: [
+        [
+          "",
+          "",
+          "Totales",
+          "Por",
+          "Proyecto",
+          "",
+          "",
+          "",
+          Formatter.numberWithCommasAndDots(totals.totalSalePrice),
+          Formatter.numberWithCommasAndDots(totals.totalCharged),
+          "",
+        ],
+        [
+          totals.totalEntryBalance,
+          totals.totalHipProcedure,
+          totals.totalFStraight,
+        ].map(
+          (value) =>
+            Formatter.numberWithCommasAndDots(value.toFixed(2)) ?? "N/A"
+        ),
+        [
+          totals.totalFrom0to30,
+          totals.totalFrom30to60,
+          totals.totalFrom60to90,
+          totals.totalMoreThan90,
+        ].map(
+          (value) =>
+            Formatter.numberWithCommasAndDots(value.toFixed(2)) ?? "N/A"
+        ),
+        [Formatter.numberWithCommasAndDots(totals.totalExpired.toFixed(2))],
+      ],
+    });
 
 
     return {
@@ -426,12 +487,12 @@ export class PdfMapper {
             "Fecha entrega",
             "Precio de venta",
             "Total Cobrado",
-            "Pago cubierto",
+            "% Cobrado",
           ],
         },
         {
           title: "Saldo",
-          subcolumns: ["Hip Trámite", "F. Directo"],
+          subcolumns: ["C. Entrada","Hip Trámite", "F. Directo"],
         },
         {
           title: "Vencidos (días)",
