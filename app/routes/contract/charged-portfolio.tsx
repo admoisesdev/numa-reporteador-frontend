@@ -61,7 +61,11 @@ const ChargedPortfolioPage = () => {
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Fecha desde</FormLabel>
-                <DatePicker value={field.value} onChange={field.onChange} />
+                <DatePicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  disabledCondition={() => false}
+                />
                 <FormMessage className="text-red-600" />
                 {form.formState.errors.endDate && <div className="h-5" />}
               </FormItem>
@@ -74,7 +78,11 @@ const ChargedPortfolioPage = () => {
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Fecha hasta</FormLabel>
-                <DatePicker value={field.value} onChange={field.onChange} />
+                <DatePicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  disabledCondition={() => false}
+                />
                 <FormMessage className="text-red-600" />
                 {form.formState.errors.startDate && <div className="h-5" />}
               </FormItem>
