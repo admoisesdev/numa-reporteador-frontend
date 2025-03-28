@@ -52,9 +52,15 @@ const ReceivablesPage = () => {
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Fecha hasta</FormLabel>
-                <DatePicker value={field.value} onChange={field.onChange} />
+                <DatePicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  disabledCondition={() => false}
+                />
                 <FormMessage className="text-red-600" />
-                {form.formState.errors.expirationDate && <div className="h-5" />}
+                {form.formState.errors.expirationDate && (
+                  <div className="h-5" />
+                )}
               </FormItem>
             )}
           />
@@ -70,9 +76,7 @@ const ReceivablesPage = () => {
               className="bg-emerald-700 hover:bg-emerald-800 text-white"
               disabled={receivables.isPending}
             >
-              {receivables.isPending && (
-                <Loader2 className="animate-spin" />
-              )}
+              {receivables.isPending && <Loader2 className="animate-spin" />}
               Generar Excel
             </Button>
             {form.formState.errors.expirationDate && <div className="h-5" />}
