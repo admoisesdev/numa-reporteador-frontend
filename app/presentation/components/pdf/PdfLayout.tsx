@@ -63,7 +63,7 @@ export const PdfLayout = ({
           <View
             style={{
               position: "relative",
-              right: 15,
+              right: 35,
               flex: 1,
               flexDirection: "column",
               alignItems: "center",

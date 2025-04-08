@@ -8,7 +8,182 @@ import type {
 import { Formatter } from "config/helpers";
 import { DateAdapter } from "config/adapters";
 
+type MainRow = { mainRow: string[][] };
+
 export class PdfMapper {
+  private static portfolioAgeData(portfolioAge: PortfolioAge[]): MainRow[] {
+    const totals = {
+      salePrice: 0,
+      totalCharged: 0,
+      entryBalance: 0,
+      hipProcedure: 0,
+      fStraight: 0,
+      from0to30: 0,
+      from30to60: 0,
+      from60to90: 0,
+      moreThan90: 0,
+      totalExpired: 0,
+    };
+
+    const data = portfolioAge.map((item) => {
+      totals.salePrice += item.salePrice || 0;
+      totals.totalCharged += item.totalCharged || 0;
+      totals.entryBalance += item.entryBalance || 0;
+      totals.hipProcedure += item.hipProcedure || 0;
+      totals.fStraight += item.fStraight || 0;
+      totals.from0to30 += item.from0to30 || 0;
+      totals.from30to60 += item.from30to60 || 0;
+      totals.from60to90 += item.from60to90 || 0;
+      totals.moreThan90 += item.moreThan90 || 0;
+      totals.totalExpired += item.totalExpired || 0;
+
+      return {
+        mainRow: [
+          [
+            item.project,
+            item.contract,
+            item.location,
+            item.constructionStatus ?? "N/A",
+            `${Formatter.numberWithCommasAndDots(
+              item.progressPercentage.toFixed(2)
+            )}%`,
+            item.customer,
+            DateAdapter.format(item.saleDate, "dd/MM/yyyy"),
+            DateAdapter.format(item.deliveryDate, "dd/MM/yyyy"),
+            Formatter.numberWithCommasAndDots(item.salePrice.toFixed(2)),
+            Formatter.numberWithCommasAndDots(item.totalCharged.toFixed(2)),
+            `${Formatter.numberWithCommasAndDots(
+              item.chargedPercentage.toFixed(2)
+            )}%`,
+          ],
+          [
+            Formatter.numberWithCommasAndDots(item.entryBalance.toFixed(2)),
+            Formatter.numberWithCommasAndDots(item.hipProcedure.toFixed(2)),
+            Formatter.numberWithCommasAndDots(item.fStraight.toFixed(2)),
+          ],
+          [
+            Formatter.numberWithCommasAndDots(item.from0to30.toFixed(2)),
+            Formatter.numberWithCommasAndDots(item.from30to60.toFixed(2)),
+            Formatter.numberWithCommasAndDots(item.from60to90.toFixed(2)),
+            Formatter.numberWithCommasAndDots(item.moreThan90.toFixed(2)),
+          ],
+          [],
+          [Formatter.numberWithCommasAndDots(item.totalExpired.toFixed(2))],
+        ],
+      };
+    });
+
+    data.push({
+      mainRow: [
+        [
+          "",
+          "",
+          "Totales",
+          "Por",
+          "Proyecto",
+          "",
+          "",
+          "",
+          Formatter.numberWithCommasAndDots(totals.salePrice),
+          Formatter.numberWithCommasAndDots(totals.totalCharged),
+          "",
+        ],
+        [
+          totals.entryBalance,
+          totals.hipProcedure,
+          totals.fStraight,
+        ].map(
+          (value) =>
+            Formatter.numberWithCommasAndDots(value.toFixed(2)) ?? "N/A"
+        ),
+        [
+          totals.from0to30,
+          totals.from30to60,
+          totals.from60to90,
+          totals.moreThan90,
+        ].map(
+          (value) =>
+            Formatter.numberWithCommasAndDots(value.toFixed(2)) ?? "N/A"
+        ),
+        [Formatter.numberWithCommasAndDots(totals.totalExpired.toFixed(2))],
+      ],
+    });
+
+    const totalIndices = {
+      totalCharged: totals.totalCharged / totals.salePrice * 100,
+      entryBalance: totals.entryBalance / totals.salePrice * 100,
+      hipProcedure: totals.hipProcedure / totals.salePrice * 100,
+      fStraight: totals.fStraight / totals.salePrice * 100,
+      from0to30: totals.from0to30 / totals.totalExpired * 100,
+      from30to60: totals.from30to60 / totals.totalExpired * 100,
+      from60to90: totals.from60to90 / totals.totalExpired * 100,
+      moreThan90: totals.moreThan90 / totals.totalExpired * 100,
+    }
+
+    const totalExpiredIndice = totalIndices.from0to30 + totalIndices.from30to60 + totalIndices.from60to90 + totalIndices.moreThan90;
+
+    data.push({
+      mainRow: [
+        [
+          "",
+          "",
+          "",
+          "Índice",
+          "",
+          "",
+          "",
+          "",
+          "",
+          `${Formatter.numberWithCommasAndDots(
+            totalIndices.totalCharged.toFixed(2)
+          )}%`,
+          "",
+        ],
+        [
+          `${Formatter.numberWithCommasAndDots(
+            totalIndices.entryBalance.toFixed(2)
+          )}%`,
+          `${Formatter.numberWithCommasAndDots(
+            totalIndices.hipProcedure.toFixed(2)
+          )}%`,
+          `${Formatter.numberWithCommasAndDots(
+            totalIndices.fStraight.toFixed(2)
+          )}%`,
+        ],
+        [
+          `${Formatter.numberWithCommasAndDots(
+            totalIndices.from0to30.toFixed(2)
+          )}%`,
+          `${Formatter.numberWithCommasAndDots(
+            totalIndices.from30to60.toFixed(2)
+          )}%`,
+          `${Formatter.numberWithCommasAndDots(
+            totalIndices.from60to90.toFixed(2)
+          )}%`,
+          `${Formatter.numberWithCommasAndDots(
+            totalIndices.moreThan90.toFixed(2)
+          )}%`,
+        ],
+        [`${Formatter.numberWithCommasAndDots(totalExpiredIndice)}%`],
+      ],
+    });
+
+    const overdueDebt = totals.totalExpired / totals.entryBalance * 100;
+
+    data.push({
+      mainRow: [
+        ["", "", "", "", "", "", "", "", "", "", ""],
+        ["", "", ""],
+        ["Índice de", "morosidad", "deuda", "vencida"],
+        [`${Formatter.numberWithCommasAndDots(overdueDebt.toFixed(2))}%`],
+      ],
+    });
+
+
+
+    return data;
+  }
+
   static fromAccountStatusToPdfData(
     accountStatus: AccountStatus,
     customerName: string
@@ -365,103 +540,7 @@ export class PdfMapper {
     portfolioAge: PortfolioAge[],
     expiredDate: Date
   ): PortfolioAgePdfData {
-    const totals = {
-      totalSalePrice: 0,
-      totalCharged: 0,
-      totalEntryBalance: 0,
-      totalHipProcedure: 0,
-      totalFStraight: 0,
-      totalFrom0to30: 0,
-      totalFrom30to60: 0,
-      totalFrom60to90: 0,
-      totalMoreThan90: 0,
-      totalExpired: 0,
-    }
-
-    const portfolioAgeData = portfolioAge.map((item) => {
-      totals.totalSalePrice += item.salePrice || 0;
-      totals.totalCharged += item.totalCharged || 0;
-      totals.totalEntryBalance += item.entryBalance || 0;
-      totals.totalHipProcedure += item.hipProcedure || 0;
-      totals.totalFStraight += item.fStraight || 0;
-      totals.totalFrom0to30 += item.from0to30 || 0;
-      totals.totalFrom30to60 += item.from30to60 || 0;
-      totals.totalFrom60to90 += item.from60to90 || 0;
-      totals.totalMoreThan90 += item.moreThan90 || 0;
-      totals.totalExpired += item.totalExpired || 0;
-     
-      return {
-        mainRow: [
-          [
-            item.project,
-            item.contract,
-            item.location,
-            item.constructionStatus ?? "N/A",
-            `${Formatter.numberWithCommasAndDots(
-              item.progressPercentage.toFixed(2)
-            )}%`,
-            item.customer,
-            DateAdapter.format(item.saleDate, "dd/MM/yyyy"),
-            DateAdapter.format(item.deliveryDate, "dd/MM/yyyy"),
-            Formatter.numberWithCommasAndDots(item.salePrice.toFixed(2)),
-            Formatter.numberWithCommasAndDots(item.totalCharged.toFixed(2)),
-            `${Formatter.numberWithCommasAndDots(
-              item.chargedPercentage.toFixed(2)
-            )}%`,
-          ],
-          [
-            Formatter.numberWithCommasAndDots(item.entryBalance.toFixed(2)),
-            Formatter.numberWithCommasAndDots(item.hipProcedure.toFixed(2)),
-            Formatter.numberWithCommasAndDots(item.fStraight.toFixed(2)),
-          ],
-          [
-            Formatter.numberWithCommasAndDots(item.from0to30.toFixed(2)),
-            Formatter.numberWithCommasAndDots(item.from30to60.toFixed(2)),
-            Formatter.numberWithCommasAndDots(item.from60to90.toFixed(2)),
-            Formatter.numberWithCommasAndDots(item.moreThan90.toFixed(2)),
-          ],
-          [],
-          [Formatter.numberWithCommasAndDots(item.totalExpired.toFixed(2))],
-        ],
-      };
-    }) as { mainRow: (string)[][] }[];
-
-    portfolioAgeData.push({
-      mainRow: [
-        [
-          "",
-          "",
-          "Totales",
-          "Por",
-          "Proyecto",
-          "",
-          "",
-          "",
-          Formatter.numberWithCommasAndDots(totals.totalSalePrice),
-          Formatter.numberWithCommasAndDots(totals.totalCharged),
-          "",
-        ],
-        [
-          totals.totalEntryBalance,
-          totals.totalHipProcedure,
-          totals.totalFStraight,
-        ].map(
-          (value) =>
-            Formatter.numberWithCommasAndDots(value.toFixed(2)) ?? "N/A"
-        ),
-        [
-          totals.totalFrom0to30,
-          totals.totalFrom30to60,
-          totals.totalFrom60to90,
-          totals.totalMoreThan90,
-        ].map(
-          (value) =>
-            Formatter.numberWithCommasAndDots(value.toFixed(2)) ?? "N/A"
-        ),
-        [Formatter.numberWithCommasAndDots(totals.totalExpired.toFixed(2))],
-      ],
-    });
-
+    const portfolioAgeRows = PdfMapper.portfolioAgeData(portfolioAge);
 
     return {
       logo: "./logo.png",
@@ -492,7 +571,7 @@ export class PdfMapper {
         },
         {
           title: "Saldo",
-          subcolumns: ["C. Entrada","Hip Trámite", "F. Directo"],
+          subcolumns: ["C. Entrada", "Hip Trámite", "F. Directo"],
         },
         {
           title: "Vencidos (días)",
@@ -504,7 +583,7 @@ export class PdfMapper {
         },
       ],
       portfolioAgeRows: {
-        rows: portfolioAgeData,
+        rows: portfolioAgeRows,
       },
     };
   }
