@@ -309,15 +309,26 @@ export class PdfMapper {
     });
 
     const overdueDebt = (totals.totalExpired / totals.entryBalance) * 100;
+    const overdueDebtFrom31to60Days = (totals.from30to60 / totals.totalExpired) * 100;
 
-    data.push({
-      mainRow: [
-        ["", "", "", "", "", "", "", "", "", "", ""],
-        ["", "", ""],
-        ["Índice de", "morosidad", "deuda", "vencida"],
-        [`${Formatter.numberWithCommasAndDots(overdueDebt.toFixed(2))}%`],
-      ],
-    });
+    data.push(
+      {
+        mainRow: [
+          ["", "", "", "", "", "", "", "", "", "", ""],
+          ["", "", ""],
+          ["Índice de", "morosidad", "deuda", "vencida"],
+          [`${Formatter.numberWithCommasAndDots(overdueDebt.toFixed(2))}%`],
+        ],
+      },
+      {
+        mainRow: [
+          ["", "", "", "", "", "", "", "", "", "", ""],
+          ["", "", ""],
+          ["Resumen", "vencidos", "de 31 a 60", "días"],
+          [`${Formatter.numberWithCommasAndDots(overdueDebtFrom31to60Days.toFixed(2))}%`],
+        ],
+      }
+    );
 
     return data;
   }
