@@ -436,7 +436,7 @@ export class PdfMapper {
             ) ?? "N/A",
         },
         {
-          key: "Totales canc. por dcto.",
+          key: "Canc. por dcto.",
           value:
             Formatter.numberWithCommasAndDots(
               accountStatus?.contract.totalCancelDiscount!
@@ -457,7 +457,7 @@ export class PdfMapper {
             ) ?? "N/A",
         },
         {
-          key: "Docts. vencidos",
+          key: "Docs. vencidos",
           value:
             Formatter.numberWithCommasAndDots(
               accountStatus?.contract.expiredDocumentsValue!

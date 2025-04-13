@@ -11,6 +11,6 @@ export class FinancingMapper{
       dividendValue: response.valor_dividendos,
       expirationDate: response.fecha_vencimiento,
       charges: response.charges.map(ChargeMapper.fromResponseChargesToEntity),
-    }
+    };
   }
 }
