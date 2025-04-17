@@ -1,20 +1,24 @@
-# --- Etapa 1: Construir dependencias de desarrollo ---
-FROM node:20-alpine AS development-dependencies-env
+# --- Etapa 1: Construcción ---
+FROM node:20-alpine AS builder
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci
-
-# --- Etapa 2: Construir la aplicación ---
-FROM node:20-alpine AS build-env
-WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN pnpm install
 COPY . .
-COPY --from=development-dependencies-env /app/node_modules ./node_modules
-RUN npm run build  # Genera la carpeta /app/build
 
-# --- Etapa 3: Servir con Nginx ---
-FROM nginx:alpine AS production
-COPY --from=build-env /app/build /usr/share/nginx/html
-# Config para React Router
+# Inyecta la variable de entorno del backend
+ARG VITE_BACKEND_URL=https://reporteador-numa-service.netlify.app/.netlify/functions
+ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
+
+RUN pnpm run build
+
+# Verificación (opcional, para debug)
+RUN ls -la /app/build/client
+
+# --- Etapa 2: Producción ---
+FROM nginx:alpine
+# Copia desde la ubicación exacta del build
+COPY --from=builder /app/build/client /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
