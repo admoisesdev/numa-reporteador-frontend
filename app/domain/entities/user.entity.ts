@@ -1,6 +1,12 @@
-export interface User{
+export interface User {
   id: string;
-  name: string;
   email: string;
-  img: string | null;
+  fullName: string;
+  isActive: boolean;
+  roles: string[];
+}
+
+export interface Auth{
+  token: string;
+  user: User;
 }

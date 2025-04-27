@@ -1,18 +1,10 @@
 export interface AuthResponse {
-  token: string;
-  user: UserResponse;
-}
-
-export interface UserResponse {
-  email: string;
-  emailValidated: boolean;
   id: string;
-  name: string;
-  role: string[];
-  img: string | null;
+  email: string;
+  fullName: string;
+  isActive: boolean;
+  roles: string[];
+  token: string;
 }
 
-export interface ProfileResponse extends UserResponse {
-  createdAt: string;
-  updatedAt: string;
-}
+

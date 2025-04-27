@@ -15,6 +15,7 @@ interface Options {
 
 export class AxiosAdapter implements HttpAdapter {
   private axiosInstance: AxiosInstance;
+  interceptors: any;
 
   constructor(options: Options) {
     this.axiosInstance = axios.create({

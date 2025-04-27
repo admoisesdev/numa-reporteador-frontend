@@ -1,12 +1,20 @@
+import { AuthMapper } from "infrastructure/mappers";
+
 import type { HttpAdapter } from "config/adapters";
-import type { MessageResponse } from "infrastructure/interfaces";
+import type { Auth } from "domain/entities";
+import type { AuthResponse, } from "infrastructure/interfaces";
 
 
 export const registerUserUseCase = async (
   fetcher: HttpAdapter,
   body: Record<string, string>
-): Promise<MessageResponse> => {
-  const register = await fetcher.post<MessageResponse>("/auth/register", body);
+): Promise<Auth> => {
+  try {
+    const register = await fetcher.post<AuthResponse>("/auth/register", body);
 
-  return register;
+    return AuthMapper.fromAuthResponseToToken(register);
+  } catch (error) {
+    throw new Error("Registration failed. Please try again later.");
+    
+  }
 };
