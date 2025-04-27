@@ -5,3 +5,4 @@ export * from './customer.response';
 export * from './excel.response';
 export * from './financing.response';
 export * from './pdf.response';
+export * from './user.response';
