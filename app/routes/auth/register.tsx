@@ -1,8 +1,5 @@
-// import { useRegisterMutation } from "@/presentation/hooks";
-
+import { useAuthStore } from "presentation/store";
 import {
-  Alert,
-  AlertTitle,
   Button,
   Card,
   CardContent,
@@ -21,14 +18,17 @@ import {
 } from "presentation/components/ui";
 import { registerSchema } from "presentation/validations";
 
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { AlertCircle, Mail, MailCheck } from "lucide-react";
+import { Mail } from "lucide-react";
 
-export const Register = () => {
+const RegisterPage = () => {
+  const navigate = useNavigate();
+  const { register } = useAuthStore();
+
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -39,42 +39,31 @@ export const Register = () => {
     },
   });
 
-  // const registerMutation = useRegisterMutation();
+  const onSubmit = async (values: z.infer<typeof registerSchema>) => {
+    const wasSuccessfull = await register(
+      values.name,
+      values.email,
+      values.password
+    );
 
-  const onSubmit = (values: z.infer<typeof registerSchema>) => {
-    // registerMutation.mutate({
-    //   name: values.name,
-    //   email: values.email,
-    //   password: values.password,
-    // });
+    if (wasSuccessfull) {
+      navigate("/auth/login");
+      return;
+    }
   };
 
   return (
-    <Card className="lg:mx-2 lg:my-4">
+    <Card className="lg:m-4 border-gray-500 w-full">
       <CardHeader>
         <CardTitle className="font-bold text-center uppercase">
           Crea tu cuenta
         </CardTitle>
         <CardDescription className="text-center">
-          Crea tu cuenta y gestiona tus proyectos
+          Crea tu cuenta y gestiona tus reportes
         </CardDescription>
       </CardHeader>
 
       <CardContent className="grid gap-4">
-        {registerMutation.data && (
-          <Alert variant="success">
-            <MailCheck />
-            <AlertTitle>{registerMutation.data.message}</AlertTitle>
-          </Alert>
-        )}
-
-        {registerMutation.error && (
-          <Alert variant="destructive">
-            <AlertCircle />
-            <AlertTitle>{registerMutation.error.message}</AlertTitle>
-          </Alert>
-        )}
-
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -153,8 +142,8 @@ export const Register = () => {
               )}
             />
 
-            <Button type="submit" variant="secondary">
-              <Mail className="mr-2 h-4 w-4" /> Crear cuenta
+            <Button type="submit" className="bg-slate-700 text-white w-full" disabled>
+              Crear cuenta
             </Button>
           </form>
         </Form>
@@ -169,16 +158,9 @@ export const Register = () => {
         >
           ¿Ya tienes una cuenta? Inicia sesión
         </Link>
-        <Link
-          to="/olvide-password"
-          className={buttonVariants({
-            variant: "link",
-            className: "uppercase",
-          })}
-        >
-          Olvidé mis password
-        </Link>
       </CardFooter>
     </Card>
   );
 };
+
+export default RegisterPage;

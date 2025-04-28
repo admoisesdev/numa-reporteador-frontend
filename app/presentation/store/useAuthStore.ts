@@ -11,6 +11,8 @@ export interface AuthState {
   status: AuthStatus;
   token?: string;
   user?: User;
+  isLoading: boolean;
+  errorMsg: string | null;
 
   login: (email: string, password: string) => Promise<boolean>;
   register: (
@@ -20,7 +22,6 @@ export interface AuthState {
   ) => Promise<boolean>;
   checkStatus: () => Promise<void>;
   logout: () => Promise<void>;
-
   changeStatus: (token?: string, user?: User) => Promise<boolean>;
 }
 
@@ -28,6 +29,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   status: "checking",
   token: undefined,
   user: undefined,
+  errorMsg: null,
+  isLoading: false,
 
   changeStatus: async (token?: string, user?: User) => {
     if (!token || !user) {
@@ -45,10 +48,17 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     return true;
   },
   login: async (email: string, password: string) => {
+    set({ isLoading: true });
     const res = await UseCases.loginUserUseCase(apiFetcher, {
       email,
       password,
     });
+
+    if (!res) {
+      set({ isLoading: false });
+      return false;
+    }
+    set({ isLoading: false });
 
     return get().changeStatus(res?.token, res?.user);
   },

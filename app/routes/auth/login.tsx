@@ -1,7 +1,4 @@
-// import { useLoginMutation } from "@/presentation/hooks";
 import {
-  Alert,
-  AlertTitle,
   Button,
   Card,
   CardContent,
@@ -20,14 +17,17 @@ import {
 } from "presentation/components/ui";
 import { loginSchema } from "presentation/validations";
 
-import { Link } from "react-router";
+import { Link,useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { AlertCircle, LogIn } from "lucide-react";
+import { useAuthStore } from "presentation/store";
 
-export const Login = () => {
+const LoginPage = () => {
+  const { login } = useAuthStore();
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -36,31 +36,26 @@ export const Login = () => {
     },
   });
 
-  // const { loginMutation } = useLoginMutation();
-
-  const onSubmit = (values: z.infer<typeof loginSchema>) => {
-    // loginMutation.mutate(values);
+  const onSubmit = async (values: z.infer<typeof loginSchema>) => {
+    const wasSuccessfull = await login(values.email, values.password);
+    if (wasSuccessfull) {
+      navigate("/clientes");
+      return;
+    }
   };
 
   return (
-    <Card className="lg:mx-2 lg:my-4">
+    <Card className="lg:m-4 border-gray-500 w-full">
       <CardHeader>
         <CardTitle className="font-bold text-center uppercase">
           Inicia sesión
         </CardTitle>
         <CardDescription className="text-center">
-          Inicia sesión y gestiona tus proyectos
+          Inicia sesión y gestiona tus reportes
         </CardDescription>
       </CardHeader>
 
       <CardContent className="grid gap-4">
-        {loginMutation.error && (
-          <Alert variant="destructive">
-            <AlertCircle />
-            <AlertTitle>{loginMutation.error.message}</AlertTitle>
-          </Alert>
-        )}
-
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -75,7 +70,7 @@ export const Login = () => {
                     <Input type="email" placeholder="Tu email" {...field} />
                   </FormControl>
 
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -96,18 +91,18 @@ export const Login = () => {
                     />
                   </FormControl>
 
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
 
-            <Button variant="secondary">
-              <LogIn className="mr-2 h-4 w-4" /> Iniciar sesion
+            <Button className="bg-slate-700 text-white w-full">
+              Iniciar sesion
             </Button>
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex flex-col sm:flex-row px-0">
+      <CardFooter className="flex flex-col sm:flex-row justify-center px-0">
         <Link
           to="/registrar"
           className={buttonVariants({
@@ -117,16 +112,9 @@ export const Login = () => {
         >
           ¿No tienes una cuenta? Regístrate
         </Link>
-        <Link
-          to="/olvide-password"
-          className={buttonVariants({
-            variant: "link",
-            className: "uppercase",
-          })}
-        >
-          Olvidé mis password
-        </Link>
       </CardFooter>
     </Card>
   );
 };
+
+export default LoginPage;

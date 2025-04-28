@@ -1,6 +1,7 @@
 import { Link, Outlet, useLocation } from "react-router";
 
 import {
+  Button,
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
@@ -13,7 +14,7 @@ import { cn } from "presentation/lib/utils";
 
 const routes = [
   {
-    path: "/",
+    path: "/clientes",
     name: "Estado de cuenta",
   },
   {
@@ -91,6 +92,10 @@ const MainLayout = () => {
             )}
           </NavigationMenuList>
         </NavigationMenu>
+
+        <Button className="bg-slate-700 text-white ml-auto">
+          <Link to="/">Cerrar sesión</Link>
+        </Button>
       </section>
 
       <Outlet />
@@ -99,3 +104,4 @@ const MainLayout = () => {
 };
 
 export default MainLayout;
+
