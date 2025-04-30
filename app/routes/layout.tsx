@@ -1,5 +1,7 @@
-import { Link, Outlet, useLocation } from "react-router";
+import { useEffect } from "react";
+import { Link, Outlet, redirect, useLocation } from "react-router";
 
+import { useAuthStore } from "presentation/store";
 import {
   Button,
   NavigationMenu,
@@ -9,7 +11,10 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
+  Spinner,
 } from "presentation/components/ui";
+import { TypographyH4, TypographyP } from "presentation/components/shared";
+
 import { cn } from "presentation/lib/utils";
 
 const routes = [
@@ -38,10 +43,27 @@ const routes = [
 
 const MainLayout = () => {
   const { pathname } = useLocation();
+  const { status, checkStatus, user } = useAuthStore();
+
+  useEffect(() => {
+    checkStatus();
+  }, []);
+
+  if (status === "checking") {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Spinner className="text-slate-500" size="xxl" />
+      </div>
+    );
+  }
+
+  if (status === "unauthenticated") {
+    return redirect("/");
+  }
 
   return (
     <div className="container mx-auto p-3 ">
-      <section className="flex flex-col-reverse sm:flex-row items-center sm:gap-4">
+      <section className="flex flex-col lg:flex-row items-center sm:gap-4">
         <img src="/logo.png" alt="Logo" width={250} height={150} />
 
         <NavigationMenu>
@@ -93,9 +115,19 @@ const MainLayout = () => {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <Button className="bg-slate-700 text-white ml-auto">
-          <Link to="/">Cerrar sesión</Link>
-        </Button>
+        <section className="flex items-center gap-4 ml-auto">
+          <div className="flex flex-col xl:flex-row items-center gap-0 xl:gap-1">
+            <TypographyH4 className="text-slate-600 font-semibold">
+              Hola:
+            </TypographyH4>
+            <TypographyP className="text-slate-700">
+              {user?.fullName}
+            </TypographyP>
+          </div>
+          <Button className="bg-slate-700 text-white">
+            <Link to="/">Cerrar sesión</Link>
+          </Button>
+        </section>
       </section>
 
       <Outlet />
@@ -104,4 +136,3 @@ const MainLayout = () => {
 };
 
 export default MainLayout;
-

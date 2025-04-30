@@ -23,6 +23,20 @@ export class AxiosAdapter implements HttpAdapter {
       params: options.params,
       headers: options.headers,
     });
+
+    this.axiosInstance.interceptors.request.use(async (config) => {
+      if (config.headers?.Authorization) {
+        return config;
+      }
+
+      const token = localStorage.getItem("token");
+      
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+
+      return config;
+    });
   }
 
   private setAccessToken(token: string) {
@@ -35,13 +49,7 @@ export class AxiosAdapter implements HttpAdapter {
     });
   }
 
-  async get<T>(
-    url: string,
-    options?: AxiosRequestConfig,
-    token?: string
-  ): Promise<T> {
-    if (token) this.setAccessToken(token);
-
+  async get<T>(url: string, options?: AxiosRequestConfig): Promise<T> {
     try {
       const { data } = await this.axiosInstance.get<T>(url, options);
 
@@ -58,11 +66,8 @@ export class AxiosAdapter implements HttpAdapter {
   async post<T>(
     url: string,
     body: Record<string, unknown>,
-    options?: AxiosRequestConfig,
-    token?: string
+    options?: AxiosRequestConfig
   ): Promise<T> {
-    if (token) this.setAccessToken(token);
-
     try {
       const { data } = await this.axiosInstance.post<T>(url, body, options);
       return data;
@@ -78,11 +83,8 @@ export class AxiosAdapter implements HttpAdapter {
   async put<T>(
     url: string,
     body: Record<string, unknown>,
-    options?: AxiosRequestConfig,
-    token?: string
+    options?: AxiosRequestConfig
   ): Promise<T> {
-    if (token) this.setAccessToken(token);
-
     try {
       const { data } = await this.axiosInstance.put<T>(url, body, options);
       return data;
@@ -95,13 +97,7 @@ export class AxiosAdapter implements HttpAdapter {
     }
   }
 
-  async delete<T>(
-    url: string,
-    options?: AxiosRequestConfig,
-    token?: string
-  ): Promise<T> {
-    if (token) this.setAccessToken(token);
-
+  async delete<T>(url: string, options?: AxiosRequestConfig): Promise<T> {
     try {
       const { data } = await this.axiosInstance.delete<T>(url, options);
       return data;

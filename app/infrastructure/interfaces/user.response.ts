@@ -1,8 +1,9 @@
 export interface AuthResponse {
   id: string;
+  activo: boolean;
+  apellido: string;
   email: string;
-  fullName: string;
-  isActive: boolean;
+  nombre: string;
   roles: string[];
   token: string;
 }

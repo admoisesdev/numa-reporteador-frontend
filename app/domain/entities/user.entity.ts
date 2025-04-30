@@ -10,3 +10,4 @@ export interface Auth{
   token: string;
   user: User;
 }
+
