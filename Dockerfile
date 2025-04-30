@@ -7,7 +7,7 @@ RUN pnpm install
 COPY . .
 
 # Inyecta la variable de entorno del backend
-ARG VITE_BACKEND_URL
+ARG VITE_BACKEND_URL=http://34.71.107.222:3000/api
 ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
 
 RUN pnpm run build
