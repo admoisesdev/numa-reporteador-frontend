@@ -19,7 +19,8 @@ import { cn } from "presentation/lib/utils";
 
 const routes = [
   {
-    path: "/clientes",
+    // path: "/clientes",
+    path: "/",
     name: "Estado de cuenta",
   },
   {
@@ -45,7 +46,7 @@ const MainLayout = () => {
   const { pathname } = useLocation();
   const { status, checkStatus, user } = useAuthStore();
 
-  useEffect(() => {
+ /*  useEffect(() => {
     checkStatus();
   }, []);
 
@@ -58,8 +59,8 @@ const MainLayout = () => {
   }
 
   if (status === "unauthenticated") {
-    return redirect("/");
-  }
+    return redirect("/clientes");
+  } */
 
   return (
     <div className="container mx-auto p-3 ">
@@ -115,7 +116,7 @@ const MainLayout = () => {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <section className="flex items-center gap-4 ml-auto">
+        {/* <section className="flex items-center gap-4 ml-auto">
           <div className="flex flex-col xl:flex-row items-center gap-0 xl:gap-1">
             <TypographyH4 className="text-slate-600 font-semibold">
               Hola:
@@ -127,7 +128,7 @@ const MainLayout = () => {
           <Button className="bg-slate-700 text-white">
             <Link to="/">Cerrar sesión</Link>
           </Button>
-        </section>
+        </section> */}
       </section>
 
       <Outlet />
