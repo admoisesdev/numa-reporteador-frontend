@@ -1,11 +1,6 @@
-import axios, {
-  AxiosError,
-  type AxiosInstance,
-  type AxiosRequestConfig,
-} from "axios";
+import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
 
-import { HttpAdapter,HttpError } from "./";
-import type { MessageResponse } from "infrastructure/interfaces";
+import { HttpAdapter, HttpError } from "./";
 
 interface Options {
   baseURL: string;
@@ -42,14 +37,15 @@ export class AxiosAdapter implements HttpAdapter {
     try {
       const { data } = await this.axiosInstance.get<T>(url, options);
       return data;
-    } catch (error) {
-      const serverError = error as AxiosError;
-      const errorMessage = serverError.response?.data as MessageResponse;
-      if (errorMessage?.statusCode === 401) {
-        throw new Error("Unauthorized");
-      }
-      // console.log(errorMessage);
-      throw new Error(serverError.message);
+    } catch (error: any) {
+      const errorData = HttpError.getErrorSever(error);
+      if (error.response) throw new HttpError(errorData);
+
+      throw new HttpError({
+        message: error.message,
+        error: "Unknown error",
+        statusCode: 500,
+      });
     }
   }
 
@@ -61,18 +57,15 @@ export class AxiosAdapter implements HttpAdapter {
     try {
       const { data } = await this.axiosInstance.post<T>(url, body, options);
       return data;
-    } catch (error) {
-      const serverError = error as AxiosError;
-      const errorMessage = serverError.response?.data as MessageResponse;
-      // console.log(errorMessage);
+    } catch (error: any) {
+      const errorData = HttpError.getErrorSever(error);
+      if (error.response) throw new HttpError(errorData);
 
-      if (serverError.response) {
-        throw new HttpError(
-          errorMessage?.message || "Unknown error",
-          errorMessage.statusCode
-        );
-      }
-      throw new HttpError(serverError.message, 500);
+      throw new HttpError({
+        message: error.message,
+        error: "Unknown error",
+        statusCode: 500,
+      });
     }
   }
 
@@ -84,18 +77,15 @@ export class AxiosAdapter implements HttpAdapter {
     try {
       const { data } = await this.axiosInstance.put<T>(url, body, options);
       return data;
-    } catch (error) {
-     const serverError = error as AxiosError;
-     const errorMessage = serverError.response?.data as MessageResponse;
-     // console.log(errorMessage);
+    } catch (error: any) {
+      const errorData = HttpError.getErrorSever(error);
+      if (error.response) throw new HttpError(errorData);
 
-     if (serverError.response) {
-       throw new HttpError(
-         errorMessage?.message || "Unknown error",
-         errorMessage.statusCode
-       );
-     }
-     throw new HttpError(serverError.message, 500);
+      throw new HttpError({
+        message: error.message,
+        error: "Unknown error",
+        statusCode: 500,
+      });
     }
   }
 
@@ -103,18 +93,15 @@ export class AxiosAdapter implements HttpAdapter {
     try {
       const { data } = await this.axiosInstance.delete<T>(url, options);
       return data;
-    } catch (error) {
-      const serverError = error as AxiosError;
-      const errorMessage = serverError.response?.data as MessageResponse;
-      // console.log(errorMessage);
+    } catch (error: any) {
+      const errorData = HttpError.getErrorSever(error);
+      if (error.response) throw new HttpError(errorData);
 
-      if (serverError.response) {
-        throw new HttpError(
-          errorMessage?.message || "Unknown error",
-          errorMessage.statusCode
-        );
-      }
-      throw new HttpError(serverError.message, 500);
+      throw new HttpError({
+        message: error.message,
+        error: "Unknown error",
+        statusCode: 500,
+      });
     }
   }
 }

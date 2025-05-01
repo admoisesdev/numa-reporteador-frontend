@@ -4,7 +4,7 @@ import { apiFetcher } from "config/adapters";
 import * as UseCases from "domain/use-cases/auth";
 
 import type { User } from "domain/entities";
-import { redirect, useNavigate } from "react-router";
+import type { MsgResponse } from "infrastructure/interfaces";
 
 export type AuthStatus = "authenticated" | "unauthenticated" | "checking";
 
@@ -12,8 +12,7 @@ export interface AuthState {
   status: AuthStatus;
   token?: string;
   user?: User;
-  isLoading: boolean;
-  errorMsg: string | null;
+  error: MsgResponse | null;
 
   login: (email: string, password: string) => Promise<boolean>;
   register: (
@@ -30,8 +29,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   status: "checking",
   token: undefined,
   user: undefined,
-  errorMsg: null,
-  isLoading: false,
+  error: null,
 
   changeStatus: async (token?: string, user?: User) => {
     if (!token || !user) {
@@ -49,14 +47,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     return true;
   },
   login: async (email: string, password: string) => {
-    set({ isLoading: true });
     const res = await UseCases.loginUserUseCase(apiFetcher, {
       email,
       password,
     });
 
-  
-    set({ isLoading: false });
+    if ("statusCode" in res) {
+      set({ error: res });
+      return false;
+    }
 
     return get().changeStatus(res?.token, res?.user);
   },
@@ -67,10 +66,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       password,
     });
 
+    if ("statusCode" in res) {
+      set({ error: res });
+      return false;
+    }
+
     return get().changeStatus(res?.token, res?.user);
   },
   checkStatus: async () => {
     const res = await UseCases.checkUserTokenUseCase(apiFetcher);
+
+    if ("statusCode" in res) {
+      set({ error: res });
+      return;
+    }
 
     get().changeStatus(res?.token, res?.user);
   },

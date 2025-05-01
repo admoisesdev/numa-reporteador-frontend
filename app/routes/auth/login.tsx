@@ -25,7 +25,7 @@ import { z } from "zod";
 import { useAuthStore } from "presentation/store";
 
 const LoginPage = () => {
-  const { login } = useAuthStore();
+  const { login,error } = useAuthStore();
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof loginSchema>>({
