@@ -39,16 +39,6 @@ export class AxiosAdapter implements HttpAdapter {
     });
   }
 
-  private setAccessToken(token: string) {
-    this.axiosInstance.interceptors.request.use(async (config) => {
-      if (config.headers?.Authorization) {
-        return config;
-      }
-      config.headers.Authorization = `Bearer ${token}`;
-      return config;
-    });
-  }
-
   async get<T>(url: string, options?: AxiosRequestConfig): Promise<T> {
     try {
       const { data } = await this.axiosInstance.get<T>(url, options);
