@@ -4,14 +4,14 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "presentation/lib/utils";
 
 const alertVariants = cva(
-  "flex items-center gap-2 w-full border p-2 shadow-sm border-l-4",
+  "flex flex-col gap-2 w-full border p-2 px-3 shadow-sm border-l-4 rounded-lg",
   {
     variants: {
       variant: {
         default: "bg-background text-foreground border-l-border-l-destructive",
-        destructive:
-          "dark:border-destructive [&>svg]:text-destructive border-l-destructive",
-        success: "[&>svg]:text-green-700 border-l-green-700",
+        destructive: "dark:border-red-700 [&>svg]:text-red-700 border-red-700",
+        success:
+          "dark:border-emerald-700 [&>svg]:text-emerald-700 border-emerald-700",
       },
     },
     defaultVariants: {

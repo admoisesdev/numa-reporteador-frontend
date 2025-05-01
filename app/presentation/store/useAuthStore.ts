@@ -12,28 +12,30 @@ export interface AuthState {
   status: AuthStatus;
   token?: string;
   user?: User;
+  isLoading: boolean;
+  isRegister: boolean;
   error: MsgResponse | null;
 
   login: (email: string, password: string) => Promise<boolean>;
-  register: (
-    fullName: string,
-    email: string,
-    password: string
-  ) => Promise<boolean>;
+  register: (registerBody: UseCases.RegisterBody) => Promise<boolean>;
   checkStatus: () => Promise<void>;
   logout: () => void;
   changeStatus: (token?: string, user?: User) => Promise<boolean>;
+  clearError: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
   status: "checking",
   token: undefined,
   user: undefined,
+  isRegister: false,
+  isLoading: false,
   error: null,
 
   changeStatus: async (token?: string, user?: User) => {
     if (!token || !user) {
       set({ status: "unauthenticated", token: undefined, user: undefined });
+      get().clearError();
 
       get().logout();
 
@@ -57,19 +59,32 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return false;
     }
 
+    get().clearError();
+
     return get().changeStatus(res?.token, res?.user);
   },
-  register: async (fullName: string, email: string, password: string) => {
+  register: async (registerBody: UseCases.RegisterBody) => {
+    set({ isLoading: true });
+    set({ isRegister: true });
+
+    const { name, lastName, email, password } = registerBody;
+
     const res = await UseCases.registerUserUseCase(apiFetcher, {
-      fullName,
+      name,
+      lastName,
       email,
       password,
     });
 
+    set({ isLoading: false });
+    
     if ("statusCode" in res) {
       set({ error: res });
       return false;
     }
+    
+    get().clearError();
+
 
     return get().changeStatus(res?.token, res?.user);
   },
@@ -81,11 +96,17 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return;
     }
 
+    get().clearError();
+
     get().changeStatus(res?.token, res?.user);
   },
   logout: () => {
     localStorage.removeItem("token");
 
     set({ status: "unauthenticated", token: undefined, user: undefined });
+    get().clearError();
+  },
+  clearError: () => {
+    set({ error: null });
   },
 }));

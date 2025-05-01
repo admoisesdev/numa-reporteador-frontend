@@ -1,6 +1,7 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
 
-import { HttpAdapter, HttpError } from "./";
+import { HttpAdapter } from "./";
+import { HttpError } from "config/helpers";
 
 interface Options {
   baseURL: string;
@@ -51,7 +52,7 @@ export class AxiosAdapter implements HttpAdapter {
 
   async post<T>(
     url: string,
-    body: Record<string, unknown>,
+    body: Record<string, any>,
     options?: AxiosRequestConfig
   ): Promise<T> {
     try {
@@ -71,7 +72,7 @@ export class AxiosAdapter implements HttpAdapter {
 
   async put<T>(
     url: string,
-    body: Record<string, unknown>,
+    body: Record<string, any>,
     options?: AxiosRequestConfig
   ): Promise<T> {
     try {

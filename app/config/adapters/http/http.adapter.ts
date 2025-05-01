@@ -5,13 +5,13 @@ export abstract class HttpAdapter {
 
   abstract post<T>(
     url: string,
-    body: Record<string, unknown>,
+    body: Record<string, any>,
     options?: AxiosRequestConfig
   ): Promise<T>;
 
   abstract put<T>(
     url: string,
-    body: Record<string, unknown>,
+    body: Record<string, any>,
     options?: AxiosRequestConfig
   ): Promise<T>;
 

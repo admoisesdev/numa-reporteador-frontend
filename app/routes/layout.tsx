@@ -13,7 +13,7 @@ import {
   navigationMenuTriggerStyle,
   Spinner,
 } from "presentation/components/ui";
-import { TypographyH4, TypographyP } from "presentation/components/shared";
+import { TypographyP } from "presentation/components/shared";
 
 import { cn } from "presentation/lib/utils";
 
@@ -117,10 +117,7 @@ const MainLayout = () => {
 
         <section className="flex items-center gap-4 ml-auto">
           <div className="flex flex-col xl:flex-row items-center gap-0 xl:gap-1">
-            <TypographyH4 className="text-slate-600 font-semibold">
-              Hola:
-            </TypographyH4>
-            <TypographyP className="text-slate-700">
+            <TypographyP className="text-slate-700 font-semibold text-md">
               {user?.fullName}
             </TypographyP>
           </div>

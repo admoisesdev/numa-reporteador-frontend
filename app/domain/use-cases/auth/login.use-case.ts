@@ -1,6 +1,6 @@
 import { AuthMapper } from "infrastructure/mappers";
-import { HttpError } from "config/adapters/http";
 
+import { HttpError } from "config/helpers";
 import type { HttpAdapter } from "config/adapters";
 import type { AuthResponse, MsgResponse } from "infrastructure/interfaces";
 import type { Auth } from "domain/entities";

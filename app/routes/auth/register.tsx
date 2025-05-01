@@ -1,5 +1,9 @@
+import { useEffect } from "react";
 import { useAuthStore } from "presentation/store";
 import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
   Button,
   Card,
   CardContent,
@@ -14,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  Spinner,
   buttonVariants,
 } from "presentation/components/ui";
 import { registerSchema } from "presentation/validations";
@@ -22,29 +27,35 @@ import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
-import { Mail } from "lucide-react";
+import { AlertCircle, CircleCheck } from "lucide-react";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const { register } = useAuthStore();
+  const { register,clearError, error, isRegister, isLoading } = useAuthStore();
+  console.log({ error, isRegister, isLoading });
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
+      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
     },
   });
 
+  useEffect(() => {
+    clearError();
+  }, []);
+
   const onSubmit = async (values: z.infer<typeof registerSchema>) => {
-    const wasSuccessfull = await register(
-      values.name,
-      values.email,
-      values.password
-    );
+    const wasSuccessfull = await register({
+      name: values.name,
+      lastName: values.lastName,
+      email: values.email,
+      password: values.password,
+    });
 
     if (wasSuccessfull) {
       navigate("/auth/login");
@@ -64,6 +75,34 @@ const RegisterPage = () => {
       </CardHeader>
 
       <CardContent className="grid gap-4">
+        {error && (
+          <Alert variant="destructive">
+            <section className="flex items-center gap-1">
+              <AlertCircle className="h-5 w-5 text-red-700" />
+              <AlertTitle className="text-red-700">
+                Error al registrar usuario
+              </AlertTitle>
+            </section>
+            <AlertDescription className="text-red-700">
+              {error?.message}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {isRegister && (
+          <Alert variant="success">
+            <section className="flex items-center gap-1">
+              <CircleCheck className="h-5 w-5 text-emerald-700" />
+              <AlertTitle className="text-emerald-700">
+                Usuario registrado correctamente.
+              </AlertTitle>
+            </section>
+            <AlertDescription className="text-emerald-700">
+              Inicia sesión para poder acceder a tu cuenta.
+            </AlertDescription>
+          </Alert>
+        )}
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -78,7 +117,24 @@ const RegisterPage = () => {
                     <Input type="text" placeholder="Tu nombre" {...field} />
                   </FormControl>
 
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem className="w-full space-y-1">
+                  <FormLabel className="uppercase font-bold text-gray-600">
+                    Apellido
+                  </FormLabel>
+                  <FormControl>
+                    <Input type="text" placeholder="Tu Apellido" {...field} />
+                  </FormControl>
+
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -95,7 +151,7 @@ const RegisterPage = () => {
                     <Input type="email" placeholder="Tu email" {...field} />
                   </FormControl>
 
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -106,7 +162,7 @@ const RegisterPage = () => {
               render={({ field }) => (
                 <FormItem className="w-full space-y-1">
                   <FormLabel className="uppercase font-bold text-gray-600">
-                    Password
+                    Contraseña
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -116,7 +172,7 @@ const RegisterPage = () => {
                     />
                   </FormControl>
 
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -127,7 +183,7 @@ const RegisterPage = () => {
               render={({ field }) => (
                 <FormItem className="w-full space-y-1">
                   <FormLabel className="uppercase font-bold text-gray-600">
-                    Repetir Password
+                    Repetir Contraseña
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -137,12 +193,21 @@ const RegisterPage = () => {
                     />
                   </FormControl>
 
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
 
-            <Button type="submit" className="bg-slate-700 text-white w-full" disabled>
+            <Button
+              type="submit"
+              className="bg-slate-700 text-white w-full"
+              disabled={isLoading}
+            >
+              <Spinner
+                size="small"
+                show={isLoading}
+                className="text-slate-300"
+              />
               Crear cuenta
             </Button>
           </form>

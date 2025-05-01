@@ -1,4 +1,9 @@
+import {useEffect} from "react";
+import { useAuthStore } from "presentation/store";
 import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
   Button,
   Card,
   CardContent,
@@ -17,16 +22,15 @@ import {
 } from "presentation/components/ui";
 import { loginSchema } from "presentation/validations";
 
-import { Link,useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
-import { useAuthStore } from "presentation/store";
+import { AlertCircle } from "lucide-react";
 
 const LoginPage = () => {
-  const { login,error } = useAuthStore();
   const navigate = useNavigate();
+  const { login, error,clearError } = useAuthStore();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -35,6 +39,10 @@ const LoginPage = () => {
       password: "",
     },
   });
+
+  useEffect(() => {
+    clearError();
+  }, []);
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     const wasSuccessfull = await login(values.email, values.password);
@@ -56,6 +64,17 @@ const LoginPage = () => {
       </CardHeader>
 
       <CardContent className="grid gap-4">
+        {error && (
+          <Alert variant="destructive">
+            <section className="flex items-center gap-1">
+              <AlertCircle className="h-5 w-5 text-red-700" />
+              <AlertTitle className="text-red-700">Error al iniciar sesión</AlertTitle>
+            </section>
+            <AlertDescription className="text-red-700">
+              {error?.message}
+            </AlertDescription>
+          </Alert>
+        )}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -81,7 +100,7 @@ const LoginPage = () => {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel className="uppercase font-bold text-gray-600">
-                    Password
+                    Contraseña
                   </FormLabel>
                   <FormControl>
                     <Input
