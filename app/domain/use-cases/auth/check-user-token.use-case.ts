@@ -7,9 +7,15 @@ import type { AuthResponse } from "infrastructure/interfaces";
 export const checkUserTokenUseCase = async (
   fetcher: HttpAdapter
 ): Promise<Auth> => {
-  const checkStatus = await fetcher.get<AuthResponse>(
-    `/auth/ckeck-auth-status`
-  );
+  try {
+    const checkStatus = await fetcher.get<AuthResponse>(
+      `/auth/ckeck-auth-status`
+    );
 
-  return AuthMapper.fromAuthResponseToToken(checkStatus);
+    return AuthMapper.fromAuthResponseToToken(checkStatus);
+  } catch (error) {
+    return {
+      token: "",
+    };
+  }
 };

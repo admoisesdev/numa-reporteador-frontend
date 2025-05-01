@@ -8,6 +8,6 @@ export interface User {
 
 export interface Auth{
   token: string;
-  user: User;
+  user?: User;
 }
 

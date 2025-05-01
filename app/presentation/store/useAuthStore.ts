@@ -4,6 +4,7 @@ import { apiFetcher } from "config/adapters";
 import * as UseCases from "domain/use-cases/auth";
 
 import type { User } from "domain/entities";
+import { redirect, useNavigate } from "react-router";
 
 export type AuthStatus = "authenticated" | "unauthenticated" | "checking";
 
@@ -54,10 +55,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       password,
     });
 
-    if (!res) {
-      set({ isLoading: false });
-      return false;
-    }
+  
     set({ isLoading: false });
 
     return get().changeStatus(res?.token, res?.user);

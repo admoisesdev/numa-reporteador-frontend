@@ -4,7 +4,7 @@ import axios, {
   type AxiosRequestConfig,
 } from "axios";
 
-import { HttpAdapter } from "./http.adapter";
+import { HttpAdapter,HttpError } from "./";
 import type { MessageResponse } from "infrastructure/interfaces";
 
 interface Options {
@@ -15,7 +15,6 @@ interface Options {
 
 export class AxiosAdapter implements HttpAdapter {
   private axiosInstance: AxiosInstance;
-  interceptors: any;
 
   constructor(options: Options) {
     this.axiosInstance = axios.create({
@@ -30,7 +29,7 @@ export class AxiosAdapter implements HttpAdapter {
       }
 
       const token = localStorage.getItem("token");
-      
+
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -42,14 +41,15 @@ export class AxiosAdapter implements HttpAdapter {
   async get<T>(url: string, options?: AxiosRequestConfig): Promise<T> {
     try {
       const { data } = await this.axiosInstance.get<T>(url, options);
-
       return data;
     } catch (error) {
       const serverError = error as AxiosError;
       const errorMessage = serverError.response?.data as MessageResponse;
-      console.log(errorMessage);
-
-      throw new Error(errorMessage.message);
+      if (errorMessage?.statusCode === 401) {
+        throw new Error("Unauthorized");
+      }
+      // console.log(errorMessage);
+      throw new Error(serverError.message);
     }
   }
 
@@ -64,9 +64,15 @@ export class AxiosAdapter implements HttpAdapter {
     } catch (error) {
       const serverError = error as AxiosError;
       const errorMessage = serverError.response?.data as MessageResponse;
-      console.log(errorMessage);
+      // console.log(errorMessage);
 
-      throw new Error(errorMessage.message);
+      if (serverError.response) {
+        throw new HttpError(
+          errorMessage?.message || "Unknown error",
+          errorMessage.statusCode
+        );
+      }
+      throw new HttpError(serverError.message, 500);
     }
   }
 
@@ -79,11 +85,17 @@ export class AxiosAdapter implements HttpAdapter {
       const { data } = await this.axiosInstance.put<T>(url, body, options);
       return data;
     } catch (error) {
-      const serverError = error as AxiosError;
-      const errorMessage = serverError.response?.data as MessageResponse;
-      console.log(errorMessage);
+     const serverError = error as AxiosError;
+     const errorMessage = serverError.response?.data as MessageResponse;
+     // console.log(errorMessage);
 
-      throw new Error(errorMessage.message);
+     if (serverError.response) {
+       throw new HttpError(
+         errorMessage?.message || "Unknown error",
+         errorMessage.statusCode
+       );
+     }
+     throw new HttpError(serverError.message, 500);
     }
   }
 
@@ -94,9 +106,15 @@ export class AxiosAdapter implements HttpAdapter {
     } catch (error) {
       const serverError = error as AxiosError;
       const errorMessage = serverError.response?.data as MessageResponse;
-      console.log(errorMessage);
+      // console.log(errorMessage);
 
-      throw new Error(errorMessage.message);
+      if (serverError.response) {
+        throw new HttpError(
+          errorMessage?.message || "Unknown error",
+          errorMessage.statusCode
+        );
+      }
+      throw new HttpError(serverError.message, 500);
     }
   }
 }
