@@ -25,17 +25,16 @@ FROM nginx:alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copia solo los archivos built
-COPY --from=builder /app/build/client /usr/share/nginx/html
+COPY --from=builder --chown=nginx:nginx /app/build/client /usr/share/nginx/html
 
-# Configuración de seguridad y performance
-RUN \
-    # Elimina la página por defecto
-    rm -rf /usr/share/nginx/html/*.html && \
-    # Habilita compresión gzip
-    echo "gzip on;" >> /etc/nginx/conf.d/default.conf && \
-    echo "gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;" >> /etc/nginx/conf.d/default.conf && \
-    # Configura cache para assets estáticos
-    sed -i '/location \/ {/a \    expires 1y;\n    add_header Cache-Control "public";' /etc/nginx/conf.d/default.conf
+# Asegura que Nginx tenga permisos de escritura para logs
+RUN mkdir -p /var/log/nginx && \
+    chown -R nginx:nginx /var/log/nginx && \
+    chmod -R 755 /var/log/nginx
+
+# Salud del contenedor
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD curl -f http://localhost/ || exit 1
 
 EXPOSE 80
 
