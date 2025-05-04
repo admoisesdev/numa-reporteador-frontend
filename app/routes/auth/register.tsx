@@ -32,7 +32,6 @@ import { AlertCircle, CircleCheck } from "lucide-react";
 const RegisterPage = () => {
   const navigate = useNavigate();
   const { register,clearError, error, isRegister, isLoading } = useAuthStore();
-  console.log({ error, isRegister, isLoading });
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
