@@ -49,7 +49,7 @@ const MainLayout = () => {
     checkStatus();
   }, []);
 
- /*  if (status === "checking") {
+  if (status === "checking") {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Spinner className="text-slate-500" size="xxl" />
@@ -59,7 +59,7 @@ const MainLayout = () => {
 
   if (status === "unauthenticated") {
     return <Navigate to="/" replace />;
-  } */
+  }
 
   return (
     <div className="container mx-auto p-3 ">

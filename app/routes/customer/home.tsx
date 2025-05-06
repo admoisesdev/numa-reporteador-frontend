@@ -21,7 +21,7 @@ export default function CustomerPage() {
     <DataTable
       columns={customerColumns}
       data={queryCustomers?.data ?? []}
-      isLoading={!queryCustomers.isLoading}
+      isLoading={queryCustomers.isLoading}
       noDataMessage="No hay clientes"
       filterColumns={CustomerFilters}
       canHideColumns

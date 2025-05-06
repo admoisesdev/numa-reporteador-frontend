@@ -11,3 +11,7 @@ export interface Auth{
   user?: User;
 }
 
+export interface UserCompany {
+  
+}
+
