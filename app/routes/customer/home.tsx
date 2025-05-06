@@ -1,6 +1,7 @@
 import type { Route } from "./+types/home";
 
 import { useCustomers } from "presentation/hooks/customer";
+import { CustomerFilters } from "presentation/components/customer";
 import { DataTable } from "presentation/components/shared";
 
 import { customerColumns } from "./customer-columns";
@@ -20,10 +21,10 @@ export default function CustomerPage() {
     <DataTable
       columns={customerColumns}
       data={queryCustomers?.data ?? []}
-      isLoading={queryCustomers.isLoading}
+      isLoading={!queryCustomers.isLoading}
       noDataMessage="No hay clientes"
+      filterColumns={CustomerFilters}
       canHideColumns
-      canFilterColumns
       canPaginate
     />
   );

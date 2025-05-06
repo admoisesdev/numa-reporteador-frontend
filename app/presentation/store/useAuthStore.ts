@@ -21,6 +21,8 @@ export interface AuthState {
   checkStatus: () => Promise<void>;
   logout: () => void;
   changeStatus: (token?: string, user?: User) => Promise<boolean>;
+  hasRole: (role: string) => boolean;
+  hasAnyRole: (roles: string[]) => boolean;
   clearError: () => void;
 }
 
@@ -77,14 +79,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     });
 
     set({ isLoading: false });
-    
+
     if ("statusCode" in res) {
       set({ error: res });
       return false;
     }
-    
-    get().clearError();
 
+    get().clearError();
 
     return get().changeStatus(res?.token, res?.user);
   },
@@ -105,6 +106,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     set({ status: "unauthenticated", token: undefined, user: undefined });
     get().clearError();
+  },
+  hasRole: (role: string): boolean => {
+    const user = get().user;
+    return user?.roles?.includes(role) || false;
+  },
+
+  hasAnyRole: (roles: string[]): boolean => {
+    const user = get().user;
+    if (!user?.roles) return false;
+    return roles.some((role) => user.roles.includes(role));
   },
   clearError: () => {
     set({ error: null });

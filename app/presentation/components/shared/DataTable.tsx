@@ -6,7 +6,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  Input,
   Skeleton,
   Table,
   TableBody,
@@ -30,11 +29,17 @@ import type {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
+  Table as TableResponse,
   VisibilityState,
 } from "@tanstack/react-table";
 
 import { Eye } from "lucide-react";
 import { cn } from "presentation/lib/utils";
+
+export interface FiltersProps {
+  table: TableResponse<any>;
+}
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -44,8 +49,8 @@ interface DataTableProps<TData, TValue> {
   noDataMessage?: string;
   rowsPerPageOptions?: number[];
   canHideColumns?: boolean;
-  canFilterColumns?: boolean;
   canPaginate?: boolean;
+  filterColumns?: ({ table }: FiltersProps) => React.ReactNode;
   classNameTableHeader?: string;
 }
 
@@ -57,8 +62,8 @@ export function DataTable<TData, TValue>({
   noDataMessage = "No hay datos para mostrar",
   rowsPerPageOptions = [5, 10, 15, 20, 30],
   canHideColumns = false,
-  canFilterColumns = false,
   canPaginate = false,
+  filterColumns: FilterColumns,
   classNameTableHeader = "bg-slate-800 border-slate-800",
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -89,49 +94,12 @@ export function DataTable<TData, TValue>({
         className={cn(
           "flex flex-col-reverse md:flex-row justify-between items-start gap-2",
           {
-            "py-4": canFilterColumns || canHideColumns,
+            "py-4": FilterColumns || canHideColumns,
           }
         )}
       >
-        {canFilterColumns && (
-          <div className="flex flex-wrap sm:flex-nowrap flex-row items-center gap-3 lg:w-3/5">
-            <Input
-              placeholder="Filtrar por identificación"
-              value={
-                (table
-                  .getColumn("identificacion")
-                  ?.getFilterValue() as string) ?? ""
-              }
-              onChange={(event) =>
-                table
-                  .getColumn("identificacion")
-                  ?.setFilterValue(event.target.value)
-              }
-              className="max-w-xs"
-            />
-
-            <Input
-              placeholder="Filtrar por nombre"
-              value={
-                (table.getColumn("nombre")?.getFilterValue() as string) ?? ""
-              }
-              onChange={(event) =>
-                table.getColumn("nombre")?.setFilterValue(event.target.value)
-              }
-              className="max-w-xs"
-            />
-
-            <Input
-              placeholder="Filtrar por email"
-              value={
-                (table.getColumn("correo")?.getFilterValue() as string) ?? ""
-              }
-              onChange={(event) =>
-                table.getColumn("correo")?.setFilterValue(event.target.value)
-              }
-              className="max-w-xs"
-            />
-          </div>
+        {FilterColumns && (
+          <FilterColumns table={table} />
         )}
 
         {canHideColumns && (
