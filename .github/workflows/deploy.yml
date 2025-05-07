@@ -31,6 +31,10 @@ jobs:
             -e "ssh -o BatchMode=yes" \
             --exclude='.git' \
             --exclude='node_modules' \
+            --exclude='.next' \
+            --exclude='.cache' \
+            --exclude='.vscode' \
+            --exclude='.idea' \
             ./ numa-desarrollo@34.71.107.222:/home/numa-desarrollo/numa-reporteador-frontend
 
       - name: Update Frontend Service
