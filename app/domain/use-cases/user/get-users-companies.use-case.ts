@@ -9,7 +9,7 @@ export const getUsersCompaniesUseCase = async (
 ): Promise<UserCompany[]> => {
   try {
     const usersWithCompanies = await fetcher.get<UserCompanyResponse[]>(
-      "/user/companies"
+      "/company/companies/user"
     );
 
     return usersWithCompanies.map(UserMapper.fromResponseUserCompanyToEntity);

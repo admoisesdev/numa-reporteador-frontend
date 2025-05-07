@@ -1,5 +1,6 @@
 export * from './api.response';
 export * from './charges.response';
+export * from './company.response';
 export * from './contract.response';
 export * from './customer.response';
 export * from './excel.response';
