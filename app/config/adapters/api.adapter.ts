@@ -7,3 +7,4 @@ export const apiFetcher = new AxiosAdapter({
     Accept: "application/json",
   },
 });
+console.log("API URL: ", import.meta.env.VITE_BACKEND_URL);
