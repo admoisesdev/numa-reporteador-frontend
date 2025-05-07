@@ -4,9 +4,19 @@ import type { CompanyResponse } from "infrastructure/interfaces";
 
 import { CompanyMapper } from "infrastructure/mappers";
 
+export interface CompanyBody {
+  ruc: string;
+  businessName: string;
+  project: string;
+  commercial: string;
+  establishment: string;
+  legalRepresentative: string;
+  resolutionDate: string;
+}
+
 export const createCompanyUseCase = async (
   fetcher: HttpAdapter,
-  body: Record<string, string>
+  body: CompanyBody,
 ): Promise<Company> => {
   try {
     const newUser = await fetcher.post<CompanyResponse>("/company", body);

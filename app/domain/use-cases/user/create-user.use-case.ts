@@ -4,9 +4,18 @@ import type { UserCompany } from "domain/entities";
 import type { UserCompanyResponse } from "infrastructure/interfaces";
 import { UserMapper } from "infrastructure/mappers";
 
+export interface UserBody {
+  name: string;
+  lastName: string;
+  email: string;
+  password: string;
+  roles: string[];
+  companyIds: number[];
+}
+
 export const createUserUseCase = async (
   fetcher: HttpAdapter,
-  body: Record<string, string>
+  body: UserBody,
 ): Promise<UserCompany> => {
   try {
     const newUser = await fetcher.post<UserCompanyResponse>("/user", body);

@@ -94,6 +94,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     if ("statusCode" in res) {
       set({ error: res });
+      get().logout();
       return;
     }
 
