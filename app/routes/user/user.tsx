@@ -21,7 +21,7 @@ export default function UserPage() {
   return (
     <>
       <TypographyH2 className="mt-2 font-normal text-slate-700">
-        Consulta el estado de cuenta de tus clientes:
+        Gestiona los usuarios:
       </TypographyH2>
       <DataTable
         columns={userColumns}

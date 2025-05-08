@@ -44,7 +44,7 @@ export interface FiltersProps {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  isLoading: boolean;
+  isLoading?: boolean;
   metaData?: Record<string, any>;
   noDataMessage?: string;
   rowsPerPageOptions?: number[];

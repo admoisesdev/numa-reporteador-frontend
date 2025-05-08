@@ -5,21 +5,21 @@ export const UserFilters = ({ table }: FiltersProps) => {
   return (
     <div className="flex flex-wrap sm:flex-nowrap flex-row items-center gap-3 lg:w-3/5">
       <Input
-        placeholder="Filtrar por identificación"
+        placeholder="Filtrar por nombre"
         value={
-          (table.getColumn("identificacion")?.getFilterValue() as string) ?? ""
+          (table.getColumn("nombre")?.getFilterValue() as string) ?? ""
         }
         onChange={(event) =>
-          table.getColumn("identificacion")?.setFilterValue(event.target.value)
+          table.getColumn("nombre")?.setFilterValue(event.target.value)
         }
         className="max-w-xs"
       />
 
       <Input
-        placeholder="Filtrar por nombre"
-        value={(table.getColumn("nombre")?.getFilterValue() as string) ?? ""}
+        placeholder="Filtrar por apellido"
+        value={(table.getColumn("apellido")?.getFilterValue() as string) ?? ""}
         onChange={(event) =>
-          table.getColumn("nombre")?.setFilterValue(event.target.value)
+          table.getColumn("apellido")?.setFilterValue(event.target.value)
         }
         className="max-w-xs"
       />
@@ -32,6 +32,7 @@ export const UserFilters = ({ table }: FiltersProps) => {
         }
         className="max-w-xs"
       />
+        
     </div>
   );
 };
