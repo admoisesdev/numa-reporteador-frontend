@@ -26,7 +26,7 @@ export class PdfMapper {
           [
             financing.dividendNumber ?? "N/A",
             financing.dividendType ?? "N/A",
-            financing.expirationDate ?? "N/A",
+            DateAdapter.format(financing.expirationDate, "dd/MM/yyyy") ?? "N/A",
             Formatter.numberWithCommasAndDots(financing.dividendValue) ?? "N/A",
           ],
           ["", "", ""],
@@ -40,7 +40,7 @@ export class PdfMapper {
             `${charge.reference} ${charge.dividendType}` || "N/A",
             "",
             charge.receiptNumber ?? "N/A",
-            charge.chargeDate ?? "N/A",
+            DateAdapter.format(charge.chargeDate, "dd/MM/yyyy") ?? "N/A",
             Formatter.numberWithCommasAndDots(charge.chargedValue) ?? "N/A",
             "",
           ]) ?? [],
@@ -88,7 +88,7 @@ export class PdfMapper {
             item.creditAdvisor,
             item.location,
             item.customer,
-            item.deliveryDate,
+            DateAdapter.format(item.deliveryDate, "dd/MM/yyyy"),
             Formatter.numberWithCommasAndDots(item.initialFee.toFixed(2)),
           ],
           [
@@ -357,7 +357,11 @@ export class PdfMapper {
         },
         {
           key: "fecha cont",
-          value: accountStatus?.contract.closingDate! ?? "N/A",
+          value:
+            DateAdapter.format(
+              accountStatus?.contract.closingDate!,
+              "dd/MM/yyyy"
+            ) ?? "N/A",
         },
         {
           key: "tipo del bien",

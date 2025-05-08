@@ -1,3 +1,4 @@
+import { DateAdapter } from "config/adapters";
 import type { ChargedPortfolio, PortfolioAge } from "domain/entities";
 import type {
   ChargedPortfolioExcelData,
@@ -15,7 +16,7 @@ export class ExcelMapper {
       "Oficial de crédito": data.creditAdvisor,
       Ubicación: data.location,
       Cliente: data.customer,
-      "Fecha entrega": data.deliveryDate,
+      "Fecha entrega": DateAdapter.format(data.deliveryDate, "dd/MM/yyyy"),
       "Cuota inicial": data.initialFee,
       "Vencido menos de 30 días": data.expiredLess30Fb,
       "Vencido más de 30 días": data.expiredMore30Fb,
@@ -47,7 +48,10 @@ export class ExcelMapper {
       Ubicación: data.ubicacion,
       "Tipo de documento": data.tipo_documento,
       Descripción: data.descripcion,
-      "Fecha vencimiento": data.fecha_vencimiento,
+      "Fecha vencimiento": DateAdapter.format(
+        data.fecha_vencimiento,
+        "dd/MM/yyyy"
+      ),
       Cuota: data.cuota,
       "Imp. pendiente": data.imp_pendiente,
       "Imp. bruto": data.imp_bruto,
@@ -60,12 +64,12 @@ export class ExcelMapper {
     return {
       Proyecto: data.project,
       Contrato: data.contract,
-      "Ubicación": data.location,
+      Ubicación: data.location,
       "Estado Const.": data.constructionStatus,
       "% Avan.": data.progressPercentage,
       Cliente: data.customer,
-      "Fecha venta": data.saleDate,
-      "Fecha entrega": data.deliveryDate,
+      "Fecha venta": DateAdapter.format(data.saleDate, "dd/MM/yyyy"),
+      "Fecha entrega": DateAdapter.format(data.deliveryDate, "dd/MM/yyyy"),
       "Precio de venta": data.salePrice,
       "Total cobrado": data.totalCharged,
       "Pago cubierto": data.chargedPercentage,

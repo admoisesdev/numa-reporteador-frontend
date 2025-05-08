@@ -59,7 +59,7 @@ const MainLayout = () => {
   const { pathname } = useLocation();
   const { status, checkStatus, user, hasRole } = useAuthStore();
 
- /*  useEffect(() => {
+  useEffect(() => {
     checkStatus();
   }, []);
 
@@ -73,7 +73,7 @@ const MainLayout = () => {
 
   if (status === "unauthenticated") {
     return <Navigate to="/" replace />;
-  } */
+  }
 
   return (
     <div className="container mx-auto p-3 ">
