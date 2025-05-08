@@ -29,6 +29,10 @@ export default function UserPage() {
         isLoading={queryUserCompanies.isLoading}
         noDataMessage="No hay clientes"
         filterColumns={UserFilters}
+        createDataButton={{
+          name: "Crear usuario",
+          path: "/crear-usuario",
+        }}
         canHideColumns
         canPaginate
       />

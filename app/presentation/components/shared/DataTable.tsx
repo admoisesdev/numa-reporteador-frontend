@@ -35,11 +35,16 @@ import type {
 
 import { Eye } from "lucide-react";
 import { cn } from "presentation/lib/utils";
+import { Link } from "react-router";
+
+type CreateDataButton = {
+  name: string;
+  path: string;
+}
 
 export interface FiltersProps {
   table: TableResponse<any>;
 }
-
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -51,6 +56,7 @@ interface DataTableProps<TData, TValue> {
   canHideColumns?: boolean;
   canPaginate?: boolean;
   filterColumns?: ({ table }: FiltersProps) => React.ReactNode;
+  createDataButton?: CreateDataButton;
   classNameTableHeader?: string;
 }
 
@@ -64,6 +70,7 @@ export function DataTable<TData, TValue>({
   canHideColumns = false,
   canPaginate = false,
   filterColumns: FilterColumns,
+  createDataButton,
   classNameTableHeader = "bg-slate-800 border-slate-800",
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -98,41 +105,46 @@ export function DataTable<TData, TValue>({
           }
         )}
       >
-        {FilterColumns && (
-          <FilterColumns table={table} />
-        )}
+        {FilterColumns && <FilterColumns table={table} />}
 
-        {canHideColumns && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="focus-visible:ring-0 focus-visible:border-slate-600"
-              >
-                <Eye /> Columnas visibles
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-white" align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+        <div className="flex items-center gap-3">
+          {createDataButton && (
+            <Button className="bg-cyan-950 text-white">
+              <Link to={createDataButton.path}>{createDataButton.name}</Link>
+            </Button>
+          )}
+          {canHideColumns && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="focus-visible:ring-0 focus-visible:border-slate-600"
+                >
+                  <Eye /> Columnas visibles
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-white" align="end">
+                {table
+                  .getAllColumns()
+                  .filter((column) => column.getCanHide())
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    );
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
       </section>
 
       <section className="rounded-md overflow-hidden">
