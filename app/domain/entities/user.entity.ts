@@ -1,3 +1,5 @@
+import type { Company } from "./company.entity";
+
 export interface User {
   id: string;
   email: string;
@@ -12,6 +14,12 @@ export interface Auth{
 }
 
 export interface UserCompany {
-  
+  id: string;
+  name: string;
+  lastName: string;
+  email: string;
+  isActive: boolean;
+  roles: string[];
+  companies: Company[];
 }
 

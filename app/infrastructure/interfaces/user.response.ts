@@ -1,3 +1,5 @@
+import type { CompanyResponse } from "./company.response";
+
 export interface AuthResponse {
   id: string;
   activo: boolean;
@@ -8,8 +10,14 @@ export interface AuthResponse {
   token: string;
 }
 
-export interface UserCompanyResponse { 
-
+export interface UserCompanyResponse {
+  id: string;
+  nombre: string;
+  apellido: string;
+  email: string;
+  activo: boolean;
+  roles: string[];
+  empresas: CompanyResponse[];
 }
 
 

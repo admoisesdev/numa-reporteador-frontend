@@ -15,6 +15,6 @@ export default [
     route("cartera-cobrada", "routes/contract/charged-portfolio.tsx"),
     route("cartera-por-cobrar", "routes/contract/receivables.tsx"),
     route("antiguedad-cartera", "routes/contract/portfolio-age.tsx"),
-    route("usuarios", "routes/user/index.tsx"),
+    route("usuarios", "routes/user/user.tsx"),
   ]),
 ] satisfies RouteConfig;

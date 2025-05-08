@@ -17,12 +17,21 @@ import { TypographyP } from "presentation/components/shared";
 
 import { cn } from "presentation/lib/utils";
 
-const routes = [
+interface Route {
+  name: string;
+  path?: string;
+  role?: string;
+  subRoutes?: Route[];
+}
+
+const routes: Route[] = [
   {
     path: "/clientes",
     name: "Estado de cuenta",
+    role: "user",
   },
   {
+    role: "user",
     name: "Reportes de Cartera",
     subRoutes: [
       {
@@ -42,12 +51,13 @@ const routes = [
   {
     path: "/usuarios",
     name: "Usuarios",
+    role: "admin",
   },
 ];
 
 const MainLayout = () => {
   const { pathname } = useLocation();
-  const { status, checkStatus, user } = useAuthStore();
+  const { status, checkStatus, user, hasRole } = useAuthStore();
 
   useEffect(() => {
     checkStatus();
@@ -93,27 +103,30 @@ const MainLayout = () => {
                           )}
                           asChild
                         >
-                          <Link to={subRoute.path}>{subRoute.name}</Link>
+                          <Link to={subRoute.path!}>{subRoute.name}</Link>
                         </NavigationMenuLink>
                       ))}
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
               ) : (
-                <NavigationMenuItem key={route.path}>
-                  <NavigationMenuLink
-                    className={cn(
-                      navigationMenuTriggerStyle(),
-                      "text-xl rounded-none md:hover:text-slate-700",
-                      {
-                        "border-b-2 border-slate-700": pathname === route.path,
-                      }
-                    )}
-                    asChild
-                  >
-                    <Link to={route.path}>{route.name}</Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+                hasRole(route.role!) &&(
+                  <NavigationMenuItem key={route.path}>
+                    <NavigationMenuLink
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        "text-xl rounded-none md:hover:text-slate-700",
+                        {
+                          "border-b-2 border-slate-700":
+                            pathname === route.path,
+                        }
+                      )}
+                      asChild
+                    >
+                      <Link to={route.path!}>{route.name}</Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                )
               )
             )}
           </NavigationMenuList>
