@@ -1,12 +1,16 @@
 import type { CompanyResponse } from "./company.response";
 
-export interface AuthResponse {
+export interface UserResponse{
   id: string;
-  activo: boolean;
+  nombre: string;
   apellido: string;
   email: string;
-  nombre: string;
+  password: string;
+  activo: boolean;
   roles: string[];
+}
+
+export interface AuthResponse extends UserResponse {
   token: string;
 }
 

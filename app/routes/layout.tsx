@@ -16,52 +16,28 @@ import {
 import { TypographyP } from "presentation/components/shared";
 
 import { cn } from "presentation/lib/utils";
+import { routes, routesWithRol } from "./rol-routes";
 
-interface Route {
-  name: string;
-  path?: string;
-  role?: string;
-  subRoutes?: Route[];
-}
-
-const routes: Route[] = [
-  {
-    path: "/clientes",
-    name: "Estado de cuenta",
-    role: "user",
-  },
-  {
-    role: "user",
-    name: "Reportes de Cartera",
-    subRoutes: [
-      {
-        path: "/cartera-cobrada",
-        name: "Cartera cobrada",
-      },
-      {
-        path: "/cartera-por-cobrar",
-        name: "Cartera por cobrar",
-      },
-      {
-        path: "/antiguedad-cartera",
-        name: "Antigüedad de cartera",
-      },
-    ],
-  },
-  {
-    path: "/usuarios",
-    name: "Usuarios",
-    role: "admin",
-  },
-];
 
 const MainLayout = () => {
   const { pathname } = useLocation();
-  const { status, checkStatus, user, hasRole } = useAuthStore();
+  const { status, checkStatus, user, hasRole,hasAnyRole } = useAuthStore();
 
   useEffect(() => {
     checkStatus();
   }, []);
+
+
+  const hasAccess = routesWithRol.some((route) => {
+    if (route.path === pathname) {
+      if (Array.isArray(route.role)) {
+        return hasAnyRole(route.role);
+      } else {
+        return hasRole(route.role!);
+      }
+    }
+    return false;
+  });
 
   if (status === "checking") {
     return (
@@ -75,6 +51,11 @@ const MainLayout = () => {
     return <Navigate to="/" replace />;
   }
 
+
+  if (!hasAccess) {
+    return <Navigate to="/clientes" replace />;
+  }
+
   return (
     <div className="container mx-auto p-3 ">
       <section className="flex flex-col lg:flex-row items-center sm:gap-4">
@@ -82,35 +63,60 @@ const MainLayout = () => {
 
         <NavigationMenu>
           <NavigationMenuList>
-            {routes.map((route) =>
-              route.subRoutes ? (
-                <NavigationMenuItem key={route.name}>
-                  <NavigationMenuTrigger className="text-xl  rounded-none md:hover:text-slate-700 cursor-pointer">
-                    {route.name}
-                  </NavigationMenuTrigger>
+            {routes.map((route) => {
+              // Verificar si el usuario tiene acceso a la ruta principal
+              const hasRouteAccess = Array.isArray(route.role)
+                ? hasAnyRole(route.role) // Verifica si el usuario tiene al menos uno de los roles
+                : route.role
+                ? hasRole(route.role)
+                : true;
 
-                  <NavigationMenuContent>
-                    <ul className="grid gap-3 py-4 px-8 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
-                      {route.subRoutes.map((subRoute) => (
-                        <NavigationMenuLink
-                          key={subRoute.path}
-                          className={cn(
-                            "block px-4 py-2 text-md rounded-none md:hover:text-slate-700 text-center",
-                            {
-                              "border-b-2 border-slate-700 font-semibold":
-                                pathname === subRoute.path,
-                            }
-                          )}
-                          asChild
-                        >
-                          <Link to={subRoute.path!}>{subRoute.name}</Link>
-                        </NavigationMenuLink>
-                      ))}
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              ) : (
-                hasRole(route.role!) &&(
+              // Verificar si el usuario tiene acceso a alguna subruta
+              const hasSubRouteAccess = route.subRoutes?.some((subRoute) =>
+                Array.isArray(subRoute.role)
+                  ? hasAnyRole(subRoute.role)
+                  : subRoute.role
+                  ? hasRole(subRoute.role)
+                  : true
+              );
+
+              // Mostrar la ruta principal si tiene acceso o si alguna subruta es accesible
+              if (hasRouteAccess || hasSubRouteAccess) {
+                return route.subRoutes ? (
+                  <NavigationMenuItem key={route.name}>
+                    <NavigationMenuTrigger className="text-xl rounded-none md:hover:text-slate-700 cursor-pointer">
+                      {route.name}
+                    </NavigationMenuTrigger>
+
+                    <NavigationMenuContent>
+                      <ul className="grid gap-3 py-4 px-8 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
+                        {route.subRoutes
+                          .filter((subRoute) =>
+                            Array.isArray(subRoute.role)
+                              ? hasAnyRole(subRoute.role)
+                              : subRoute.role
+                              ? hasRole(subRoute.role)
+                              : true
+                          )
+                          .map((subRoute) => (
+                            <NavigationMenuLink
+                              key={subRoute.path}
+                              className={cn(
+                                "block px-4 py-2 text-md rounded-none md:hover:text-slate-700 text-center",
+                                {
+                                  "border-b-2 border-slate-700 font-semibold":
+                                    pathname === subRoute.path,
+                                }
+                              )}
+                              asChild
+                            >
+                              <Link to={subRoute.path!}>{subRoute.name}</Link>
+                            </NavigationMenuLink>
+                          ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                ) : (
                   <NavigationMenuItem key={route.path}>
                     <NavigationMenuLink
                       className={cn(
@@ -126,9 +132,11 @@ const MainLayout = () => {
                       <Link to={route.path!}>{route.name}</Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
-                )
-              )
-            )}
+                );
+              }
+
+              return null;
+            })}
           </NavigationMenuList>
         </NavigationMenu>
 

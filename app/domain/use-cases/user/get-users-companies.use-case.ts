@@ -12,7 +12,7 @@ export const getUsersCompaniesUseCase = async (
       "/user/companies"
     );
 
-    return usersWithCompanies.map(UserMapper.fromResponseUserCompanyToEntity);
+    return usersWithCompanies.map(UserMapper.fromUserCompanyResponseToEntity);
   } catch (error) {
     throw new Error("Error getting users with companies");
   }

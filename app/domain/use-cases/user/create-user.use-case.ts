@@ -1,6 +1,6 @@
 import type { HttpAdapter } from "config/adapters/http";
-import type { UserCompany } from "domain/entities";
-import type { MsgResponse, UserCompanyResponse } from "infrastructure/interfaces";
+import type { FullUser } from "domain/entities";
+import type { MsgResponse, UserResponse } from "infrastructure/interfaces";
 
 import { UserMapper } from "infrastructure/mappers";
 import { HttpError } from "config/helpers";
@@ -17,12 +17,12 @@ export interface UserBody {
 export const createUserUseCase = async (
   fetcher: HttpAdapter,
   body: UserBody
-): Promise<UserCompany | MsgResponse> => {
+): Promise<FullUser | MsgResponse> => {
   try {
-    const newUser = await fetcher.post<UserCompanyResponse>("/user", body);
+    const newUser = await fetcher.post<UserResponse>("/user", body);
     console.log("newUser", newUser);
 
-    return UserMapper.fromResponseUserCompanyToEntity(newUser);
+    return UserMapper.fromUserResponseToEntity(newUser);
   } catch (error: any) {
     const errorData = HttpError.getError(error);
 

@@ -1,10 +1,15 @@
 import { CompanyMapper } from "./company.mapper";
 
-import type { UserCompany } from "domain/entities";
-import type { UserCompanyResponse } from "infrastructure/interfaces";
+import type { FullUser, UserCompany } from "domain/entities";
+import type {
+  UserCompanyResponse,
+  UserResponse,
+} from "infrastructure/interfaces";
 
 export class UserMapper {
-  static fromResponseUserCompanyToEntity(response: UserCompanyResponse): UserCompany {
+  static fromUserCompanyResponseToEntity(
+    response: UserCompanyResponse
+  ): UserCompany {
     return {
       id: response.id,
       name: response.nombre,
@@ -12,7 +17,20 @@ export class UserMapper {
       email: response.email,
       isActive: response.activo,
       roles: response.roles,
-      companies: response.empresas.map(CompanyMapper.fromCompanyResponseToEntity),
+      companies: response.empresas.map(
+        CompanyMapper.fromCompanyResponseToEntity
+      ),
+    };
+  }
+
+  static fromUserResponseToEntity(response: UserResponse): FullUser {
+    return {
+      id: response.id,
+      name: response.nombre,
+      lastName: response.apellido,
+      email: response.email,
+      isActive: response.activo,
+      roles: response.roles,
     };
   }
 }

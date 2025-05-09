@@ -1,13 +1,12 @@
-
 import * as UsesCases from "domain/use-cases/user";
 
 import { apiFetcher } from "config/adapters";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { UserCompany } from "domain/entities";
+import { useNavigate } from "react-router";
+import { useMutation } from "@tanstack/react-query";
 
 export const useUserMutation = () => {
-  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const createUser = useMutation({
     mutationFn: (body: UsesCases.UserBody) => {
@@ -15,6 +14,9 @@ export const useUserMutation = () => {
     },
     onSuccess: (data) => {
       console.log("data", data);
+
+     
+      navigate("/usuarios");
     },
     onError: (error) => {
       console.log("error", error);

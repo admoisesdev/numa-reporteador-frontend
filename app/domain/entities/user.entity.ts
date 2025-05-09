@@ -8,6 +8,15 @@ export interface User {
   roles: string[];
 }
 
+export interface FullUser {
+  id: string;
+  name: string;
+  lastName: string;
+  email: string;
+  isActive: boolean;
+  roles: string[];
+}
+
 export interface Auth{
   token: string;
   user?: User;

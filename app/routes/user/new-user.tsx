@@ -1,6 +1,5 @@
-import { useNavigate } from "react-router";
-
 import { useUserMutation } from "presentation/hooks/user";
+import { useCompanies } from "presentation/hooks/company";
 
 import {
   Alert,
@@ -34,8 +33,8 @@ import { AlertCircle, CircleCheck } from "lucide-react";
 import { ROLES } from "../../config/constants/User";
 
 export default function NewUserPage() {
-  const navigate = useNavigate();
   const { createUser } = useUserMutation();
+  const { queryCompanies } = useCompanies();
 
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
@@ -44,25 +43,24 @@ export default function NewUserPage() {
       lastName: "",
       email: "",
       password: "",
-      roles: [],
-      companies: [],
+      roles: "",
+      companies: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof userSchema>) => {
-    createUser.mutate({
-      name: values.name,
-      lastName: values.lastName,
-      email: values.email,
-      password: values.password,
-      roles: values.roles,
-      companyIds: values.companies,
-    });
+    const company = Number(values.companies);
+    const role = values.roles;
 
-    if (createUser.isSuccess) {
-      navigate("/usuarios");
-      return;
-    }
+    console.log("values", {values, company, role});
+     createUser.mutate({
+       name: values.name,
+       lastName: values.lastName,
+       email: values.email,
+       password: values.password,
+       roles: [role],
+       companyIds: [company],
+     });
   };
 
   return (
@@ -216,11 +214,14 @@ export default function NewUserPage() {
                             <SelectLabel className="font-semibold">
                               Empresas
                             </SelectLabel>
-                            <SelectItem value="apple">Apple</SelectItem>
-                            <SelectItem value="banana">Banana</SelectItem>
-                            <SelectItem value="blueberry">Blueberry</SelectItem>
-                            <SelectItem value="grapes">Grapes</SelectItem>
-                            <SelectItem value="pineapple">Pineapple</SelectItem>
+                            {queryCompanies.data?.map((company) => (
+                              <SelectItem
+                                key={company.value}
+                                value={String(company.value)}
+                              >
+                                {company.label}
+                              </SelectItem>
+                            ))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -234,7 +235,8 @@ export default function NewUserPage() {
 
             <Button
               type="submit"
-              className="bg-slate-700 text-white w-full"
+              size="lg"
+              className="bg-slate-700 text-white w-2/5 hover:bg-slate-800 transition-all duration-200 ease-in-out"
               disabled={createUser.isPending}
             >
               <Spinner

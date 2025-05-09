@@ -109,7 +109,7 @@ export function DataTable<TData, TValue>({
 
         <div className="flex items-center gap-3">
           {createDataButton && (
-            <Button className="bg-cyan-950 text-white">
+            <Button className="bg-cyan-900 text-white hover:bg-cyan-950 transition-all duration-200 ease-in-out">
               <Link to={createDataButton.path}>{createDataButton.name}</Link>
             </Button>
           )}

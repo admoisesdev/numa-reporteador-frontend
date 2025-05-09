@@ -119,7 +119,7 @@ export const userColumns: ColumnDef<UserCompany>[] = [
     },
     cell: ({ row }) => {
       return (
-        <div className="flex gap-1 w-2/4">
+        <div className="flex gap-1">
           {row.original.roles.map((role, index) => (
             <span
               key={role}

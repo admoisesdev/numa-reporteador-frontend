@@ -2,7 +2,7 @@ import type { HttpAdapter } from "config/adapters/http";
 import type { UserCompany } from "domain/entities";
 
 import type { UserCompanyResponse } from "infrastructure/interfaces";
-import { CompanyMapper } from "infrastructure/mappers";
+import { UserMapper } from "infrastructure/mappers";
 
 export const getCompaniesByUserUseCase = async (
   fetcher: HttpAdapter
@@ -12,7 +12,7 @@ export const getCompaniesByUserUseCase = async (
       "/user/companies"
     );
 
-    return companiesByUser.map(CompanyMapper.fromCompanyResponseToEntity);
+    return companiesByUser.map(UserMapper.fromUserCompanyResponseToEntity);
   } catch (error) {
     throw new Error("Error getting companies by user");
   }

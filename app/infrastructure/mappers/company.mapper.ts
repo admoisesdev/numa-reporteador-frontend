@@ -1,5 +1,5 @@
 import type { Company } from "domain/entities";
-import type { CompanyResponse } from "infrastructure/interfaces";
+import type { CompanyResponse, SelectOption } from "infrastructure/interfaces";
 
 export class CompanyMapper {
   static fromCompanyResponseToEntity(response: CompanyResponse): Company {
@@ -13,6 +13,15 @@ export class CompanyMapper {
       legalRepresentative: response.representante_legal,
       resolutionDate: response.fecha,
       isActive: response.estado,
+    };
+  }
+
+  static fromCompanyResponseToSelectOption(
+    response: CompanyResponse
+  ): SelectOption {
+    return {
+      value: response.id,
+      label: response.razon_social,
     };
   }
 }
