@@ -76,7 +76,7 @@ const MainLayout = () => {
       </section>
 
       <NavigationMenu className="mt-4 sm:mt-0">
-        <NavigationMenuList className="flex flex-col md:flex-row gap-4 mt-4">
+        <NavigationMenuList className="flex flex-wrap md:flex-row gap-4 mt-4">
           {routes.map((route) => {
             const hasRouteAccess = Array.isArray(route.role)
               ? hasAnyRole(route.role)
