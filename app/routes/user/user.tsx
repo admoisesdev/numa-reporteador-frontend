@@ -1,7 +1,7 @@
 import type { Route } from "./+types/user";
 
 import { useUserCompanies } from "presentation/hooks/user";
-import { DataTable, TypographyH3 } from "presentation/components/shared";
+import { DataTable } from "presentation/components/shared";
 import { UserFilters } from "presentation/components/user";
 
 import { userColumns } from "./user-columns";

@@ -64,7 +64,6 @@ export default function NewUserPage() {
     const company = Number(values.companies);
     const role = values.roles;
 
-    console.log("values", { values, company, role });
     createUser.mutate({
       name: values.name,
       lastName: values.lastName,

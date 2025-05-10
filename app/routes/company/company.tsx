@@ -1,26 +1,25 @@
 import { useCompanies } from "presentation/hooks/company";
-import { DataTable,  TypographyH3 } from "presentation/components/shared";
 
+import { DataTable } from "presentation/components/shared";
+import { CompanyFilters } from "presentation/components/company";
+import { companyColumns } from "./company-columns";
 
 export default function CompanyPage() {
   const { queryCompanies } = useCompanies();
 
   return (
-    <>
-
-      {/* <DataTable
-        columns={[]}
-        data={queryCompanies?.data ?? []}
-        isLoading={queryCompanies.isLoading}
-        noDataMessage="No hay clientes"
-        filterColumns={}
-        createDataButton={{
-          name: "Crear empresa",
-          path: "/crear-empresa",
-        }}
-        canHideColumns
-        canPaginate
-      /> */}
-    </>
+    <DataTable
+      columns={companyColumns}
+      data={queryCompanies?.data ?? []}
+      isLoading={queryCompanies.isLoading}
+      noDataMessage="No hay empresas"
+      filterColumns={CompanyFilters}
+      createDataButton={{
+        name: "Crear empresa",
+        path: "/crear-empresa",
+      }}
+      canHideColumns
+      canPaginate
+    />
   );
 }

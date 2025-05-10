@@ -1,4 +1,4 @@
-import { companiesUserColumns } from "routes/user/companies-user-columns";
+import { companyColumns } from "routes/company/company-columns";
 import { DataTable } from "../shared";
 
 import {
@@ -36,7 +36,7 @@ export const UserCompanies = ({ user }: CustomerContractsProps) => {
           </DialogTitle>
 
           <DataTable
-            columns={companiesUserColumns}
+            columns={companyColumns}
             data={user.companies ?? []}
             noDataMessage="No hay empresas de usuario"
             classNameTableHeader="bg-gray-800 border-gray-800"

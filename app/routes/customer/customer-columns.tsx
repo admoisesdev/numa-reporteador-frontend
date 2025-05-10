@@ -81,7 +81,7 @@ export const customerColumns: ColumnDef<Customer>[] = [
           {column.getIsSorted() === "asc" ? (
             <ArrowUpDown className="h-4 w-4" />
           ) : (
-            <ArrowUpDown className="h-4 w-4" />
+            <ArrowDownUp className="h-4 w-4" />
           )}
         </Button>
       );

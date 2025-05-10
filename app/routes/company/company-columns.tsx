@@ -4,8 +4,9 @@ import type { Company } from "domain/entities";
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { DateAdapter } from "config/adapters";
+import { ArrowDownUp, ArrowUpDown } from "lucide-react";
 
-export const companiesUserColumns: ColumnDef<Company>[] = [
+export const companyColumns: ColumnDef<Company>[] = [
   {
     id: "ruc",
     accessorKey: "ruc",
@@ -17,10 +18,15 @@ export const companiesUserColumns: ColumnDef<Company>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           RUC
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          ) : (
+            <ArrowDownUp className="ml-2 h-4 w-4" />
+          )}
         </Button>
       );
     },
-    enableSorting: false,
+    enableHiding: false,
   },
   {
     id: "razon social",
@@ -33,13 +39,18 @@ export const companiesUserColumns: ColumnDef<Company>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Razón Social
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUpDown className="h-4 w-4" />
+          ) : (
+            <ArrowDownUp className="h-4 w-4" />
+          )}
         </Button>
       );
     },
     cell: ({ row }) => {
       return row.original.businessName ?? "N/A";
     },
-    enableSorting: false,
+    enableHiding: false,
   },
   {
     id: "proyecto",
@@ -52,10 +63,29 @@ export const companiesUserColumns: ColumnDef<Company>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Proyecto
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUpDown className="h-4 w-4" />
+          ) : (
+            <ArrowDownUp className="h-4 w-4" />
+          )}
         </Button>
       );
     },
-    enableSorting: false,
+  },
+  {
+    id: "comercial",
+    accessorKey: "commercial",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="pl-2"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Comercial
+        </Button>
+      );
+    },
   },
   {
     id: "establecimiento",
@@ -74,7 +104,6 @@ export const companiesUserColumns: ColumnDef<Company>[] = [
     cell: ({ row }) => {
       return row.original.establishment ?? "N/A";
     },
-    enableSorting: false,
   },
   {
     id: "representante legal",
@@ -87,13 +116,17 @@ export const companiesUserColumns: ColumnDef<Company>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Representante Legal
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUpDown className="h-4 w-4" />
+          ) : (
+            <ArrowDownUp className="h-4 w-4" />
+          )}
         </Button>
       );
     },
     cell: ({ row }) => {
       return row.original.legalRepresentative ?? "N/A";
     },
-    enableSorting: false,
   },
   {
     id: "fecha resolucion",
@@ -106,13 +139,18 @@ export const companiesUserColumns: ColumnDef<Company>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Fecha Resolución
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUpDown className="h-4 w-4" />
+          ) : (
+            <ArrowDownUp className="h-4 w-4" />
+          )}
         </Button>
       );
     },
     cell: ({ row }) => {
-      return DateAdapter.format(row.original.resolutionDate,"yyyy-MM-dd") ?? "N/A";
+      return (
+        DateAdapter.format(row.original.resolutionDate, "yyyy-MM-dd") ?? "N/A"
+      );
     },
-    enableSorting: false,
   },
-  
 ];
