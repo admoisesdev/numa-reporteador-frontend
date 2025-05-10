@@ -1,3 +1,5 @@
+import type { Route } from "./+types/new-user";
+
 import { useUserMutation } from "presentation/hooks/user";
 import { useCompanies } from "presentation/hooks/company";
 
@@ -32,9 +34,19 @@ import { z } from "zod";
 import { AlertCircle, CircleCheck } from "lucide-react";
 import { ROLES } from "../../config/constants/User";
 
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Crear usuario" },
+    {
+      name: "description",
+      content: "Bienvenido a la pagina para crear usuario",
+    },
+  ];
+}
+
 export default function NewUserPage() {
   const { createUser } = useUserMutation();
-  const { queryCompanies } = useCompanies();
+  const { selectOptionsCompanies } = useCompanies();
 
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
@@ -52,24 +64,20 @@ export default function NewUserPage() {
     const company = Number(values.companies);
     const role = values.roles;
 
-    console.log("values", {values, company, role});
-     createUser.mutate({
-       name: values.name,
-       lastName: values.lastName,
-       email: values.email,
-       password: values.password,
-       roles: [role],
-       companyIds: [company],
-     });
+    console.log("values", { values, company, role });
+    createUser.mutate({
+      name: values.name,
+      lastName: values.lastName,
+      email: values.email,
+      password: values.password,
+      roles: [role],
+      companyIds: [company],
+    });
   };
 
   return (
     <section className="flex flex-col justify-center w-full">
-      <TypographyH2 className="my-5 font-normal text-slate-700">
-        Crea un nuevo usuario:
-      </TypographyH2>
-
-      <section className="w-full">
+      <section className="w-full mt-8">
         {createUser.error && (
           <Alert variant="destructive">
             <section className="flex items-center gap-1">
@@ -214,7 +222,7 @@ export default function NewUserPage() {
                             <SelectLabel className="font-semibold">
                               Empresas
                             </SelectLabel>
-                            {queryCompanies.data?.map((company) => (
+                            {selectOptionsCompanies.map((company) => (
                               <SelectItem
                                 key={company.value}
                                 value={String(company.value)}

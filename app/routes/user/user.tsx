@@ -1,7 +1,7 @@
 import type { Route } from "./+types/user";
 
 import { useUserCompanies } from "presentation/hooks/user";
-import { DataTable, TypographyH2 } from "presentation/components/shared";
+import { DataTable, TypographyH3 } from "presentation/components/shared";
 import { UserFilters } from "presentation/components/user";
 
 import { userColumns } from "./user-columns";
@@ -20,9 +20,6 @@ export default function UserPage() {
 
   return (
     <>
-      <TypographyH2 className="mt-2 font-normal text-slate-700">
-        Gestiona los usuarios:
-      </TypographyH2>
       <DataTable
         columns={userColumns}
         data={queryUserCompanies?.data ?? []}

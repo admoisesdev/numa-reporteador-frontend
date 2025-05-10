@@ -17,11 +17,11 @@ export class CompanyMapper {
   }
 
   static fromCompanyResponseToSelectOption(
-    response: CompanyResponse
+    response: Company
   ): SelectOption {
     return {
       value: response.id,
-      label: response.razon_social,
+      label: response.businessName,
     };
   }
 }

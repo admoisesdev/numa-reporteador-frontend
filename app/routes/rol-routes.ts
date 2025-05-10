@@ -37,6 +37,11 @@ export const routes: Route[] = [
     name: "Usuarios",
     role: "admin",
   },
+  {
+    path: "/empresas",
+    name: "Empresas",
+    role: "admin",
+  },
 ];
 
 export const routesWithRol: RouteRol[] = [
@@ -46,15 +51,15 @@ export const routesWithRol: RouteRol[] = [
   },
   {
     path: "/cartera-cobrada",
-    role: ["user","asesor-credito","jefe-credito"],
+    role: ["user", "asesor-credito", "jefe-credito"],
   },
   {
     path: "/cartera-por-cobrar",
-    role: ["user","asesor-credito","jefe-credito"],
+    role: ["user", "asesor-credito", "jefe-credito"],
   },
   {
     path: "/antiguedad-cartera",
-    role: ["user","asesor-credito","jefe-credito"],
+    role: ["user", "asesor-credito", "jefe-credito"],
   },
   {
     path: "/usuarios",
@@ -62,6 +67,14 @@ export const routesWithRol: RouteRol[] = [
   },
   {
     path: "/crear-usuario",
+    role: "admin",
+  },
+  {
+    path: "/empresas",
+    role: "admin",
+  },
+  {
+    path: "/crear-empresa",
     role: "admin",
   },
 ];
