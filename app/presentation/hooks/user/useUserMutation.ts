@@ -13,9 +13,8 @@ export const useUserMutation = () => {
       return UsesCases.createUserUseCase(apiFetcher, body);
     },
     onSuccess: (data) => {
-      console.log("data", data);
+      // console.log("data", data);
 
-     
       navigate("/usuarios");
     },
     onError: (error) => {

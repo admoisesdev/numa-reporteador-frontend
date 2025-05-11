@@ -14,7 +14,7 @@ export const useCompanyMutation = () => {
       return UsesCases.createCompanyUseCase(apiFetcher, body);
     },
     onSuccess: (data) => {
-      console.log("data", data);
+      // console.log("data", data);
 
       navigate("/empresas");
     },

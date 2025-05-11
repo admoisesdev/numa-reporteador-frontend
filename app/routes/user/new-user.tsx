@@ -180,7 +180,7 @@ export default function NewUserPage() {
                     </FormLabel>
                     <FormControl>
                       <Select onValueChange={field.onChange}>
-                        <SelectTrigger className="border-gray-300">
+                        <SelectTrigger>
                           <SelectValue placeholder="Seleccione un rol" />
                         </SelectTrigger>
                         <SelectContent>
@@ -213,7 +213,7 @@ export default function NewUserPage() {
                     </FormLabel>
                     <FormControl>
                       <Select onValueChange={field.onChange}>
-                        <SelectTrigger className="border-gray-300">
+                        <SelectTrigger className="">
                           <SelectValue placeholder="Seleccione una empresa" />
                         </SelectTrigger>
                         <SelectContent>

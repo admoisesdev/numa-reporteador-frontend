@@ -1,18 +1,26 @@
+import { Building2, FileText, Home, UserCog, Users, type LucideProps } from "lucide-react";
+
+type Icon = React.ForwardRefExoticComponent<
+  Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
+>;
+
 interface RouteRol {
   role?: string | string[];
   path?: string;
 }
 
-interface Route extends RouteRol {
+export interface RoutePage extends RouteRol {
   name: string;
-  subRoutes?: Route[];
+  subRoutes?: RoutePage[];
+  icon?: Icon;
 }
 
-export const routes: Route[] = [
+export const routes: RoutePage[] = [
   {
     path: "/clientes",
     name: "Estado de cuenta",
     role: ["user", "asesor-credito", "jefe-credito"],
+    icon: Users,
   },
   {
     role: ["user", "asesor-credito", "jefe-credito"],
@@ -31,16 +39,19 @@ export const routes: Route[] = [
         name: "Antigüedad de cartera",
       },
     ],
+    icon: FileText,
   },
   {
     path: "/usuarios",
     name: "Usuarios",
     role: "admin",
+    icon: UserCog,
   },
   {
     path: "/empresas",
     name: "Empresas",
     role: "admin",
+    icon: Building2,
   },
 ];
 
