@@ -7,7 +7,6 @@ import {
 } from "presentation/components/ui";
 import { TypographyH1 } from "presentation/components/shared";
 
-import { PanelLeftClose, PanelRightClose } from "lucide-react";
 
 export const LayoutSidebar = () => {
   const matches = useMatches();
@@ -25,7 +24,6 @@ export const LayoutSidebar = () => {
         </TypographyH1>
 
         <main>
-          <SidebarTrigger icon={isOpen ? PanelLeftClose : PanelRightClose} />
           <Outlet />
         </main>
       </div>

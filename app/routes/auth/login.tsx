@@ -47,7 +47,7 @@ const LoginPage = () => {
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     const wasSuccessfull = await login(values.email, values.password);
     if (wasSuccessfull) {
-      navigate("/clientes");
+      navigate("/empresas-usuario");
       return;
     }
   };

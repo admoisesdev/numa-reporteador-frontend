@@ -25,6 +25,7 @@ export const routes: RoutePage[] = [
   {
     role: ["user", "asesor-credito", "jefe-credito"],
     name: "Reportes de Cartera",
+    path: "cartera",
     subRoutes: [
       {
         path: "/cartera-cobrada",
@@ -56,6 +57,10 @@ export const routes: RoutePage[] = [
 ];
 
 export const routesWithRol: RouteRol[] = [
+  {
+    path: "/empresas-usuario",
+    role: [],
+  },
   {
     path: "/clientes",
     role: ["user", "asesor-credito", "jefe-credito"],

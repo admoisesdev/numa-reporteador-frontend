@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 import { useAuthStore } from "presentation/store";
 import {
@@ -9,7 +9,9 @@ import {
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubItem,
+  useSidebar,
 } from "../ui";
+import { cn } from "presentation/lib/utils";
 
 import type { RoutePage } from "routes/rol-routes";
 import { ChevronDown } from "lucide-react";
@@ -19,8 +21,11 @@ interface MenuSidebarProps {
 }
 
 export const MenuSidebar = ({ route }: MenuSidebarProps) => {
+  const { pathname } = useLocation();
+  const {open: isOpen} = useSidebar();
   const { hasRole, hasAnyRole } = useAuthStore();
 
+  
   const hasRouteAccess = Array.isArray(route.role)
     ? hasAnyRole(route.role)
     : route.role
@@ -40,7 +45,10 @@ export const MenuSidebar = ({ route }: MenuSidebarProps) => {
       <Collapsible defaultOpen className="group/collapsible">
         <SidebarMenuItem>
           <CollapsibleTrigger className="flex items-center w-full" asChild>
-            <SidebarMenuButton className="mx-auto cursor-pointer text-lg text-slate-950 md:hover:bg-slate-200 rounded-md transition-colors duration-200">
+            <SidebarMenuButton
+              className="mx-auto cursor-pointer text-lg text-slate-950"
+              isActive={pathname.includes(route.path!)}
+            >
               {route.icon && (
                 <route.icon className="text-slate-950" width={20} height={20} />
               )}
@@ -50,7 +58,7 @@ export const MenuSidebar = ({ route }: MenuSidebarProps) => {
           </CollapsibleTrigger>
 
           <CollapsibleContent>
-            <SidebarMenuSub className="flex gap-3 border-slate-300">
+            <SidebarMenuSub className="flex gap-3 border-slate-00">
               {route.subRoutes
                 .filter((subRoute) =>
                   Array.isArray(subRoute.role)
@@ -78,9 +86,16 @@ export const MenuSidebar = ({ route }: MenuSidebarProps) => {
       </Collapsible>
     ) : (
       <SidebarMenuItem
-        className="md:hover:bg-slate-200 rounded-md transition-colors duration-200"
+        className={cn({
+          "rounded-md transition-colors duration-200":
+            isOpen,
+        })}
       >
-        <SidebarMenuButton asChild className="mx-auto text-lg text-slate-950">
+        <SidebarMenuButton
+          asChild
+          className="mx-auto text-lg text-slate-950"
+          isActive={route.path === pathname}
+        >
           <Link to={route.path!}>
             {route.icon && <route.icon className="text-slate-950" />}
             <span>{route.name}</span>

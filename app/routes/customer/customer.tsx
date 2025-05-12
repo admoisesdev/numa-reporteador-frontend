@@ -1,4 +1,4 @@
-import type { Route } from "./+types/home";
+import type { Route } from "./+types/customer";
 
 import { useCustomers } from "presentation/hooks/customer";
 import { CustomerFilters } from "presentation/components/customer";

@@ -8,13 +8,17 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
+  SidebarTrigger,
   useSidebar,
 } from "../ui";
 import { TypographyH4 } from "../shared";
+import { MenuSidebar } from "./MenuSidebar";
+import { cn } from "presentation/lib/utils";
 
 import { Formatter } from "config/helpers";
 import { routes, routesWithRol } from "routes/rol-routes";
-import { MenuSidebar } from "./MenuSidebar";
+
+import { PanelLeftClose, PanelRightClose } from "lucide-react";
 
 export const AppSidebar = () => {
   const { pathname } = useLocation();
@@ -30,16 +34,25 @@ export const AppSidebar = () => {
     return false;
   });
 
-  if (!hasAccess) return <Navigate to="/clientes" replace />;
+  if (!hasAccess) return <Navigate to="/empresas-usuario" replace />;
 
   return (
     <Sidebar variant="inset" collapsible="icon">
+      <SidebarTrigger
+        icon={isOpen ? PanelLeftClose : PanelRightClose}
+        className={cn("absolute top-1 right-0 text-zinc-800", {
+          "pl-2": !isOpen,
+        })}
+      />
+      
       <SidebarHeader>
         {isOpen ? <img src="/logo.png" alt="Logo" height={150} /> : null}
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu className="flex flex-col gap-2">
-          {routes.map((route) => <MenuSidebar key={route.name} route={route} />)}
+          {routes.map((route) => (
+            <MenuSidebar key={route.name} route={route} />
+          ))}
         </SidebarMenu>
       </SidebarContent>
 

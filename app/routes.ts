@@ -11,7 +11,10 @@ export default [
     route("registrar", "routes/auth/register.tsx"),
   ]),
   layout("routes/layout.tsx", [
-    route("clientes", "routes/customer/home.tsx", {
+    route("empresas-usuario", "routes/company/user-companies.tsx", {
+      id: " ",
+    }),
+    route("clientes", "routes/customer/customer.tsx", {
       id: "Estado de cuenta de tus clientes",
     }),
     route("cartera-cobrada", "routes/contract/charged-portfolio.tsx", {
