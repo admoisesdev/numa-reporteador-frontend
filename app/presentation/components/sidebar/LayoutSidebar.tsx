@@ -1,17 +1,11 @@
 import { Outlet, useLocation, useMatches } from "react-router";
 
-import {
-  SidebarInset,
-  SidebarTrigger,
-  useSidebar,
-} from "presentation/components/ui";
+import { SidebarInset } from "presentation/components/ui";
 import { TypographyH1 } from "presentation/components/shared";
-
 
 export const LayoutSidebar = () => {
   const matches = useMatches();
   const { pathname } = useLocation();
-  const { open: isOpen } = useSidebar();
 
   const currentRoute = matches.find((match) => match.pathname === pathname);
   const title = currentRoute?.id;

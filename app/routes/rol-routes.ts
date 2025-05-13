@@ -19,11 +19,11 @@ export const routes: RoutePage[] = [
   {
     path: "/clientes",
     name: "Estado de cuenta",
-    role: ["user", "asesor-credito", "jefe-credito"],
+    role: ["admin","user", "asesor-credito", "jefe-credito"],
     icon: Users,
   },
   {
-    role: ["user", "asesor-credito", "jefe-credito"],
+    role: ["admin","user", "asesor-credito", "jefe-credito"],
     name: "Reportes de Cartera",
     path: "cartera",
     subRoutes: [
@@ -45,13 +45,13 @@ export const routes: RoutePage[] = [
   {
     path: "/usuarios",
     name: "Usuarios",
-    role: "admin",
+    role: ["admin"],
     icon: UserCog,
   },
   {
     path: "/empresas",
     name: "Empresas",
-    role: "admin",
+    role: ["admin"],
     icon: Building2,
   },
 ];
@@ -63,34 +63,34 @@ export const routesWithRol: RouteRol[] = [
   },
   {
     path: "/clientes",
-    role: ["user", "asesor-credito", "jefe-credito"],
+    role: ["admin", "user", "asesor-credito", "jefe-credito"],
   },
   {
     path: "/cartera-cobrada",
-    role: ["user", "asesor-credito", "jefe-credito"],
+    role: ["admin", "user", "asesor-credito", "jefe-credito"],
   },
   {
     path: "/cartera-por-cobrar",
-    role: ["user", "asesor-credito", "jefe-credito"],
+    role: ["admin", "user", "asesor-credito", "jefe-credito"],
   },
   {
     path: "/antiguedad-cartera",
-    role: ["user", "asesor-credito", "jefe-credito"],
+    role: ["admin", "user", "asesor-credito", "jefe-credito"],
   },
   {
     path: "/usuarios",
-    role: "admin",
+    role: ["admin"],
   },
   {
     path: "/crear-usuario",
-    role: "admin",
+    role: ["admin"],
   },
   {
     path: "/empresas",
-    role: "admin",
+    role: ["admin"],
   },
   {
     path: "/crear-empresa",
-    role: "admin",
+    role: ["admin"],
   },
 ];

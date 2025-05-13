@@ -45,7 +45,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function NewUserPage() {
-  const { createUser } = useUserMutation();
+  const { createUser,errorMsg } = useUserMutation();
   const { selectOptionsCompanies } = useCompanies();
 
   const form = useForm<z.infer<typeof userSchema>>({
@@ -55,6 +55,7 @@ export default function NewUserPage() {
       lastName: "",
       email: "",
       password: "",
+      confirmPassword: "",
       roles: "",
       companies: "",
     },
@@ -77,12 +78,12 @@ export default function NewUserPage() {
   return (
     <section className="flex flex-col justify-center w-full">
       <section className="w-full mt-8">
-        {createUser.error && (
-          <Alert variant="destructive">
-            <section className="flex items-center gap-1">
+        {errorMsg && (
+          <Alert variant="destructive" className="mb-4 w-5/6">
+            <section className="flex items-center gap-2">
               <AlertCircle className="h-5 w-5 text-red-700" />
               <AlertTitle className="text-red-700">
-                {createUser.error.message}
+                {errorMsg.message}
               </AlertTitle>
             </section>
           </Alert>
@@ -127,9 +128,7 @@ export default function NewUserPage() {
                   </FormItem>
                 )}
               />
-            </div>
 
-            <div className="flex gap-4 items-start">
               <FormField
                 control={form.control}
                 name="email"
@@ -146,7 +145,9 @@ export default function NewUserPage() {
                   </FormItem>
                 )}
               />
+            </div>
 
+            <div className="flex gap-4 items-start">
               <FormField
                 control={form.control}
                 name="password"
@@ -159,6 +160,27 @@ export default function NewUserPage() {
                       <Input
                         type="password"
                         placeholder="Tu password"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage className="text-red-500" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem className="w-full space-y-1">
+                    <FormLabel className="uppercase font-bold text-gray-600">
+                      Repetir Contraseña
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder=" Repetir tu password"
                         {...field}
                       />
                     </FormControl>

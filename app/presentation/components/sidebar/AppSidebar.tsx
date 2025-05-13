@@ -25,15 +25,17 @@ export const AppSidebar = () => {
   const { user, hasRole, hasAnyRole } = useAuthStore();
   const { open: isOpen } = useSidebar();
 
-  const hasAccess = routesWithRol.some((route) => {
-    if (route.path === pathname) {
+  const filteredRoutes = routesWithRol.filter((route) => {
+    if (route.role) {
       return Array.isArray(route.role)
         ? hasAnyRole(route.role)
         : hasRole(route.role!);
     }
-    return false;
+    return true;
   });
 
+  const hasAccess = filteredRoutes.some((route) => route.path === pathname);
+  
   if (!hasAccess) return <Navigate to="/empresas-usuario" replace />;
 
   return (
