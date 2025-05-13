@@ -3,6 +3,7 @@ import type { ChargeResponse } from "infrastructure/interfaces";
 
 export class ChargeMapper{
   static fromResponseChargesToEntity(response: ChargeResponse): Charge{
+    
     return {
       chargeDate: response.fecha_cobro,
       chargedValue: response.valor_cobrado,

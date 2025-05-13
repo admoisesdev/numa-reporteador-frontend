@@ -20,6 +20,7 @@ interface MainRow {
 
 export class PdfMapper {
   private static accountStatusData(accountStatus: AccountStatus): MainRow[] {
+
     const data = accountStatus?.financing.map((financing) => {
       return {
         mainRow: [
@@ -36,14 +37,16 @@ export class PdfMapper {
           ],
         ],
         subRows:
-          financing.charges.map((charge) => [
-            `${charge.reference} ${charge.dividendType}` || "N/A",
-            "",
-            charge.receiptNumber ?? "N/A",
-            DateAdapter.format(charge.chargeDate, "dd/MM/yyyy") ?? "N/A",
-            Formatter.numberWithCommasAndDots(charge.chargedValue) ?? "N/A",
-            "",
-          ]) ?? [],
+          financing.charges.map((charge) => {
+            return [
+              `${charge.reference} ${charge.dividendType}` || "N/A",
+              "",
+              charge.receiptNumber ?? "N/A",
+              DateAdapter.format(charge.chargeDate, "dd/MM/yyyy") ?? "N/A",
+              Formatter.numberWithCommasAndDots(charge.chargedValue) ?? "N/A",
+              "",
+            ];
+          }) ?? [],
       };
     }) as MainRow[];
 

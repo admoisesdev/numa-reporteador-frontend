@@ -15,7 +15,7 @@ export default [
       id: " ",
     }),
     route("clientes", "routes/customer/customer.tsx", {
-      id: "Estado de cuenta de tus clientes",
+      id: "Contratos de clientes",
     }),
     route("cartera-cobrada", "routes/contract/charged-portfolio.tsx", {
       id: "Reporte de cartera cobrada",

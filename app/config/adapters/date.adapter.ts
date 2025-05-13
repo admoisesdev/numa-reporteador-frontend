@@ -6,16 +6,20 @@ export class DateAdapter {
   static format(
     date: Date | number | string,
     stringFormat: string,
-    options: FormatOptions = { locale: es }
+    options: FormatOptions = { locale: es, }
   ): string {
-    let formatDate = new Date(date);
+    let formatDate: Date;
 
+
+    
     if (typeof date === "string") {
-      formatDate = DateAdapter.parseISO(date);
+      const dateString = date.split("T")?.at(0)!;
+      formatDate = DateAdapter.parseISO(dateString);
+    } else {
+      formatDate = new Date(date);
     }
 
-
-    return format(new Date(formatDate), stringFormat, options);
+    return format(formatDate, stringFormat, options);
   }
 
   static isToday(date: Date): boolean {

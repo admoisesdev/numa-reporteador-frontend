@@ -35,11 +35,11 @@ export const companySchema = z.object({
     }),
   legalRepresentative: z
     .string()
-    .min(1, {
-      message: "El representante legal debe tener al menos 1 caracteres",
+    .min(3, {
+      message: "El representante legal debe tener al menos 3 caracteres",
     })
-    .max(3, {
-      message: "El representante legal no puede tener más de 3 caracteres",
+    .max(50, {
+      message: "El representante legal no puede tener más de 50 caracteres",
     }),
   resolutionDate: z
     .string()
