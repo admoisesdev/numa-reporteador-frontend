@@ -19,7 +19,7 @@ export default function UserCompaniesPage() {
   return (
     <section className="container flex flex-col justify-center min-h-screen">
       <TypographyH1 className="text-slate-900 text-xl lg:text-xl font-semibold text-center mb-3 uppercase">
-        Empresas del usuario
+        Seleccione la empresa
       </TypographyH1>
 
       <section className="flex flex-col items-center space-y-4">

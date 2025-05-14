@@ -120,6 +120,7 @@ const TableBodyPdf = ({ rows = [] }: TableBodyProps) => {
             borderBottomColor: "#e2e8f0",
             padding: 2,
           }}
+          wrap={false}
         >
           <View style={styles.tableRow}>
             {row.mainRow.flat().map((cell, cellIndex) => (
