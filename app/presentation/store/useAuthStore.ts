@@ -19,6 +19,7 @@ export interface AuthState {
   login: (email: string, password: string) => Promise<boolean>;
   register: (registerBody: UseCases.RegisterBody) => Promise<boolean>;
   checkStatus: () => Promise<void>;
+  changePassword: (newPassword: string) => Promise<boolean>;
   logout: () => void;
   changeStatus: (token?: string, user?: User) => Promise<boolean>;
   hasRole: (role: string) => boolean;
@@ -101,6 +102,23 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     get().clearError();
 
     get().changeStatus(res?.token, res?.user);
+  },
+  changePassword: async (newPassword: string) => {
+    set({ isLoading: true });
+
+    const res = await UseCases.changePasswordUseCase(apiFetcher, {
+      newPassword,
+    });
+
+    set({ isLoading: false });
+    
+    if ("statusCode" in res) {
+      set({ error: res });
+      return false;
+    }
+
+    get().clearError();
+    return get().changeStatus(res?.token, res?.user);
   },
   logout: () => {
     localStorage.removeItem("token");

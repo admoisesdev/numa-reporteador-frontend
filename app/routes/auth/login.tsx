@@ -121,7 +121,7 @@ const LoginPage = () => {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex flex-col sm:flex-row justify-center px-0 hidden">
+      <CardFooter className="flex-col sm:flex-row justify-center px-0 hidden">
         <Link
           to="/registrar"
           className={buttonVariants({

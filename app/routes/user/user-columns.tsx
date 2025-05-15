@@ -4,7 +4,7 @@ import type { UserCompany } from "domain/entities";
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, ArrowDownUp, UserCheck, UserX } from "lucide-react";
-import { UserCompanies } from "presentation/components/user/UserCompanies";
+import { UserCompanies } from "presentation/components/user";
 
 export const userColumns: ColumnDef<UserCompany>[] = [
   {

@@ -38,5 +38,8 @@ export default [
     route("crear-empresa", "routes/company/new-company.tsx", {
       id: "Crear nueva empresa",
     }),
+    route("cambiar-contrasena", "routes/user/new-password.tsx", {
+      id: "Crear nueva contraseña",
+    }),
   ]),
 ] satisfies RouteConfig;

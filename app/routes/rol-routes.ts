@@ -1,4 +1,11 @@
-import { Building2, FileText, Home, UserCog, Users, type LucideProps } from "lucide-react";
+import {
+  Building2,
+  FileText,
+  LockKeyholeOpen,
+  UserCog,
+  Users,
+  type LucideProps,
+} from "lucide-react";
 
 type Icon = React.ForwardRefExoticComponent<
   Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
@@ -19,11 +26,11 @@ export const routes: RoutePage[] = [
   {
     path: "/clientes",
     name: "Estado de cuenta",
-    role: ["admin","user", "asesor-credito", "jefe-credito"],
+    role: ["admin", "user", "asesor-credito", "jefe-credito"],
     icon: Users,
   },
   {
-    role: ["admin","user", "asesor-credito", "jefe-credito"],
+    role: ["admin", "user", "asesor-credito", "jefe-credito"],
     name: "Reportes de Cartera",
     path: "cartera",
     subRoutes: [
@@ -53,6 +60,12 @@ export const routes: RoutePage[] = [
     name: "Empresas",
     role: ["admin"],
     icon: Building2,
+  },
+  {
+    path: "/cambiar-contrasena",
+    name: "Cambiar contraseña",
+    role: ["admin", "user", "asesor-credito", "jefe-credito"],
+    icon: LockKeyholeOpen,
   },
 ];
 
@@ -92,5 +105,9 @@ export const routesWithRol: RouteRol[] = [
   {
     path: "/crear-empresa",
     role: ["admin"],
+  },
+  {
+    path: "/cambiar-contrasena",
+    role: ["admin", "user", "asesor-credito", "jefe-credito"],
   },
 ];

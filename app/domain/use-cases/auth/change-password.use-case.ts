@@ -1,15 +1,23 @@
+import { HttpError } from "config/helpers";
+import { AuthMapper } from "infrastructure/mappers";
+import type { AuthResponse, MsgResponse } from "infrastructure/interfaces";
+import type { Auth } from "domain/entities";
 import type { HttpAdapter } from "config/adapters";
-import type { MsgResponse } from "infrastructure/interfaces";
 
 export const changePasswordUseCase = async (
   fetcher: HttpAdapter,
-  body: Record<string, string>,
-  token: string
-): Promise<MsgResponse> => {
-  const resetPassword = await fetcher.post<MsgResponse>(
-    `/auth/change-password/${token}`,
-    body
-  );
+  body: Record<string, string>
+): Promise<Auth | MsgResponse> => {
+  try {
+    const changePassword = await fetcher.post<AuthResponse>(
+      `/auth/change-password`,
+      body
+    );
 
-  return resetPassword;
+    return AuthMapper.fromAuthResponseToToken(changePassword);
+  } catch (error: any) {
+    const errorData = HttpError.getError(error);
+
+    return errorData;
+  }
 };
