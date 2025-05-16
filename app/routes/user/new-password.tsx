@@ -37,6 +37,7 @@ const NewPasswordPage = () => {
     resolver: zodResolver(newPasswordSchema),
     defaultValues: {
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -55,7 +56,7 @@ const NewPasswordPage = () => {
 
   return (
     <section className="flex justify-center items-center min-h-[90vh]">
-      <Card className="border-gray-500 w-2/4 mt-3">
+      <Card className="border-gray-500 w-full md:w-3/4 lg:w-2/4 mt-3">
         <CardHeader>
           <CardTitle className="font-bold text-center uppercase">
             Restablecer contraseña
@@ -100,6 +101,31 @@ const NewPasswordPage = () => {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage className="text-red-500" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field, formState: { errors } }) => (
+                  <FormItem className="w-full space-y-1">
+                    <FormLabel className="uppercase font-bold text-gray-600">
+                      Confirmar nueva contraseña:
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder=" Repetir tu password"
+                        className={cn(`border`, {
+                          "border-red-500": errors.confirmPassword?.message,
+                          "border-blue-500": !errors.confirmPassword?.message,
+                        })}
+                        {...field}
+                      />
+                    </FormControl>
+
                     <FormMessage className="text-red-500" />
                   </FormItem>
                 )}

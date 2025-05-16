@@ -23,7 +23,7 @@ export const useCompanies = () => {
       });
       setSelectOptionsCompanies(selectOptionsCompanies);
     }
-  }, []);
+  }, [queryCompanies.data]);
 
   return {
     queryCompanies,
